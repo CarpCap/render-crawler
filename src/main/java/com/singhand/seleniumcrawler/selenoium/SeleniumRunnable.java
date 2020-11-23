@@ -1,7 +1,9 @@
 package com.singhand.seleniumcrawler.selenoium;
 
+import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
+import com.singhand.tinycrawler.managercenter.entities.DataPackage;
+import com.singhand.tinycrawler.managercenter.entities.Proxy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,6 +12,14 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
+import javax.swing.text.html.ObjectView;
+import java.util.concurrent.Callable;
 
 /**
  * @author Kwon
@@ -17,7 +27,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * @Description:
  * @date 2020/11/20 15:27
  */
-public class SeleniumRunnable implements Runnable {
+@Component
+@Scope("request")
+public class SeleniumRunnable implements Callable<String> {
     private static ThreadLocal<WebDriver> seleniumThreadLocal = new ThreadLocal<>();
     private static ThreadLocal<Integer> sum = ThreadLocal.withInitial(() -> 0);
     private static ThreadLocal<ChromeOptions> chromeOptionsThreadLocal=new ThreadLocal<>();
@@ -25,15 +37,14 @@ public class SeleniumRunnable implements Runnable {
     private String url;
     private String css;
 
+    @Autowired
+    ProxyDispatchFeign proxyDispatchFeign;
+
     static {
         System.getProperties().setProperty("webdriver.chrome.driver","C:\\Users\\aa3\\Downloads\\chromedriver_win32\\chromedriver.exe");
     }
 
-    public SeleniumRunnable(String url,String css){
-        this.css=css;
-        this.url=url;
 
-    }
 
     private WebDriver getWebDriver() {
         if (seleniumThreadLocal.get() == null) {
@@ -58,6 +69,9 @@ public class SeleniumRunnable implements Runnable {
         //todo 代理 加入 申请代理
         // 因为目前调研结果来看 只有在new WebDriver时才能设置代理
 
+//        DataPackage<Proxy> domesticProxy = proxyDispatchFeign.getDomesticProxy();
+//        System.out.println(domesticProxy.toString());
+
         chromeOptionsThreadLocal.set(chromeOptions);
       //开启webDriver进程
         WebDriver webDriver = new ChromeDriver(chromeOptions);
@@ -70,19 +84,26 @@ public class SeleniumRunnable implements Runnable {
     }
     
     @Override
-    public void run() {
+    public String call() {
+        //todo setProxy
+
         //new WebDriver
         ChromeDriver webDriver = (ChromeDriver) getWebDriver();
-
-
         webDriver.get(url);
-        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        WebDriverWait wait = new WebDriverWait(webDriver, 5);
         ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
         wait.until(webElementExpectedCondition);
-
-        String s = webDriver.getPageSource();
-        System.out.println("url:"+url);
-        System.out.println("css:"+css);
-        System.out.println();
+        return webDriver.getPageSource();
     }
+
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setCss(String css) {
+        this.css = css;
+    }
+
+
 }

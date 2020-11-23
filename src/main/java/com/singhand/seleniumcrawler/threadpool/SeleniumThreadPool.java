@@ -13,7 +13,7 @@ public class  SeleniumThreadPool extends ThreadPoolExecutor {
     public final static Integer queueSize=2;
 
     public SeleniumThreadPool() {
-        super(corePoolSize,maximumPoolSize, 1, TimeUnit.SECONDS,new LinkedBlockingDeque<>(queueSize));
+        super(1,1, 1, TimeUnit.SECONDS,new LinkedBlockingDeque<>(queueSize));
     }
 
 
