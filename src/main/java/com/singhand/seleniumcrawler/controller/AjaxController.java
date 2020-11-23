@@ -40,7 +40,6 @@ public class AjaxController {
     public String ajax(String url,@PathVariable String css,@PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
         //根据isDomestic判断是国内还是国外
 
-
         seleniumRunnable.setCss(css);
         seleniumRunnable.setUrl(url);
         return seleniumThreadPool.submit(seleniumRunnable).get();

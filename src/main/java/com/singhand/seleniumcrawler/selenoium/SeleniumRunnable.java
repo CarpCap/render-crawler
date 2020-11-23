@@ -31,9 +31,8 @@ import java.util.concurrent.Callable;
 @Scope("request")
 public class SeleniumRunnable implements Callable<String> {
     private static ThreadLocal<WebDriver> seleniumThreadLocal = new ThreadLocal<>();
-    private static ThreadLocal<Integer> sum = ThreadLocal.withInitial(() -> 0);
-    private static ThreadLocal<ChromeOptions> chromeOptionsThreadLocal=new ThreadLocal<>();
-    private static final Integer vuew = 10;
+    private static ThreadLocal<Integer> requestSum = ThreadLocal.withInitial(() -> 0);
+    private static final Integer REOPEN = 10;
     private String url;
     private String css;
 
@@ -43,21 +42,23 @@ public class SeleniumRunnable implements Callable<String> {
     static {
         System.getProperties().setProperty("webdriver.chrome.driver","C:\\Users\\aa3\\Downloads\\chromedriver_win32\\chromedriver.exe");
     }
-
-
-
+    
     private WebDriver getWebDriver() {
+        //判断本线程是否由WebDriver实例
         if (seleniumThreadLocal.get() == null) {
             seleniumThreadLocal.set(newWebDriver());
             return seleniumThreadLocal.get();
         }
-        if (sum.get() > vuew) {
-            sum.set(0);
+        //判断是否需要重新new WebDriver
+        if (requestSum.get() > REOPEN) {
+            requestSum.set(0);
             closeWebDriver(seleniumThreadLocal.get());
             seleniumThreadLocal.set(newWebDriver());
             return seleniumThreadLocal.get();
         }
-        sum.set(sum.get() + 1);
+        //requestSum+1
+        requestSum.set(requestSum.get() + 1);
+        //return
         return seleniumThreadLocal.get();
     }
 
@@ -68,11 +69,10 @@ public class SeleniumRunnable implements Callable<String> {
 
         //todo 代理 加入 申请代理
         // 因为目前调研结果来看 只有在new WebDriver时才能设置代理
-
+        // 一个代理只用 REOPEN 次
 //        DataPackage<Proxy> domesticProxy = proxyDispatchFeign.getDomesticProxy();
 //        System.out.println(domesticProxy.toString());
 
-        chromeOptionsThreadLocal.set(chromeOptions);
       //开启webDriver进程
         WebDriver webDriver = new ChromeDriver(chromeOptions);
         return webDriver;
@@ -85,14 +85,15 @@ public class SeleniumRunnable implements Callable<String> {
     
     @Override
     public String call() {
-        //todo setProxy
-
-        //new WebDriver
+        //get WebDriver
         ChromeDriver webDriver = (ChromeDriver) getWebDriver();
+        //http Request
         webDriver.get(url);
+        //wait ajax load
         WebDriverWait wait = new WebDriverWait(webDriver, 5);
         ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
         wait.until(webElementExpectedCondition);
+        //return
         return webDriver.getPageSource();
     }
 
