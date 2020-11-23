@@ -14,6 +14,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class SeleniumApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SeleniumApplication.class,args);
+        SpringApplication.run(SeleniumApplication.class, args);
     }
 }

@@ -23,7 +23,7 @@ import java.util.concurrent.Callable;
 
 /**
  * @author Kwon
- * @Title:  selenium执行策略
+ * @Title: selenium执行策略
  * @Description:
  * @date 2020/11/20 15:27
  */
@@ -40,7 +40,7 @@ public class SeleniumRunnable implements Callable<String> {
     ProxyDispatchFeign proxyDispatchFeign;
 
     static {
-        System.getProperties().setProperty("webdriver.chrome.driver","C:\\Users\\aa3\\Downloads\\chromedriver_win32\\chromedriver.exe");
+        System.getProperties().setProperty("webdriver.chrome.driver", "C:\\Users\\aa3\\Downloads\\chromedriver_win32\\chromedriver.exe");
     }
 
     private WebDriver getWebDriver() {
@@ -73,7 +73,7 @@ public class SeleniumRunnable implements Callable<String> {
 //        DataPackage<Proxy> domesticProxy = proxyDispatchFeign.getDomesticProxy();
 //        System.out.println(domesticProxy.toString());
 
-      //开启webDriver进程
+        //开启webDriver进程
         WebDriver webDriver = new ChromeDriver(chromeOptions);
         return webDriver;
     }
@@ -82,7 +82,7 @@ public class SeleniumRunnable implements Callable<String> {
         seleniumThreadLocal.get().close();
         seleniumThreadLocal.get().quit();
     }
-    
+
     @Override
     public String call() {
         //get WebDriver

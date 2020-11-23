@@ -18,26 +18,26 @@ import java.util.concurrent.ExecutionException;
  * @Description:
  * @date 2020/11/20 14:42
  */
+
 @RestController
-@RequestMapping("ajax")
 @Scope("request")
+@RequestMapping("ajax")
 public class AjaxController {
-    public static SeleniumThreadPool seleniumThreadPool=new SeleniumThreadPool();
+
+    public static SeleniumThreadPool seleniumThreadPool = new SeleniumThreadPool();
     @Autowired
     private SeleniumRunnable seleniumRunnable;
 
     /**
-     *
-     *
-     * @author Kwon
-     * @date 2020/11/20 17:26
-     * @param url  请求路径
-     * @param css css成功选择器
+     * @param url        请求路径
+     * @param css        css成功选择器
      * @param isDomestic 是国内代理
      * @return
+     * @author Kwon
+     * @date 2020/11/20 17:26
      */
     @GetMapping("/{css}/{isDomestic}")
-    public String ajax(String url,@PathVariable String css,@PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
+    public String ajax(String url, @PathVariable String css, @PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
         //todo：根据isDomestic判断是国内还是国外， 处理策略尚未实现
         seleniumRunnable.setCss(css);
         seleniumRunnable.setUrl(url);
