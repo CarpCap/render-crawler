@@ -1,6 +1,6 @@
 package com.singhand.seleniumcrawler.controller;
 
-import com.singhand.seleniumcrawler.selenoium.SeleniumRunnable;
+import com.singhand.seleniumcrawler.selenoium.SeleniumCallable;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,7 +26,7 @@ public class AjaxController {
 
     public static SeleniumThreadPool seleniumThreadPool = new SeleniumThreadPool();
     @Autowired
-    private SeleniumRunnable seleniumRunnable;
+    private SeleniumCallable seleniumCallable;
 
     /**
      * @param url        请求路径
@@ -39,8 +39,8 @@ public class AjaxController {
     @GetMapping("/{css}/{isDomestic}")
     public String ajax(String url, @PathVariable String css, @PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
         //todo：根据isDomestic判断是国内还是国外， 处理策略尚未实现
-        seleniumRunnable.setCss(css);
-        seleniumRunnable.setUrl(url);
-        return seleniumThreadPool.submit(seleniumRunnable).get();
+        seleniumCallable.setCss(css);
+        seleniumCallable.setUrl(url);
+        return seleniumThreadPool.submit(seleniumCallable).get();
     }
 }

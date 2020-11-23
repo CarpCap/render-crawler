@@ -1,24 +1,18 @@
 package com.singhand.seleniumcrawler.selenoium;
 
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
-import com.singhand.tinycrawler.managercenter.entities.DataPackage;
-import com.singhand.tinycrawler.managercenter.entities.Proxy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.RequestScope;
 
-import javax.swing.text.html.ObjectView;
 import java.util.concurrent.Callable;
 
 /**
@@ -29,7 +23,7 @@ import java.util.concurrent.Callable;
  */
 @Component
 @Scope("request")
-public class SeleniumRunnable implements Callable<String> {
+public class SeleniumCallable implements Callable<String> {
     private static ThreadLocal<WebDriver> seleniumThreadLocal = new ThreadLocal<>();
     private static ThreadLocal<Integer> requestSum = ThreadLocal.withInitial(() -> 0);
     private static final Integer REOPEN = 10;
