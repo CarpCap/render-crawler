@@ -23,7 +23,7 @@ import java.util.concurrent.Callable;
 
 /**
  * @author Kwon
- * @Title:
+ * @Title:  selenium执行策略
  * @Description:
  * @date 2020/11/20 15:27
  */
