@@ -42,7 +42,7 @@ public class SeleniumRunnable implements Callable<String> {
     static {
         System.getProperties().setProperty("webdriver.chrome.driver","C:\\Users\\aa3\\Downloads\\chromedriver_win32\\chromedriver.exe");
     }
-    
+
     private WebDriver getWebDriver() {
         //判断本线程是否由WebDriver实例
         if (seleniumThreadLocal.get() == null) {

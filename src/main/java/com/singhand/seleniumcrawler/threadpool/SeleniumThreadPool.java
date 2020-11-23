@@ -18,7 +18,8 @@ public class  SeleniumThreadPool extends ThreadPoolExecutor {
     public final static Integer queueSize=10;
 
     public SeleniumThreadPool() {
-        super(1,1, 1, TimeUnit.SECONDS,new LinkedBlockingDeque<>(queueSize));
+        //todo：拒绝策略需要修改，改为队列不够时 自身线程执行
+        super(corePoolSize,maximumPoolSize, 1, TimeUnit.SECONDS,new LinkedBlockingDeque<>(queueSize));
     }
 
 
