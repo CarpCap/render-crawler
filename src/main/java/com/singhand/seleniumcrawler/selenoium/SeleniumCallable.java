@@ -1,6 +1,7 @@
 package com.singhand.seleniumcrawler.selenoium;
 
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,9 +11,14 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 
 /**
@@ -23,9 +29,15 @@ import java.util.concurrent.Callable;
  */
 @Component
 @Scope("request")
-public class SeleniumCallable implements Callable<String> {
+public class  SeleniumCallable implements Callable<String> {
     private static ThreadLocal<WebDriver> seleniumThreadLocal = new ThreadLocal<>();
+    /**
+     * 某一个浏览器实例请求次数.
+     */
     private static ThreadLocal<Integer> requestSum = ThreadLocal.withInitial(() -> 0);
+    /**
+     * 浏览器实例最大请求次数.
+     */
     private static final Integer REOPEN = 10;
     private String url;
     private String css;
@@ -33,9 +45,6 @@ public class SeleniumCallable implements Callable<String> {
     @Autowired
     ProxyDispatchFeign proxyDispatchFeign;
 
-    static {
-        System.getProperties().setProperty("webdriver.chrome.driver", "C:\\Users\\aa3\\Downloads\\chromedriver_win32\\chromedriver.exe");
-    }
 
     private WebDriver getWebDriver() {
         //判断本线程是否由WebDriver实例
