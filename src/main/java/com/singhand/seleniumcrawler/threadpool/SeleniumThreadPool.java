@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/11/20 15:27
  */
 public class SeleniumThreadPool extends ThreadPoolExecutor {
-    public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 4;
-    public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 4;
-    public final static Integer QUEUE_SIZE = 10;
+    public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
+    public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
+    public final static Integer QUEUE_SIZE = 20;
 
     public SeleniumThreadPool() {
         //todo：拒绝策略需要修改，改为队列不够时 自身线程执行

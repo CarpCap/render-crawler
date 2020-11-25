@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.Callable;
 
 /**
+ * todo 需要加入删除策略，长时间没有执行任务 进行浏览器删除
  * @author Kwon
  * @Title: selenium执行策略
  * @Description:
@@ -24,7 +25,7 @@ import java.util.concurrent.Callable;
 @Component
 @Scope("request")
 public class  SeleniumCallable implements Callable<String> {
-    private static ThreadLocal<WebDriver> seleniumThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Selenium> seleniumThreadLocal = new ThreadLocal<>();
     /**
      * 某一个浏览器实例请求次数.
      */
@@ -42,21 +43,23 @@ public class  SeleniumCallable implements Callable<String> {
 
     private WebDriver getWebDriver() {
         //判断本线程是否由WebDriver实例
-        if (seleniumThreadLocal.get() == null) {
-            seleniumThreadLocal.set(newWebDriver());
-            return seleniumThreadLocal.get();
+        if (seleniumThreadLocal.get().getWebDriver() == null) {
+            seleniumThreadLocal.get().setTime(System.currentTimeMillis());
+            seleniumThreadLocal.get().setWebDriver(newWebDriver());
+            return seleniumThreadLocal.get().getWebDriver();
         }
         //判断是否需要重新new WebDriver
         if (requestSum.get() > REOPEN) {
             requestSum.set(0);
-            closeWebDriver(seleniumThreadLocal.get());
-            seleniumThreadLocal.set(newWebDriver());
-            return seleniumThreadLocal.get();
+            closeWebDriver(seleniumThreadLocal.get().getWebDriver());
+            seleniumThreadLocal.get().setTime(System.currentTimeMillis());
+            seleniumThreadLocal.get().setWebDriver(newWebDriver());
+            return seleniumThreadLocal.get().getWebDriver();
         }
         //requestSum+1
         requestSum.set(requestSum.get() + 1);
         //return
-        return seleniumThreadLocal.get();
+        return seleniumThreadLocal.get().getWebDriver();
     }
 
 
@@ -76,8 +79,8 @@ public class  SeleniumCallable implements Callable<String> {
     }
 
     public void closeWebDriver(WebDriver webDriver) {
-        seleniumThreadLocal.get().close();
-        seleniumThreadLocal.get().quit();
+        seleniumThreadLocal.get().getWebDriver().close();
+        seleniumThreadLocal.get().getWebDriver().quit();
     }
 
     @Override
@@ -86,6 +89,7 @@ public class  SeleniumCallable implements Callable<String> {
         ChromeDriver webDriver = (ChromeDriver) getWebDriver();
         //http Request
         webDriver.get(url);
+        seleniumThreadLocal.get().setTime(System.currentTimeMillis());
         //wait ajax load
         WebDriverWait wait = new WebDriverWait(webDriver, 5);
         ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
