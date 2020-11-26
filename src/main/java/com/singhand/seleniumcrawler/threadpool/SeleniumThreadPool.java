@@ -15,11 +15,11 @@ import java.util.concurrent.TimeUnit;
 public class SeleniumThreadPool extends ThreadPoolExecutor {
     public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
     public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
-    public final static Integer QUEUE_SIZE = 20;
+    public final static Integer QUEUE_SIZE = 10;
 
     public SeleniumThreadPool() {
         //todo：拒绝策略需要修改，改为队列不够时 自身线程执行
-        super(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(QUEUE_SIZE));
+        super(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(QUEUE_SIZE),new CallerRunsPolicy());
     }
 
 
