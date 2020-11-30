@@ -35,6 +35,11 @@ public class Selenium {
     private WebDriver webDriver=null;
     private Long time;
 
+    public Selenium(){
+        time=System.currentTimeMillis();
+        newWebDriver();
+    }
+
     public static Selenium getSelenium() {
         //判断本线程是否由Selenium实例
         if (seleniumThreadLocal.get() == null || seleniumThreadLocal.get().getWebDriver()==null) {
@@ -53,16 +58,13 @@ public class Selenium {
         return seleniumThreadLocal.get();
     }
 
-    public static   Selenium newSelenium(){
+    public static  Selenium newSelenium(){
         Selenium selenium = new Selenium();
         SeleniumSelector.register(selenium);
         return selenium;
     }
 
-    public Selenium(){
-        time=System.currentTimeMillis();
-        newWebDriver();
-    }
+
 
 
     private  WebDriver newWebDriver() {

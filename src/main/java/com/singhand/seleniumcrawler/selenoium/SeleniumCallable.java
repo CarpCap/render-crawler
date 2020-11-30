@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.Callable;
 
 /**
- * todo 需要加入删除策略，长时间没有执行任务 进行浏览器删除
+ *
  *
  * 生命周期策略 request
  * @author Kwon
@@ -47,7 +47,7 @@ public class  SeleniumCallable implements Callable<String> {
 
             Selenium.seleniumThreadLocal.get().setTime(System.currentTimeMillis());
             //wait ajax load
-            WebDriverWait wait = new WebDriverWait(webDriver, 5);
+            WebDriverWait wait = new WebDriverWait(webDriver, 30);
             ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
             wait.until(webElementExpectedCondition);
             //return

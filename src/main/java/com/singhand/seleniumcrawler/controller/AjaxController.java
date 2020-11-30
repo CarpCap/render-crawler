@@ -1,6 +1,7 @@
 package com.singhand.seleniumcrawler.controller;
 
-import com.singhand.seleniumcrawler.selenoium.SeleniumCallable;
+
+import com.singhand.seleniumcrawler.service.SeleniumService;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 
 /**
@@ -28,8 +28,10 @@ import java.util.concurrent.Future;
 public class AjaxController {
 
     public static SeleniumThreadPool seleniumThreadPool = new SeleniumThreadPool();
+
+
     @Autowired
-    private SeleniumCallable seleniumCallable;
+    private SeleniumService seleniumService;
 
     /**
      * @param url        请求路径
@@ -41,18 +43,10 @@ public class AjaxController {
      */
     @GetMapping("/{css}/{isDomestic}")
     public String ajax(String url, @PathVariable String css, @PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
-        //todo：根据isDomestic判断是国内还是国外， 处理策略尚未实现
-        seleniumCallable.setCss(css);
-        seleniumCallable.setUrl(url);
 
-        Future<String> future;
-        try {
-            future = seleniumThreadPool.submit(seleniumCallable);
-        }catch (Exception e){
-              log.warn("线程池队列已满，执行拒绝策略");
-              return null;
+        if (isDomestic) {
+            return seleniumService.domestic(url, css);
         }
-
-        return future.get();
+        return seleniumService.foreign(url, css);
     }
 }
