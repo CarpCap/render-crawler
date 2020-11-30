@@ -43,7 +43,6 @@ public class AjaxController {
      */
     @GetMapping("/{css}/{isDomestic}")
     public String ajax(String url, @PathVariable String css, @PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
-
         if (isDomestic) {
             return seleniumService.domestic(url, css);
         }

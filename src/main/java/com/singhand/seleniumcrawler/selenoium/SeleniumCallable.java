@@ -28,6 +28,7 @@ public class  SeleniumCallable implements Callable<String> {
     private String url;
     private String css;
 
+
     @Autowired
     ProxyDispatchFeign proxyDispatchFeign;
 
@@ -38,14 +39,13 @@ public class  SeleniumCallable implements Callable<String> {
 
 
         //get WebDriver
-        Selenium selenium = Selenium.getSelenium();
+        Selenium selenium = SeleniumThreadLoad.getSelenium(true);
         selenium.reentrantLock.lock();
         try{
             ChromeDriver webDriver = (ChromeDriver) selenium.getWebDriver();
             //http Request
             webDriver.get(url);
-
-            Selenium.seleniumThreadLocal.get().setTime(System.currentTimeMillis());
+            selenium.setTime(System.currentTimeMillis());
             //wait ajax load
             WebDriverWait wait = new WebDriverWait(webDriver, 30);
             ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));

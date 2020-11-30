@@ -11,7 +11,7 @@ public class JSONTest {
 
 
     public static void main(String[] args) {
-        Selenium selenium=new Selenium();
+        Selenium selenium=new Selenium(true);
         selenium.setTime(123123L);
         String s = JSONObject.toJSONString(selenium);
 
