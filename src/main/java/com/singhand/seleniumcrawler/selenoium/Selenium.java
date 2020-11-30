@@ -3,6 +3,7 @@ package com.singhand.seleniumcrawler.selenoium;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,6 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Getter
 @Setter
+@Log4j2
 public class Selenium {
     public static ThreadLocal<Selenium> seleniumThreadLocal = new ThreadLocal<>();
     /**
@@ -84,6 +86,7 @@ public class Selenium {
 
 
     public void closeSelenium() {
+        log.info("关闭浏览器实例："+webDriver);
         reentrantLock.lock();
         try{
             webDriver.close();
