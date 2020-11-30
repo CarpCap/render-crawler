@@ -2,6 +2,7 @@ package com.singhand.seleniumcrawler.selenoium;
 
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -32,6 +34,9 @@ public class  SeleniumCallable implements Callable<String> {
     @Autowired
     ProxyDispatchFeign proxyDispatchFeign;
 
+    @Autowired
+    SeleniumThreadLoad seleniumThreadLoad;
+
 
     @Override
     public String call() {
@@ -39,17 +44,18 @@ public class  SeleniumCallable implements Callable<String> {
 
 
         //get WebDriver
-        Selenium selenium = SeleniumThreadLoad.getSelenium(true);
+        Selenium selenium = seleniumThreadLoad.getSelenium(true);
         selenium.reentrantLock.lock();
         try{
-            ChromeDriver webDriver = (ChromeDriver) selenium.getWebDriver();
+            WebDriver webDriver =  selenium.getWebDriver();
             //http Request
             webDriver.get(url);
             selenium.setTime(System.currentTimeMillis());
             //wait ajax load
-            WebDriverWait wait = new WebDriverWait(webDriver, 30);
+            WebDriverWait wait = new WebDriverWait(webDriver, 30,1);
             ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
             wait.until(webElementExpectedCondition);
+
             //return
             pageSource= webDriver.getPageSource();
         }finally {

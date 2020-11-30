@@ -13,11 +13,10 @@ import java.util.Set;
  */
 public class SeleniumSelector {
 
-
     private volatile static Set<Selenium> selectedKey= Sets.newConcurrentHashSet();
 
     //超时时间 毫秒
-    private static Long TIME=60000L;
+    private static Long TIME=30000L;
 
 
     /**

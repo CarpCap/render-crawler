@@ -41,8 +41,8 @@ public class AjaxController {
      * @author Kwon
      * @date 2020/11/20 17:26
      */
-    @GetMapping("/{css}/{isDomestic}")
-    public String ajax(String url, @PathVariable String css, @PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
+    @GetMapping("/{isDomestic}")
+    public String ajax(String url, String css, @PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
         if (isDomestic) {
             return seleniumService.domestic(url, css);
         }
