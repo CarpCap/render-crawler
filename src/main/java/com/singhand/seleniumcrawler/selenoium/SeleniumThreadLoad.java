@@ -1,13 +1,13 @@
 package com.singhand.seleniumcrawler.selenoium;
 
-import com.singhand.bidcrawler.commons.entity.ApplyRequest;
+import com.google.common.collect.Lists;
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
-import com.singhand.tinycrawler.managercenter.entities.DataPackage;
-import com.singhand.tinycrawler.managercenter.entities.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Kwon
@@ -71,7 +71,15 @@ public class SeleniumThreadLoad {
 
     }
 
-    private   Selenium createSelenium(boolean proxyType){
+    /**
+     * TODO 工厂模式
+     *
+     * @author Kwon
+     * @date 2020/12/1 9:32
+     * @param proxyType
+     * @return
+     */
+    private  Selenium createSelenium(boolean proxyType){
 //        //TODO 待实现
 //        DataPackage<Proxy> domesticProxy;
 //        if (proxyType){
@@ -87,11 +95,9 @@ public class SeleniumThreadLoad {
 //        }
 //        System.out.println(domesticProxy.toString());
 
-
-        Selenium selenium = new Selenium();
+        SeleniumSelector seleniumSelector=new SeleniumSelector();
+        List<ObserverSelenium> observerSeleniumList = Lists.newArrayList(seleniumSelector);
+        Selenium selenium = new Selenium(observerSeleniumList);
         return selenium;
     }
-
-
-
 }

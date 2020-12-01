@@ -7,6 +7,9 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 
@@ -19,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @Getter
 @Setter
 @Log4j2
-public class Selenium {
+public class Selenium extends SeleniumAbstract{
     /**
      * 浏览器实例请求次数.
      */
@@ -47,15 +50,29 @@ public class Selenium {
         chromeOptions.setProxy(proxy);
         //new webDriver
         webDriver = new ChromeDriver(chromeOptions);
-        SeleniumSelector.register(this);
+        notifyObserverSeleniumCreate();
     }
-    public Selenium(){
+    /**
+     * 策略工厂
+     *
+     * @author Kwon
+     * @date 2020/12/1 10:41
+     * @param observerSeleniumList
+     * @return
+     */
+    public Selenium(List<ObserverSelenium> observerSeleniumList){
+        this.observerSeleniumList=observerSeleniumList;
+        init();
+    }
+
+
+
+    public void init(){
         ChromeOptions chromeOptions = new ChromeOptions();
 //        chromeOptions.addArguments("-headless");
         //new webDriver
         webDriver = new ChromeDriver(chromeOptions);
-        SeleniumSelector.register(this);
-
+        notifyObserverSeleniumCreate();
     }
 
     public void closeSelenium() {
@@ -64,13 +81,28 @@ public class Selenium {
         try{
             webDriver.quit();
             webDriver=null;
-            SeleniumSelector.unregister(this);
+            notifyObserverSeleniumClose();
         }catch (Exception e){
-            SeleniumSelector.unregister(this);
                 e.printStackTrace();
         }finally {
             reentrantLock.unlock();
         }
     }
+
+
+    private void notifyObserverSeleniumCreate(){
+        observerSeleniumList.forEach(os->{
+            os.seleniumCreated(this);
+        });
+    }
+
+    private void notifyObserverSeleniumClose(){
+        observerSeleniumList.forEach(os->{
+            os.seleniumClosed(this);
+        });
+    }
+
+
+
 
 }

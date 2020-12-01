@@ -23,7 +23,7 @@
 
     <dependencies>
         <!-- singhand begin -->
-            <!--todo  暂时使用其他项目公共依赖-->
+            <!--todo  暂时使用其他项目公共依赖  待修改-->
         <dependency>
             <groupId>com.singhand.bidcrawler</groupId>
             <artifactId>commons-feign-description</artifactId>

@@ -30,7 +30,6 @@ public class  SeleniumCallable implements Callable<String> {
     private String url;
     private String css;
 
-
     @Autowired
     ProxyDispatchFeign proxyDispatchFeign;
 

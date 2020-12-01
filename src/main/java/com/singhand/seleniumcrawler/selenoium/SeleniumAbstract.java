@@ -1,0 +1,31 @@
+package com.singhand.seleniumcrawler.selenoium;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 观察者 抽象目标
+ * @author Kwon
+ * @Title:
+ * @Description:
+ * @date 2020/12/1 9:53
+ */
+public abstract class SeleniumAbstract {
+    /**
+     * selenium事件观察者
+     *
+     * @author Kwon
+     * @date 2020/12/1 9:54
+     * @param null
+     * @return
+     */
+    protected List<ObserverSelenium> observerSeleniumList;
+
+    public List<ObserverSelenium> getObserverSeleniumList() {
+        return observerSeleniumList;
+    }
+
+    public void setObserverSeleniumList(List<ObserverSelenium> observerSeleniumList) {
+        this.observerSeleniumList = observerSeleniumList;
+    }
+}

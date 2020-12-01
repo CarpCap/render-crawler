@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * todo：需要实现线程池生命周期结束的后续工作
+ * TODO 线程池消费者为何有序消费 导致新请求来了 有selenium实例的线程没有领取到任务 反而让空实例的线程在执行新的任务
  *
  * @author Kwon
  * @Title: 自定义线程池
@@ -18,7 +18,6 @@ public class SeleniumThreadPool extends ThreadPoolExecutor {
     public final static Integer QUEUE_SIZE = 10;
 
     public SeleniumThreadPool() {
-        //todo：拒绝策略需要修改，改为队列不够时 自身线程执行
         super(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(QUEUE_SIZE),new CallerRunsPolicy());
     }
 

@@ -11,10 +11,10 @@ public class JSONTest {
 
 
     public static void main(String[] args) {
-        Selenium selenium=new Selenium();
-        selenium.setTime(123123L);
-        String s = JSONObject.toJSONString(selenium);
-
-        System.out.println(s);
+//        Selenium selenium=new Selenium();
+//        selenium.setTime(123123L);
+//        String s = JSONObject.toJSONString(selenium);
+//
+//        System.out.println(s);
     }
 }

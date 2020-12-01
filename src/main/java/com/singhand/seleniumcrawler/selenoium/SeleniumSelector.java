@@ -11,7 +11,7 @@ import java.util.Set;
  * @Description:
  * @date 2020/11/25 17:25
  */
-public class SeleniumSelector {
+public class SeleniumSelector implements ObserverSelenium{
 
     private volatile static Set<Selenium> selectedKey= Sets.newConcurrentHashSet();
 
@@ -55,18 +55,6 @@ public class SeleniumSelector {
         return true;
     }
 
-    /**
-     * 注册
-     *
-     * @author Kwon
-     * @date 2020/11/26 10:15
-     * @param selenium
-     * @return
-     */
-    public static boolean register(Selenium selenium){
-        selectedKey.add(selenium);
-        return true;
-    }
 
     /**
      * 注销
@@ -76,10 +64,22 @@ public class SeleniumSelector {
      * @param selenium
      * @return
      */
-    public static boolean unregister(Selenium selenium){
+    @Override
+    public void seleniumClosed(Selenium selenium) {
         selectedKey.remove(selenium);
-        return true;
     }
 
 
+    /**
+     * 注册
+     *
+     * @author Kwon
+     * @date 2020/11/26 10:15
+     * @param selenium
+     * @return
+     */
+    @Override
+    public void seleniumCreated(Selenium selenium) {
+        selectedKey.add(selenium);
+    }
 }
