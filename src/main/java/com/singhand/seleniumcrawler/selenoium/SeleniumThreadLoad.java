@@ -1,13 +1,16 @@
 package com.singhand.seleniumcrawler.selenoium;
 
 import com.google.common.collect.Lists;
+import com.singhand.bidcrawler.commons.entity.ApplyRequest;
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
+import com.singhand.tinycrawler.managercenter.entities.DataPackage;
+import com.singhand.tinycrawler.managercenter.entities.Proxy;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
 
 /**
  * @author Kwon
@@ -17,87 +20,61 @@ import java.util.List;
  */
 @Component
 public class SeleniumThreadLoad {
-    /**
-     * Selenium线程保险箱
-     */
-    public static ThreadLocal<HashMap<String,Selenium>> seleniumThreadLocal = new ThreadLocal<>();
-    /**
-     * 浏览器实例最大请求次数.
-     */
-    private static final Integer REOPEN_REQUEST_SUM = 10;
+
 
     @Autowired
     private ProxyDispatchFeign proxyDispatchFeign;
 
     /**
+     * todo 修改获取策略
+     * 从线程保险箱拿去内容改为
+     * 从Selenium管理组拿内容
      *
-     *
-     * @author Kwon
-     * @date 2020/11/30 17:14
      * @param proxyType
      * @return
+     * @author Kwon
+     * @date 2020/11/30 17:14
      */
-    public  Selenium getSelenium(boolean proxyType) {
-        if (proxyType){
-            //判断本线程是否有Selenium实例
-            if (seleniumThreadLocal.get() == null) {
-                HashMap<String, Selenium> seleniumHashMap = new HashMap<>(2);
-                seleniumHashMap.put("domestic",createSelenium(proxyType));
-                seleniumThreadLocal.set(seleniumHashMap);
-                return seleniumThreadLocal.get().get("domestic");
-            }
+    public Selenium getSelenium(String proxyType) throws Exception {
+        Selenium selenium = SeleniumSelector.getAvailableSelenium(proxyType);
 
-            if (seleniumThreadLocal.get().get("domestic")==null ||seleniumThreadLocal.get().get("domestic").getWebDriver()==null){
-                seleniumThreadLocal.get().put("domestic",createSelenium(proxyType));
-                return seleniumThreadLocal.get().get("domestic");
-            }
-
-
-
-            //判断是否需要重新new WebDriver
-            if (seleniumThreadLocal.get().get("domestic").getRequestSum() > REOPEN_REQUEST_SUM) {
-                seleniumThreadLocal.get().get("domestic").closeSelenium();
-                seleniumThreadLocal.get().put("domestic",createSelenium(proxyType));
-                return seleniumThreadLocal.get().get("domestic");
-            }
-            //requestSum+1
-            Selenium selenium = seleniumThreadLocal.get().get("domestic");
-            selenium.setRequestSum(selenium.getRequestSum()+1);
-            //return
-            return seleniumThreadLocal.get().get("domestic");
+        if (selenium==null) {
+            return createSelenium(proxyType);
         }
 
-        return seleniumThreadLocal.get().get("domestic");
 
+
+        return selenium;
     }
 
     /**
-     * TODO 工厂模式
-     *
-     * @author Kwon
-     * @date 2020/12/1 9:32
      * @param proxyType
      * @return
+     * @author Kwon
+     * @date 2020/12/1 9:32
      */
-    private  Selenium createSelenium(boolean proxyType){
-//        //TODO 待实现
-//        DataPackage<Proxy> domesticProxy;
-//        if (proxyType){
-//            domesticProxy = proxyDispatchFeign.getDomesticProxy();
-//        }else {
-//            ApplyRequest applyRequest = new ApplyRequest();
-//            // TODO: 2020/11/30 添加参数
-//            applyRequest.setChannel("");
-//            applyRequest.setPriority(1);
-//            applyRequest.setAnonymity(1);
-//
-//            domesticProxy = proxyDispatchFeign.getAbroadProxy(applyRequest);
-//        }
-//        System.out.println(domesticProxy.toString());
+    private Selenium createSelenium(String proxyType) {
+        if (StringUtils.isBlank(proxyType)) {
+            return null;
+        }
+        //观察者实例
+        SeleniumSelectorObserver seleniumSelectorObserver = new SeleniumSelectorObserver();
+        List<ObserverSelenium> observerSeleniumList = Lists.newArrayList(seleniumSelectorObserver);
 
-        SeleniumSelector seleniumSelector=new SeleniumSelector();
-        List<ObserverSelenium> observerSeleniumList = Lists.newArrayList(seleniumSelector);
-        Selenium selenium = new Selenium(observerSeleniumList);
-        return selenium;
+        if ("domestic".equals(proxyType)) {
+            //创建国内代理浏览器
+            DataPackage<Proxy> domesticProxy = proxyDispatchFeign.getDomesticProxy();
+            Proxy proxy = domesticProxy.getData();
+            return new Selenium(observerSeleniumList, proxyType, proxy.getIp(), proxy.getPort());
+        }
+        if ("abroad".equals(proxyType)) {
+            ApplyRequest applyRequest = new ApplyRequest();
+            applyRequest.setChannel("domesticProxy");
+            DataPackage<Proxy> abroadProxy = proxyDispatchFeign.getAbroadProxy(applyRequest);
+            Proxy proxy = abroadProxy.getData();
+            return new Selenium(observerSeleniumList, proxyType, proxy.getIp(), proxy.getPort());
+        }
+
+        return null;
     }
 }

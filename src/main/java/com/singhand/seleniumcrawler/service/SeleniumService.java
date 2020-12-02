@@ -12,7 +12,6 @@ import java.util.concurrent.Future;
 
 /**
  *
- * TODO 代理策略如何实现
  *
  * @author Kwon
  * @Title:
@@ -26,22 +25,20 @@ public class SeleniumService {
     @Autowired
     private SeleniumCallable seleniumCallable;
 
-
-    public static SeleniumThreadPool seleniumThreadPool = new SeleniumThreadPool();
-
-
     public String domestic(String url, String css) throws ExecutionException, InterruptedException {
         seleniumCallable.setCss(css);
         seleniumCallable.setUrl(url);
-        Future<String> future = seleniumThreadPool.submit(seleniumCallable);
+        seleniumCallable.setProxyType("domestic");
+        Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumCallable);
         return future.get();
     }
 
 
-    public String foreign(String url, String css) throws ExecutionException, InterruptedException {
+    public String abroad(String url, String css) throws ExecutionException, InterruptedException {
         seleniumCallable.setCss(css);
         seleniumCallable.setUrl(url);
-        Future<String> future = seleniumThreadPool.submit(seleniumCallable);
+        seleniumCallable.setProxyType("abroad");
+        Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumCallable);
         return future.get();
     }
 

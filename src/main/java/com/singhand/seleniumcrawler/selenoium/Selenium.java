@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 
@@ -22,87 +23,96 @@ import java.util.concurrent.locks.ReentrantLock;
 @Getter
 @Setter
 @Log4j2
-public class Selenium extends SeleniumAbstract{
+public class Selenium extends SeleniumAbstract {
     /**
      * 浏览器实例请求次数.
      */
-    private Integer requestSum =0;
+    private Integer requestSum = 0;
     /**
      * 锁
      */
-    public ReentrantLock reentrantLock=new ReentrantLock();
+    public ReentrantLock reentrantLock = new ReentrantLock();
     /**
      * 浏览器实例
      */
-    private WebDriver webDriver=null;
+    private WebDriver webDriver = null;
+    /**
+     * 代理类型
+     */
+    private String proxyType;
 
     /**
      * 最后一次执行任务的时间
      */
-    private Long time=System.currentTimeMillis();
+    private Long time = System.currentTimeMillis();
+
+    /**
+     * 浏览器状态
+     * True代表正在被使用 如 正在爬取网页，正在关闭
+     */
+    private volatile AtomicBoolean status = new AtomicBoolean(false);
 
 
-    public Selenium(String host,String port){
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("-headless");
-        Proxy proxy = new Proxy();
-        proxy.setHttpProxy(host+":"+port);
-        chromeOptions.setProxy(proxy);
-        //new webDriver
-        webDriver = new ChromeDriver(chromeOptions);
-        notifyObserverSeleniumCreate();
-    }
     /**
      * 策略工厂
      *
-     * @author Kwon
-     * @date 2020/12/1 10:41
      * @param observerSeleniumList
      * @return
+     * @author Kwon
+     * @date 2020/12/1 10:41
      */
-    public Selenium(List<ObserverSelenium> observerSeleniumList){
-        this.observerSeleniumList=observerSeleniumList;
-        init();
+    public Selenium(List<ObserverSelenium> observerSeleniumList,String proxyType, String host, Integer port) {
+        this.proxyType=proxyType;
+        this.observerSeleniumList = observerSeleniumList;
+        init(host,port);
     }
 
 
-
-    public void init(){
+    public void init(String host, Integer port) {
         ChromeOptions chromeOptions = new ChromeOptions();
 //        chromeOptions.addArguments("-headless");
+        Proxy proxy = new Proxy();
+        proxy.setHttpProxy(host + ":" + port);
+        chromeOptions.setProxy(proxy);
         //new webDriver
         webDriver = new ChromeDriver(chromeOptions);
+        //notify
         notifyObserverSeleniumCreate();
     }
 
     public void closeSelenium() {
-        log.info("关闭浏览器实例："+webDriver);
-        reentrantLock.lock();
-        try{
-            webDriver.quit();
-            webDriver=null;
-            notifyObserverSeleniumClose();
-        }catch (Exception e){
+        if (!status.get()) {
+            reentrantLock.lock();
+            try {
+                if (!status.get()) {
+                    status.set(true);
+                    webDriver.quit();
+                    webDriver = null;
+                    notifyObserverSeleniumClose();
+                    log.info("关闭浏览器实例：" + webDriver);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
-        }finally {
-            reentrantLock.unlock();
+            } finally {
+                reentrantLock.unlock();
+                status.set(false);
+            }
         }
+
     }
 
 
-    private void notifyObserverSeleniumCreate(){
-        observerSeleniumList.forEach(os->{
+    private void notifyObserverSeleniumCreate() {
+        observerSeleniumList.forEach(os -> {
             os.seleniumCreated(this);
         });
     }
 
-    private void notifyObserverSeleniumClose(){
-        observerSeleniumList.forEach(os->{
+    private void notifyObserverSeleniumClose() {
+        observerSeleniumList.forEach(os -> {
             os.seleniumClosed(this);
         });
     }
-
-
 
 
 }

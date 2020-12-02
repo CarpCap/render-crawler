@@ -46,6 +46,6 @@ public class AjaxController {
         if (isDomestic) {
             return seleniumService.domestic(url, css);
         }
-        return seleniumService.foreign(url, css);
+        return seleniumService.abroad(url, css);
     }
 }

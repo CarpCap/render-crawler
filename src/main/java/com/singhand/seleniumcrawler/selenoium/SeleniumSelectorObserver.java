@@ -1,0 +1,38 @@
+package com.singhand.seleniumcrawler.selenoium;
+
+/**
+ * 观察者
+ * @author Kwon
+ * @Title:
+ * @Description:
+ * @date 2020/12/1 16:02
+ */
+public class SeleniumSelectorObserver implements ObserverSelenium {
+
+    /**
+     * 注销
+     *
+     * @author Kwon
+     * @date 2020/11/26 10:15
+     * @param selenium
+     * @return
+     */
+    @Override
+    public void seleniumClosed(Selenium selenium) {
+        SeleniumSelector.unRegister(selenium);
+    }
+
+
+    /**
+     * 注册
+     *
+     * @author Kwon
+     * @date 2020/11/26 10:15
+     * @param selenium
+     * @return
+     */
+    @Override
+    public void seleniumCreated(Selenium selenium) {
+        SeleniumSelector.register(selenium);
+    }
+}
