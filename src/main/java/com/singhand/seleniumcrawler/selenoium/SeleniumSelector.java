@@ -51,13 +51,9 @@ public class SeleniumSelector {
      * @param proxyType
      * @return
      */
-    public static Selenium getAvailableSelenium(String proxyType) throws Exception {
-        if (StringUtils.isBlank(proxyType)) {
-            throw new Exception();
-        }
+    public static Selenium getAvailableSelenium(ProxyType proxyType)  {
         for (Selenium s : selectedKey) {
             if (proxyType.equals(s.getProxyType()) && s.getStatus().get() == false) {
-                s.getStatus().set(true);
                 return s;
             }
         }

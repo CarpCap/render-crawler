@@ -1,6 +1,7 @@
 package com.singhand.seleniumcrawler.controller;
 
 
+import com.singhand.seleniumcrawler.selenoium.ProxyType;
 import com.singhand.seleniumcrawler.service.SeleniumService;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;
@@ -23,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @Scope("request")
-@RequestMapping("ajax")
+@RequestMapping("selenium")
 @Log4j2
 public class AjaxController {
 
@@ -41,11 +42,37 @@ public class AjaxController {
      * @author Kwon
      * @date 2020/11/20 17:26
      */
-    @GetMapping("/{isDomestic}")
-    public String ajax(String url, String css, @PathVariable Boolean isDomestic) throws ExecutionException, InterruptedException {
-        if (isDomestic) {
-            return seleniumService.domestic(url, css);
-        }
-        return seleniumService.abroad(url, css);
+    @GetMapping("css/{isDomestic}")
+    public String css(String url, String css, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
+        return seleniumService.css(url, css, isDomestic);
     }
+
+
+    /**
+     * @param url        请求路径
+     * @param xpath      xpath成功选择器
+     * @param isDomestic 是国内代理
+     * @return html格式，如果抓取失败返回null
+     * @author Kwon
+     * @date 2020/11/20 17:26
+     */
+    @GetMapping("xpath/{isDomestic}")
+    public String xpath(String url, String xpath, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
+        return seleniumService.xpath(url,xpath,isDomestic);
+    }
+
+    /**
+     * @param url        请求路径
+     * @param time      时间
+     * @param isDomestic 是国内代理
+     * @return html格式，如果抓取失败返回null
+     * @author Kwon
+     * @date 2020/11/20 17:26
+     */
+    @GetMapping("time/{isDomestic}")
+    public String time(String url, Integer time, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
+        return seleniumService.time(url,time,isDomestic);
+    }
+
+
 }

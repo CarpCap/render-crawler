@@ -29,7 +29,7 @@ import java.util.concurrent.Callable;
 public class  SeleniumCallable implements Callable<String> {
     private String url;
     private String css;
-    private String proxyType;
+    private ProxyType proxyType;
 
     @Autowired
     ProxyDispatchFeign proxyDispatchFeign;
@@ -40,31 +40,11 @@ public class  SeleniumCallable implements Callable<String> {
 
     @Override
     public String call() throws Exception {
-        String pageSource=null;
         //get WebDriver
         //todo 是否存在空指针异常
         Selenium selenium = seleniumThreadLoad.getSelenium(proxyType);
 
-        selenium.reentrantLock.lock();
-        try{
-            selenium.getStatus().set(true);
-            WebDriver webDriver =  selenium.getWebDriver();
-            //http Request
-            webDriver.get(url);
-            selenium.setTime(System.currentTimeMillis());
-            //wait ajax load
-            WebDriverWait wait = new WebDriverWait(webDriver, 30,1);
-            ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
-            wait.until(webElementExpectedCondition);
-
-            //return
-            pageSource= webDriver.getPageSource();
-        }finally {
-            selenium.reentrantLock.unlock();
-            selenium.setRequestSum(selenium.getRequestSum()+1);
-            selenium.getStatus().set(false);
-        }
-        return pageSource;
+        return selenium.css(url,css);
     }
 
 
@@ -76,7 +56,7 @@ public class  SeleniumCallable implements Callable<String> {
         this.css = css;
     }
 
-    public void setProxyType(String proxyType) {
+    public void setProxyType(ProxyType proxyType) {
         this.proxyType = proxyType;
     }
 

@@ -1,5 +1,6 @@
 package com.singhand.seleniumcrawler.service;
 
+import com.singhand.seleniumcrawler.selenoium.ProxyType;
 import com.singhand.seleniumcrawler.selenoium.SeleniumCallable;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;
@@ -25,21 +26,25 @@ public class SeleniumService {
     @Autowired
     private SeleniumCallable seleniumCallable;
 
-    public String domestic(String url, String css) throws ExecutionException, InterruptedException {
+    public String css(String url, String css, ProxyType isDomestic) throws ExecutionException, InterruptedException {
         seleniumCallable.setCss(css);
         seleniumCallable.setUrl(url);
-        seleniumCallable.setProxyType("domestic");
+        seleniumCallable.setProxyType(isDomestic);
         Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumCallable);
         return future.get();
     }
 
 
-    public String abroad(String url, String css) throws ExecutionException, InterruptedException {
+    public String xpath(String url, String css, ProxyType isDomestic) throws ExecutionException, InterruptedException {
         seleniumCallable.setCss(css);
         seleniumCallable.setUrl(url);
-        seleniumCallable.setProxyType("abroad");
+        seleniumCallable.setProxyType(isDomestic);
         Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumCallable);
         return future.get();
     }
 
+    public String time(String url, Integer time, ProxyType isDomestic) {
+
+        return "";
+    }
 }

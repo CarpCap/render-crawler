@@ -3,10 +3,15 @@ package com.singhand.seleniumcrawler.selenoium;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import java.util.List;
@@ -39,7 +44,7 @@ public class Selenium extends SeleniumAbstract {
     /**
      * 代理类型
      */
-    private String proxyType;
+    private ProxyType proxyType;
 
     /**
      * 最后一次执行任务的时间
@@ -52,6 +57,9 @@ public class Selenium extends SeleniumAbstract {
      */
     private volatile AtomicBoolean status = new AtomicBoolean(false);
 
+    private String host;
+    private Integer port;
+
 
     /**
      * 策略工厂
@@ -61,18 +69,22 @@ public class Selenium extends SeleniumAbstract {
      * @author Kwon
      * @date 2020/12/1 10:41
      */
-    public Selenium(List<ObserverSelenium> observerSeleniumList,String proxyType, String host, Integer port) {
+    public Selenium(List<ObserverSelenium> observerSeleniumList,ProxyType proxyType, String host, Integer port) {
         this.proxyType=proxyType;
         this.observerSeleniumList = observerSeleniumList;
-        init(host,port);
+        this.host=host;
+        this.port=port;
+        init();
     }
 
 
-    public void init(String host, Integer port) {
+    public void init() {
         ChromeOptions chromeOptions = new ChromeOptions();
 //        chromeOptions.addArguments("-headless");
         Proxy proxy = new Proxy();
+        log.info("创建浏览器 代理信息为："+host+":"+port);
         proxy.setHttpProxy(host + ":" + port);
+        proxy.setSslProxy(host + ":" + port);
         chromeOptions.setProxy(proxy);
         //new webDriver
         webDriver = new ChromeDriver(chromeOptions);
@@ -102,6 +114,47 @@ public class Selenium extends SeleniumAbstract {
     }
 
 
+    /**
+     * 请求数据
+     * css选择器
+     *
+     * @author Kwon
+     * @date 2020/12/2 10:53
+     * @param url 请求地址
+     * @param css 选择器
+     * @return
+     */
+    public String css(String url,String css){
+        Selenium selenium=this;
+        String pageSource;
+        reentrantLock.lock();
+        try{
+            //如果为空代表
+            if (selenium.webDriver==null){
+                log.warn("webDriver deleted reCreate");
+                selenium = new Selenium(observerSeleniumList,proxyType,host,port);
+                return selenium.css(url,css);
+            }
+            selenium.status.set(true);
+            //http Request
+            selenium.webDriver.get(url);
+            selenium.setTime(System.currentTimeMillis());
+            //wait ajax load
+            WebDriverWait wait = new WebDriverWait(webDriver, 30,1);
+            ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
+            wait.until(webElementExpectedCondition);
+
+            //return
+            pageSource= selenium.webDriver.getPageSource();
+        }finally {
+            reentrantLock.unlock();
+            requestSum++;
+            status.set(false);
+        }
+        return pageSource;
+    }
+
+
     private void notifyObserverSeleniumCreate() {
         observerSeleniumList.forEach(os -> {
             os.seleniumCreated(this);
@@ -113,6 +166,7 @@ public class Selenium extends SeleniumAbstract {
             os.seleniumClosed(this);
         });
     }
+
 
 
 }
