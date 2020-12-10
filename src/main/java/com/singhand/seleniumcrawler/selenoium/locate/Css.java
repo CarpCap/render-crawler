@@ -1,4 +1,4 @@
-package com.singhand.seleniumcrawler.selenoium.webdriver;
+package com.singhand.seleniumcrawler.selenoium.locate;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,7 +1,7 @@
 package com.singhand.seleniumcrawler.service;
 
 import com.singhand.seleniumcrawler.proxy.ProxyType;
-import com.singhand.seleniumcrawler.selenoium.webdriver.LocateType;
+import com.singhand.seleniumcrawler.selenoium.locate.LocateType;
 import com.singhand.seleniumcrawler.selenoium.SeleniumTask;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;

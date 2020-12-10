@@ -2,7 +2,7 @@ package com.singhand.seleniumcrawler.selenoium;
 
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
 import com.singhand.seleniumcrawler.proxy.ProxyType;
-import com.singhand.seleniumcrawler.selenoium.webdriver.LocateType;
+import com.singhand.seleniumcrawler.selenoium.locate.LocateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
