@@ -1,4 +1,6 @@
-package com.singhand.seleniumcrawler.selenoium;
+package com.singhand.seleniumcrawler.selenoium.observer;
+
+import com.singhand.seleniumcrawler.selenoium.Selenium;
 
 /**
  *

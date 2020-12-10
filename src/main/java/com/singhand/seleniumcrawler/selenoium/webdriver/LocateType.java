@@ -1,4 +1,4 @@
-package com.singhand.seleniumcrawler.selenoium;
+package com.singhand.seleniumcrawler.selenoium.webdriver;
 
 /**
  * @author Kwon
@@ -8,7 +8,6 @@ package com.singhand.seleniumcrawler.selenoium;
  */
 public enum LocateType {
     css,xpath
-
 }
 
 

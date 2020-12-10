@@ -1,25 +1,21 @@
-package com.singhand.seleniumcrawler.webdriver;
+package com.singhand.seleniumcrawler.selenoium.webdriver;
 
-import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 /**
+ * @author Kwon
  * @Title:
  * @Description:
- * @author Kwon
  * @date 2020/12/10 14:54
  */
-public class Xpath extends Html{
-
-    public Xpath(WebDriver webDriver, String locateValue, Integer pageLoadTimeout) {
+public class Css extends Html {
+    public Css(WebDriver webDriver, String locateValue, Integer pageLoadTimeout) {
         super(webDriver, locateValue, pageLoadTimeout);
     }
+
 
     @Override
     public String getPageSource() {
@@ -27,12 +23,12 @@ public class Xpath extends Html{
             try {
                 String page = webDriver.getPageSource();
                 Document document = Jsoup.parse(page);
-                XPath xpath1 = XPathFactory.newInstance().newXPath();
-                String evaluate = (String)xpath1.evaluate(locateValue, document, XPathConstants.STRING);
-                if (StringUtils.isNotBlank(evaluate)) {
+                Elements select = document.select(locateValue);
+                if (select.size() > 0) {
                     return webDriver.getPageSource();
                 }
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -41,6 +37,4 @@ public class Xpath extends Html{
         }
         return null;
     }
-
-
 }

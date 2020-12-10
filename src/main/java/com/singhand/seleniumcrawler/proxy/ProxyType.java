@@ -1,4 +1,4 @@
-package com.singhand.seleniumcrawler.feign;
+package com.singhand.seleniumcrawler.proxy;
 
 /**
  * @author Kwon

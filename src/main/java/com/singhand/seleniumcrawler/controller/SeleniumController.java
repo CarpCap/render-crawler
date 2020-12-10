@@ -1,9 +1,8 @@
 package com.singhand.seleniumcrawler.controller;
 
 
-import com.singhand.seleniumcrawler.feign.ProxyType;
+import com.singhand.seleniumcrawler.proxy.ProxyType;
 import com.singhand.seleniumcrawler.service.SeleniumService;
-import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * @author Kwon
- * @Title: ajax渲染页面爬虫服务
+ * @Title: 渲染页面爬虫服务
  * @Description:
  * @date 2020/11/20 14:42
  */
@@ -26,9 +25,7 @@ import java.util.concurrent.ExecutionException;
 @Scope("request")
 @RequestMapping("selenium")
 @Log4j2
-public class AjaxController {
-
-    public static SeleniumThreadPool seleniumThreadPool = new SeleniumThreadPool();
+public class SeleniumController {
 
 
     @Autowired
@@ -45,10 +42,9 @@ public class AjaxController {
     @GetMapping("css/{isDomestic}")
     public String css(String url, String css,Integer pageLoadTimeout, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
         long startTime = System.currentTimeMillis();
-        String css1 = seleniumService.css(url, css, isDomestic,pageLoadTimeout);
-        long time = System.currentTimeMillis()-startTime;
-        log.info("消耗时间："+time);
-        return css1;
+        String result = seleniumService.css(url, css, isDomestic,pageLoadTimeout);
+        log.info("消耗时间：{}",System.currentTimeMillis()-startTime);
+        return result;
     }
 
 
@@ -62,7 +58,10 @@ public class AjaxController {
      */
     @GetMapping("xpath/{isDomestic}")
     public String xpath(String url, String xpath,Integer pageLoadTimeout, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
-        return seleniumService.xpath(url,xpath,isDomestic,pageLoadTimeout);
+        long startTime = System.currentTimeMillis();
+        String result = seleniumService.xpath(url,xpath,isDomestic,pageLoadTimeout);
+        log.info("消耗时间：{}",System.currentTimeMillis()-startTime);
+        return result;
     }
 
 

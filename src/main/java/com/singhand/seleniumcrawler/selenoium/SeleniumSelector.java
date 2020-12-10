@@ -2,10 +2,7 @@ package com.singhand.seleniumcrawler.selenoium;
 
 
 import com.google.common.collect.Sets;
-import com.singhand.seleniumcrawler.feign.ProxyType;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
+import com.singhand.seleniumcrawler.proxy.ProxyType;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,6 +27,12 @@ public class SeleniumSelector {
      */
     private static final Integer REOPEN_REQUEST_SUM = 10;
 
+    /**
+     * 清理掉活跃的浏览器
+     *
+     * @author Kwon
+     * @date 2020/12/10 17:09
+     */
     static {
         new Thread(() -> {
             while (true) {
@@ -42,8 +45,6 @@ public class SeleniumSelector {
             }
 
         }).start();
-
-
     }
 
     /**

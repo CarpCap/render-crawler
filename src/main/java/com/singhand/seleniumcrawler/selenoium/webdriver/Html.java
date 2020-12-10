@@ -1,4 +1,4 @@
-package com.singhand.seleniumcrawler.webdriver;
+package com.singhand.seleniumcrawler.selenoium.webdriver;
 
 import org.openqa.selenium.WebDriver;
 

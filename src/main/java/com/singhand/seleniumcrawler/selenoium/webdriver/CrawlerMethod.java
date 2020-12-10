@@ -1,4 +1,4 @@
-package com.singhand.seleniumcrawler.webdriver;
+package com.singhand.seleniumcrawler.selenoium.webdriver;
 
 /**
  * 页面抓取环境类

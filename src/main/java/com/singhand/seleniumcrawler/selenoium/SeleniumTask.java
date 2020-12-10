@@ -1,19 +1,12 @@
 package com.singhand.seleniumcrawler.selenoium;
 
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
-import com.singhand.seleniumcrawler.feign.ProxyType;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.singhand.seleniumcrawler.proxy.ProxyType;
+import com.singhand.seleniumcrawler.selenoium.webdriver.LocateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -27,7 +20,7 @@ import java.util.concurrent.Callable;
  */
 @Component
 @Scope("request")
-public class  SeleniumCallable implements Callable<String> {
+public class  SeleniumTask implements Callable<String> {
     private String url;
     private String locateValue;
     private LocateType locateType;
@@ -38,13 +31,16 @@ public class  SeleniumCallable implements Callable<String> {
     ProxyDispatchFeign proxyDispatchFeign;
 
     @Autowired
-    SeleniumThreadLoad seleniumThreadLoad;
+    SeleniumFactor seleniumFactor;
 
 
     @Override
     public String call() throws Exception {
         //get WebDriver
-        Selenium selenium = seleniumThreadLoad.getSelenium(proxyType);
+        Selenium selenium = SeleniumSelector.getAvailableSelenium(proxyType);
+        if (selenium==null) {
+            selenium=seleniumFactor.createSelenium(proxyType);
+        }
         return selenium.getPageSource(url,locateValue,locateType,pageLoadTimeout);
     }
 

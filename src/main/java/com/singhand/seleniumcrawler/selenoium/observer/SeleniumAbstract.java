@@ -1,6 +1,6 @@
-package com.singhand.seleniumcrawler.selenoium;
+package com.singhand.seleniumcrawler.selenoium.observer;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**

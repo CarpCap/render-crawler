@@ -1,26 +1,21 @@
 package com.singhand.seleniumcrawler.selenoium;
 
-import com.singhand.seleniumcrawler.feign.ProxyType;
-import com.singhand.seleniumcrawler.webdriver.CrawlerMethod;
-import com.singhand.seleniumcrawler.webdriver.Css;
-import com.singhand.seleniumcrawler.webdriver.Xpath;
+import com.singhand.seleniumcrawler.proxy.ProxyType;
+import com.singhand.seleniumcrawler.selenoium.observer.ObserverSelenium;
+import com.singhand.seleniumcrawler.selenoium.observer.SeleniumAbstract;
+import com.singhand.seleniumcrawler.selenoium.webdriver.CrawlerMethod;
+import com.singhand.seleniumcrawler.selenoium.webdriver.Css;
+import com.singhand.seleniumcrawler.selenoium.webdriver.LocateType;
+import com.singhand.seleniumcrawler.selenoium.webdriver.Xpath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -141,7 +136,7 @@ public class Selenium extends SeleniumAbstract {
      * @param pageLoadTimeout 最长等待页面加载时间
      * @return
      */
-    public String getPageSource(String url, String locateValue,LocateType locateType,Integer pageLoadTimeout){
+    public String getPageSource(String url, String locateValue, LocateType locateType, Integer pageLoadTimeout){
         Selenium selenium = this;
         reentrantLock.lock();
         try {
@@ -166,7 +161,7 @@ public class Selenium extends SeleniumAbstract {
                 case xpath:
                     return new CrawlerMethod(new Xpath(webDriver,locateValue,pageLoadTimeout)).getPageSource();
             }
-            
+
             return null;
         } catch (Exception e) {
             e.printStackTrace();
