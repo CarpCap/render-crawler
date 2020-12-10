@@ -2,6 +2,7 @@ package com.singhand.seleniumcrawler.selenoium;
 
 
 import com.google.common.collect.Sets;
+import com.singhand.seleniumcrawler.feign.ProxyType;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;

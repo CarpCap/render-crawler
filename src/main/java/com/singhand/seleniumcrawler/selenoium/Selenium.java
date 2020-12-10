@@ -1,5 +1,9 @@
 package com.singhand.seleniumcrawler.selenoium;
 
+import com.singhand.seleniumcrawler.feign.ProxyType;
+import com.singhand.seleniumcrawler.webdriver.CrawlerMethod;
+import com.singhand.seleniumcrawler.webdriver.Css;
+import com.singhand.seleniumcrawler.webdriver.Xpath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -49,22 +53,23 @@ public class Selenium extends SeleniumAbstract {
     private ProxyType proxyType;
 
     /**
-     * 最后一次执行任务的时间
+     * 最后一次活跃时间
      */
     private Long time = System.currentTimeMillis();
 
     /**
      * 浏览器状态
-     * True代表正在被使用 如 正在爬取网页，正在关闭
+     * True代表正在执行任务中
      */
     private volatile AtomicBoolean status = new AtomicBoolean(false);
 
     private String host;
+
     private Integer port;
 
 
     /**
-     * 策略工厂
+     * 创建Selenium
      *
      * @param observerSeleniumList
      * @return
@@ -84,18 +89,26 @@ public class Selenium extends SeleniumAbstract {
         ChromeOptions chromeOptions = new ChromeOptions();
 //        chromeOptions.addArguments("-headless");
         Proxy proxy = new Proxy();
-        log.info("创建浏览器 代理信息为：" + host + ":" + port);
+        log.info("create chrome. proxy info is：" + host + ":" + port);
         proxy.setHttpProxy(host + ":" + port);
         proxy.setSslProxy(host + ":" + port);
         chromeOptions.setProxy(proxy);
-        //当html下载完成之后，不等待解析完成，selenium会直接返回
+        //当访问网站 不会等待渲染全部完成就可以拿到html
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
         //new webDriver
         webDriver = new ChromeDriver(chromeOptions);
-        //notify
+        //notify Create event
         notifyObserverSeleniumCreate();
     }
 
+    /**
+     * 关闭Selenium
+     *
+     * @author Kwon
+     * @date 2020/12/10 14:50
+     * @param
+     * @return
+     */
     public void closeSelenium() {
         if (!status.get()) {
             reentrantLock.lock();
@@ -104,6 +117,7 @@ public class Selenium extends SeleniumAbstract {
                     status.set(true);
                     webDriver.quit();
                     webDriver = null;
+                    //notify Close event
                     notifyObserverSeleniumClose();
                     log.info("关闭浏览器实例：" + webDriver);
                 }
@@ -114,59 +128,45 @@ public class Selenium extends SeleniumAbstract {
                 status.set(false);
             }
         }
-
     }
 
+    /**
+     *
+     *
+     * @author Kwon
+     * @date 2020/12/10 14:35
+     * @param url
+     * @param locateValue 定位值
+     * @param locateType 定位类型
+     * @param pageLoadTimeout 最长等待页面加载时间
+     * @return
+     */
     public String getPageSource(String url, String locateValue,LocateType locateType,Integer pageLoadTimeout){
-        if (LocateType.css==locateType){
-            return css(url,locateValue,pageLoadTimeout);
-        }
-        if (LocateType.xpath==locateType){
-            return xpath(url,locateValue,pageLoadTimeout);
-        }
-        return null;
-    }
-
-
-    /**
-     * 请求数据
-     * css选择器
-     *
-     * @param url 请求地址
-     * @param css 选择器
-     * @return
-     * @author Kwon
-     * @date 2020/12/2 10:53
-     */
-    private  String css(String url, String css,Integer pageLoadTimeout) {
         Selenium selenium = this;
-        String pageSource;
         reentrantLock.lock();
         try {
-            //如果为空代表
+            //如果为空代表 浏览器被关闭了
+            //重新创建一个Selenium 进行抓取
             if (selenium.webDriver == null) {
                 log.warn("webDriver deleted reCreate");
                 selenium = new Selenium(observerSeleniumList, proxyType, host, port);
-                return selenium.css(url, css,pageLoadTimeout);
+                return selenium.getPageSource(url, locateValue,locateType,pageLoadTimeout);
             }
             selenium.status.set(true);
-            //http Request
 
+            //http Request
             selenium.webDriver.get(url);
+            //
             selenium.setTime(System.currentTimeMillis());
 
-            for (int i = 0; i < pageLoadTimeout; i++) {
-                try {
-                    String page = selenium.webDriver.getPageSource();
-                    Document document = Jsoup.parse(page);
-                    Elements select = document.select(css);
-                    if (select.size() > 0) {
-                        return selenium.webDriver.getPageSource();
-                    }
-                } catch (Exception e) { }
-                Thread.sleep(1000);
+            //抓取方式
+            switch(locateType){
+                case css:
+                    return new CrawlerMethod(new Css(webDriver,locateValue,pageLoadTimeout)).getPageSource();
+                case xpath:
+                    return new CrawlerMethod(new Xpath(webDriver,locateValue,pageLoadTimeout)).getPageSource();
             }
-
+            
             return null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -179,64 +179,30 @@ public class Selenium extends SeleniumAbstract {
     }
 
 
+
+
     /**
-     * 请求数据
-     * css选择器
+     * 通知观察者 发生了创建事件
      *
-     * @param url 请求地址
-     * @param xpath xpath
-     * @return
      * @author Kwon
-     * @date 2020/12/2 10:53
+     * @date 2020/12/10 14:37
+     * @param
+     * @return
      */
-    private String xpath(String url, String xpath,Integer pageLoadTimeout) {
-        Selenium selenium = this;
-        String pageSource;
-        reentrantLock.lock();
-        try {
-            //如果为空代表
-            if (selenium.webDriver == null) {
-                log.warn("webDriver deleted reCreate");
-                selenium = new Selenium(observerSeleniumList, proxyType, host, port);
-                return selenium.css(url, xpath,pageLoadTimeout);
-            }
-            selenium.status.set(true);
-            //http Request
-
-            selenium.webDriver.get(url);
-            selenium.setTime(System.currentTimeMillis());
-
-            for (int i = 0; i < pageLoadTimeout; i++) {
-                try {
-                    String page = selenium.webDriver.getPageSource();
-                    Document document = Jsoup.parse(page);
-                    XPath xpath1 = XPathFactory.newInstance().newXPath();
-                    String evaluate = (String)xpath1.evaluate(xpath, document, XPathConstants.STRING);
-                    if (StringUtils.isNotBlank(evaluate)) {
-                        return selenium.webDriver.getPageSource();
-                    }
-                } catch (Exception e) { }
-                Thread.sleep(1000);
-            }
-
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            reentrantLock.unlock();
-            requestSum++;
-            status.set(false);
-        }
-        return null;
-    }
-
-
     private void notifyObserverSeleniumCreate() {
         observerSeleniumList.forEach(os -> {
             os.seleniumCreated(this);
         });
     }
 
+    /**
+     * 通知观察者 发生了关闭事件
+     *
+     * @author Kwon
+     * @date 2020/12/10 14:38
+     * @param
+     * @return
+     */
     private void notifyObserverSeleniumClose() {
         observerSeleniumList.forEach(os -> {
             os.seleniumClosed(this);

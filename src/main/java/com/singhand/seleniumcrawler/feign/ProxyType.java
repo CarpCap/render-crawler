@@ -1,4 +1,4 @@
-package com.singhand.seleniumcrawler.selenoium;
+package com.singhand.seleniumcrawler.feign;
 
 /**
  * @author Kwon

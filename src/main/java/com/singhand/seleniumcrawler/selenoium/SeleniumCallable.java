@@ -1,6 +1,7 @@
 package com.singhand.seleniumcrawler.selenoium;
 
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
+import com.singhand.seleniumcrawler.feign.ProxyType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,7 +45,6 @@ public class  SeleniumCallable implements Callable<String> {
     public String call() throws Exception {
         //get WebDriver
         Selenium selenium = seleniumThreadLoad.getSelenium(proxyType);
-
         return selenium.getPageSource(url,locateValue,locateType,pageLoadTimeout);
     }
 

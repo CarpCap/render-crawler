@@ -1,7 +1,7 @@
 package com.singhand.seleniumcrawler.controller;
 
 
-import com.singhand.seleniumcrawler.selenoium.ProxyType;
+import com.singhand.seleniumcrawler.feign.ProxyType;
 import com.singhand.seleniumcrawler.service.SeleniumService;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;

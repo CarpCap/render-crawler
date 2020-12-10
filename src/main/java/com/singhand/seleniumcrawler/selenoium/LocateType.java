@@ -8,4 +8,7 @@ package com.singhand.seleniumcrawler.selenoium;
  */
 public enum LocateType {
     css,xpath
+
 }
+
+

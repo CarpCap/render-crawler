@@ -3,6 +3,7 @@ package com.singhand.seleniumcrawler.selenoium;
 import com.google.common.collect.Lists;
 import com.singhand.bidcrawler.commons.entity.ApplyRequest;
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
+import com.singhand.seleniumcrawler.feign.ProxyType;
 import com.singhand.tinycrawler.managercenter.entities.DataPackage;
 import com.singhand.tinycrawler.managercenter.entities.Proxy;
 import lombok.extern.log4j.Log4j2;

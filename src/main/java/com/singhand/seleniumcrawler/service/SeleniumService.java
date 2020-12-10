@@ -1,7 +1,7 @@
 package com.singhand.seleniumcrawler.service;
 
+import com.singhand.seleniumcrawler.feign.ProxyType;
 import com.singhand.seleniumcrawler.selenoium.LocateType;
-import com.singhand.seleniumcrawler.selenoium.ProxyType;
 import com.singhand.seleniumcrawler.selenoium.SeleniumCallable;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +27,7 @@ public class SeleniumService {
     @Autowired
     private SeleniumCallable seleniumCallable;
 
-    public String css(String url, String css, ProxyType isDomestic,Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
+    public String css(String url, String css, ProxyType isDomestic, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
         if (pageLoadTimeout!=null && pageLoadTimeout!=0){
             seleniumCallable.setPageLoadTimeout(pageLoadTimeout);
         }
