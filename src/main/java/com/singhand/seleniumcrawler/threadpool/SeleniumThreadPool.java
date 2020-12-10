@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.*;
 
 /**
- * TODO 线程池消费者为何有序消费 导致新请求来了 有selenium实例的线程没有领取到任务 反而让空实例的线程在执行新的任务
  *
  * @author Kwon
  * @Title: 自定义线程池

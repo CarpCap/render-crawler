@@ -43,8 +43,12 @@ public class AjaxController {
      * @date 2020/11/20 17:26
      */
     @GetMapping("css/{isDomestic}")
-    public String css(String url, String css, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
-        return seleniumService.css(url, css, isDomestic);
+    public String css(String url, String css,Integer pageLoadTimeout, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
+        long startTime = System.currentTimeMillis();
+        String css1 = seleniumService.css(url, css, isDomestic,pageLoadTimeout);
+        long time = System.currentTimeMillis()-startTime;
+        log.info("消耗时间："+time);
+        return css1;
     }
 
 
@@ -57,22 +61,11 @@ public class AjaxController {
      * @date 2020/11/20 17:26
      */
     @GetMapping("xpath/{isDomestic}")
-    public String xpath(String url, String xpath, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
-        return seleniumService.xpath(url,xpath,isDomestic);
+    public String xpath(String url, String xpath,Integer pageLoadTimeout, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
+        return seleniumService.xpath(url,xpath,isDomestic,pageLoadTimeout);
     }
 
-    /**
-     * @param url        请求路径
-     * @param time      时间
-     * @param isDomestic 是国内代理
-     * @return html格式，如果抓取失败返回null
-     * @author Kwon
-     * @date 2020/11/20 17:26
-     */
-    @GetMapping("time/{isDomestic}")
-    public String time(String url, Integer time, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
-        return seleniumService.time(url,time,isDomestic);
-    }
+
 
 
 }

@@ -28,8 +28,10 @@ import java.util.concurrent.Callable;
 @Scope("request")
 public class  SeleniumCallable implements Callable<String> {
     private String url;
-    private String css;
+    private String locateValue;
+    private LocateType locateType;
     private ProxyType proxyType;
+    private Integer pageLoadTimeout = 5;
 
     @Autowired
     ProxyDispatchFeign proxyDispatchFeign;
@@ -41,10 +43,9 @@ public class  SeleniumCallable implements Callable<String> {
     @Override
     public String call() throws Exception {
         //get WebDriver
-        //todo 是否存在空指针异常
         Selenium selenium = seleniumThreadLoad.getSelenium(proxyType);
 
-        return selenium.css(url,css);
+        return selenium.getPageSource(url,locateValue,locateType,pageLoadTimeout);
     }
 
 
@@ -52,13 +53,19 @@ public class  SeleniumCallable implements Callable<String> {
         this.url = url;
     }
 
-    public void setCss(String css) {
-        this.css = css;
+    public void setLocateValue(String locateValue) {
+        this.locateValue = locateValue;
     }
 
     public void setProxyType(ProxyType proxyType) {
         this.proxyType = proxyType;
     }
 
+    public void setPageLoadTimeout(Integer pageLoadTimeout) {
+        this.pageLoadTimeout = pageLoadTimeout;
+    }
 
+    public void setLocateType(LocateType locateType) {
+        this.locateType = locateType;
+    }
 }

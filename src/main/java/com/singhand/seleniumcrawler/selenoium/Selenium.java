@@ -3,18 +3,20 @@ package com.singhand.seleniumcrawler.selenoium;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -69,11 +71,11 @@ public class Selenium extends SeleniumAbstract {
      * @author Kwon
      * @date 2020/12/1 10:41
      */
-    public Selenium(List<ObserverSelenium> observerSeleniumList,ProxyType proxyType, String host, Integer port) {
-        this.proxyType=proxyType;
+    public Selenium(List<ObserverSelenium> observerSeleniumList, ProxyType proxyType, String host, Integer port) {
+        this.proxyType = proxyType;
         this.observerSeleniumList = observerSeleniumList;
-        this.host=host;
-        this.port=port;
+        this.host = host;
+        this.port = port;
         init();
     }
 
@@ -82,10 +84,12 @@ public class Selenium extends SeleniumAbstract {
         ChromeOptions chromeOptions = new ChromeOptions();
 //        chromeOptions.addArguments("-headless");
         Proxy proxy = new Proxy();
-        log.info("创建浏览器 代理信息为："+host+":"+port);
+        log.info("创建浏览器 代理信息为：" + host + ":" + port);
         proxy.setHttpProxy(host + ":" + port);
         proxy.setSslProxy(host + ":" + port);
         chromeOptions.setProxy(proxy);
+        //当html下载完成之后，不等待解析完成，selenium会直接返回
+        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
         //new webDriver
         webDriver = new ChromeDriver(chromeOptions);
         //notify
@@ -113,45 +117,117 @@ public class Selenium extends SeleniumAbstract {
 
     }
 
+    public String getPageSource(String url, String locateValue,LocateType locateType,Integer pageLoadTimeout){
+        if (LocateType.css==locateType){
+            return css(url,locateValue,pageLoadTimeout);
+        }
+        if (LocateType.xpath==locateType){
+            return xpath(url,locateValue,pageLoadTimeout);
+        }
+        return null;
+    }
+
 
     /**
      * 请求数据
      * css选择器
      *
-     * @author Kwon
-     * @date 2020/12/2 10:53
      * @param url 请求地址
      * @param css 选择器
      * @return
+     * @author Kwon
+     * @date 2020/12/2 10:53
      */
-    public String css(String url,String css){
-        Selenium selenium=this;
+    private  String css(String url, String css,Integer pageLoadTimeout) {
+        Selenium selenium = this;
         String pageSource;
         reentrantLock.lock();
-        try{
+        try {
             //如果为空代表
-            if (selenium.webDriver==null){
+            if (selenium.webDriver == null) {
                 log.warn("webDriver deleted reCreate");
-                selenium = new Selenium(observerSeleniumList,proxyType,host,port);
-                return selenium.css(url,css);
+                selenium = new Selenium(observerSeleniumList, proxyType, host, port);
+                return selenium.css(url, css,pageLoadTimeout);
             }
             selenium.status.set(true);
             //http Request
+
             selenium.webDriver.get(url);
             selenium.setTime(System.currentTimeMillis());
-            //wait ajax load
-            WebDriverWait wait = new WebDriverWait(webDriver, 30,1);
-            ExpectedCondition<WebElement> webElementExpectedCondition = ExpectedConditions.presenceOfElementLocated(By.cssSelector(css));
-            wait.until(webElementExpectedCondition);
 
-            //return
-            pageSource= selenium.webDriver.getPageSource();
-        }finally {
+            for (int i = 0; i < pageLoadTimeout; i++) {
+                try {
+                    String page = selenium.webDriver.getPageSource();
+                    Document document = Jsoup.parse(page);
+                    Elements select = document.select(css);
+                    if (select.size() > 0) {
+                        return selenium.webDriver.getPageSource();
+                    }
+                } catch (Exception e) { }
+                Thread.sleep(1000);
+            }
+
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             reentrantLock.unlock();
             requestSum++;
             status.set(false);
         }
-        return pageSource;
+        return null;
+    }
+
+
+    /**
+     * 请求数据
+     * css选择器
+     *
+     * @param url 请求地址
+     * @param xpath xpath
+     * @return
+     * @author Kwon
+     * @date 2020/12/2 10:53
+     */
+    private String xpath(String url, String xpath,Integer pageLoadTimeout) {
+        Selenium selenium = this;
+        String pageSource;
+        reentrantLock.lock();
+        try {
+            //如果为空代表
+            if (selenium.webDriver == null) {
+                log.warn("webDriver deleted reCreate");
+                selenium = new Selenium(observerSeleniumList, proxyType, host, port);
+                return selenium.css(url, xpath,pageLoadTimeout);
+            }
+            selenium.status.set(true);
+            //http Request
+
+            selenium.webDriver.get(url);
+            selenium.setTime(System.currentTimeMillis());
+
+            for (int i = 0; i < pageLoadTimeout; i++) {
+                try {
+                    String page = selenium.webDriver.getPageSource();
+                    Document document = Jsoup.parse(page);
+                    XPath xpath1 = XPathFactory.newInstance().newXPath();
+                    String evaluate = (String)xpath1.evaluate(xpath, document, XPathConstants.STRING);
+                    if (StringUtils.isNotBlank(evaluate)) {
+                        return selenium.webDriver.getPageSource();
+                    }
+                } catch (Exception e) { }
+                Thread.sleep(1000);
+            }
+
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            reentrantLock.unlock();
+            requestSum++;
+            status.set(false);
+        }
+        return null;
     }
 
 
@@ -166,7 +242,6 @@ public class Selenium extends SeleniumAbstract {
             os.seleniumClosed(this);
         });
     }
-
 
 
 }

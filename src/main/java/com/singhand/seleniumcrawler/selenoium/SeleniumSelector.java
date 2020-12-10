@@ -4,7 +4,9 @@ package com.singhand.seleniumcrawler.selenoium;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +18,7 @@ import java.util.Set;
  */
 public class SeleniumSelector {
 
-    private volatile static Set<Selenium> selectedKey = Sets.newConcurrentHashSet();
+    private volatile static Set<Selenium> selectedKey = Collections.synchronizedSet(Sets.newLinkedHashSet());
 
     /**
      * 超时时间，毫秒

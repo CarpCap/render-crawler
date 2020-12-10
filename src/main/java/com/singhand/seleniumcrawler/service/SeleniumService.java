@@ -1,5 +1,6 @@
 package com.singhand.seleniumcrawler.service;
 
+import com.singhand.seleniumcrawler.selenoium.LocateType;
 import com.singhand.seleniumcrawler.selenoium.ProxyType;
 import com.singhand.seleniumcrawler.selenoium.SeleniumCallable;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
@@ -26,8 +27,12 @@ public class SeleniumService {
     @Autowired
     private SeleniumCallable seleniumCallable;
 
-    public String css(String url, String css, ProxyType isDomestic) throws ExecutionException, InterruptedException {
-        seleniumCallable.setCss(css);
+    public String css(String url, String css, ProxyType isDomestic,Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
+        if (pageLoadTimeout!=null && pageLoadTimeout!=0){
+            seleniumCallable.setPageLoadTimeout(pageLoadTimeout);
+        }
+        seleniumCallable.setLocateValue(css);
+        seleniumCallable.setLocateType(LocateType.css);
         seleniumCallable.setUrl(url);
         seleniumCallable.setProxyType(isDomestic);
         Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumCallable);
@@ -35,16 +40,17 @@ public class SeleniumService {
     }
 
 
-    public String xpath(String url, String css, ProxyType isDomestic) throws ExecutionException, InterruptedException {
-        seleniumCallable.setCss(css);
+    public String xpath(String url, String xpath, ProxyType isDomestic, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
+        if (pageLoadTimeout!=null && pageLoadTimeout!=0){
+            seleniumCallable.setPageLoadTimeout(pageLoadTimeout);
+        }
+        seleniumCallable.setLocateValue(xpath);
+        seleniumCallable.setLocateType(LocateType.xpath);
         seleniumCallable.setUrl(url);
         seleniumCallable.setProxyType(isDomestic);
         Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumCallable);
         return future.get();
     }
 
-    public String time(String url, Integer time, ProxyType isDomestic) {
 
-        return "";
-    }
 }
