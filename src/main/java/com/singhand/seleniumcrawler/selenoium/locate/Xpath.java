@@ -1,21 +1,27 @@
 package com.singhand.seleniumcrawler.selenoium.locate;
 
+import cn.wanghaomiao.xpath.model.JXDocument;
+import cn.wanghaomiao.xpath.model.JXNode;
 import org.apache.commons.lang.StringUtils;
+import org.dom4j.io.SAXReader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
+import java.util.List;
+
 
 /**
+ * @author Kwon
  * @Title: xpath 定位
  * @Description:
- * @author Kwon
  * @date 2020/12/10 14:54
  */
-public class Xpath extends Html{
+public class Xpath extends Html {
 
     public Xpath(WebDriver webDriver, String locateValue, Integer pageLoadTimeout) {
         super(webDriver, locateValue, pageLoadTimeout);
@@ -25,14 +31,17 @@ public class Xpath extends Html{
     public String getPageSource() {
         for (int i = 0; i < pageLoadTimeout; i++) {
             try {
-                String page = webDriver.getPageSource();
-                Document document = Jsoup.parse(page);
-                XPath xpath1 = XPathFactory.newInstance().newXPath();
-                String evaluate = (String)xpath1.evaluate(locateValue, document, XPathConstants.STRING);
-                if (StringUtils.isNotBlank(evaluate)) {
+                System.out.println("start");
+                List<WebElement> elements = webDriver.findElements(By.xpath(locateValue));
+                System.out.println("end");
+                if (elements.size() > 0) {
                     return webDriver.getPageSource();
                 }
-            } catch (Exception e) { }
+            } catch (JavascriptException e) {
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

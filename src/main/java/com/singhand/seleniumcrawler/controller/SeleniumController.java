@@ -6,10 +6,7 @@ import com.singhand.seleniumcrawler.service.SeleniumService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 
@@ -57,7 +54,7 @@ public class SeleniumController {
      * @date 2020/11/20 17:26
      */
     @GetMapping("xpath/{isDomestic}")
-    public String xpath(String url, String xpath,Integer pageLoadTimeout, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
+    public String xpath(String url, @RequestBody String xpath, Integer pageLoadTimeout, @PathVariable ProxyType isDomestic) throws ExecutionException, InterruptedException {
         long startTime = System.currentTimeMillis();
         String result = seleniumService.xpath(url,xpath,isDomestic,pageLoadTimeout);
         log.info("消耗时间：{}",System.currentTimeMillis()-startTime);

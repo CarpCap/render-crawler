@@ -3,7 +3,12 @@ package com.singhand.seleniumcrawler.selenoium.locate;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 /**
  * @author Kwon
@@ -21,13 +26,18 @@ public class Css extends Html {
     public String getPageSource() {
         for (int i = 0; i < pageLoadTimeout; i++) {
             try {
+                System.out.println("start");
                 String page = webDriver.getPageSource();
                 Document document = Jsoup.parse(page);
                 Elements select = document.select(locateValue);
                 if (select.size() > 0) {
                     return webDriver.getPageSource();
                 }
+                System.out.println("end");
+            } catch (JavascriptException e) {
+
             } catch (Exception e) {
+                e.printStackTrace();
             }
             try {
                 Thread.sleep(1000);
