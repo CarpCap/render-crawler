@@ -21,8 +21,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
+ * 内置了WebDriver
+ *
  * @author Kwon
- * @Title:
+ * @Title: Selenium实例
  * @Description:
  * @date 2020/11/25 17:36
  */

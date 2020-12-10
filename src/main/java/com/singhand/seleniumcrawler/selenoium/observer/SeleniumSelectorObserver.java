@@ -4,9 +4,8 @@ import com.singhand.seleniumcrawler.selenoium.Selenium;
 import com.singhand.seleniumcrawler.selenoium.SeleniumSelector;
 
 /**
- * 观察者
  * @author Kwon
- * @Title:
+ * @Title: 观察者-SeleniumSelector
  * @Description:
  * @date 2020/12/1 16:02
  */

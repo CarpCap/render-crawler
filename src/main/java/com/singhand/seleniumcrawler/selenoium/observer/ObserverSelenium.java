@@ -3,10 +3,8 @@ package com.singhand.seleniumcrawler.selenoium.observer;
 import com.singhand.seleniumcrawler.selenoium.Selenium;
 
 /**
- *
- * Selenium抽象观察者
  * @author Kwon
- * @Title:
+ * @Title: Selenium抽象观察者
  * @Description:
  * @date 2020/12/1 9:44
  */

@@ -56,7 +56,6 @@ public class SeleniumFactor {
      * @return
      */
     private Selenium domestic(){
-        //创建国内代理浏览器
         log.info("创建国内代理浏览器");
         DataPackage<Proxy> domesticProxy = proxyDispatchFeign.getDomesticProxy();
         Proxy proxy = domesticProxy.getData();

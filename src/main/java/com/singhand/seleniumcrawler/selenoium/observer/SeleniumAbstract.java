@@ -4,9 +4,8 @@ package com.singhand.seleniumcrawler.selenoium.observer;
 import java.util.List;
 
 /**
- * 观察者 抽象目标
  * @author Kwon
- * @Title:
+ * @Title: 观察对象抽象类
  * @Description:
  * @date 2020/12/1 9:53
  */

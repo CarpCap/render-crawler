@@ -21,31 +21,13 @@ public class SeleniumSelector {
     /**
      * 超时时间，毫秒
      */
-    private static Long TIME = 30000L;
+    private static Long TIME = 60000L;
     /**
      * 浏览器实例最大请求次数.
      */
     private static final Integer REOPEN_REQUEST_SUM = 10;
 
-    /**
-     * 清理掉活跃的浏览器
-     *
-     * @author Kwon
-     * @date 2020/12/10 17:09
-     */
-    static {
-        new Thread(() -> {
-            while (true) {
-                SeleniumSelector.removeTimeOutSelenium();
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
 
-        }).start();
-    }
 
     /**
      * 获取可用的Selenium
@@ -75,7 +57,6 @@ public class SeleniumSelector {
      */
     public static Set<Selenium> selectedKeys() {
         Set<Selenium> seleniumSet = new HashSet<>();
-
         selectedKey.forEach(s -> {
             if (System.currentTimeMillis() - TIME > s.getTime() || s.getRequestSum()>=REOPEN_REQUEST_SUM) {
                 seleniumSet.add(s);
@@ -85,22 +66,6 @@ public class SeleniumSelector {
     }
 
 
-    /**
-     * 获取 超时的 selenium 集合
-     * 清空 其中的webDriver
-     *
-     * @param
-     * @return
-     * @author Kwon
-     * @date 2020/11/26 10:15
-     */
-    public static boolean removeTimeOutSelenium() {
-        Set<Selenium> seleniumSet = selectedKeys();
-        seleniumSet.forEach(selenium -> {
-            selenium.closeSelenium();
-        });
-        return true;
-    }
 
 
     /**

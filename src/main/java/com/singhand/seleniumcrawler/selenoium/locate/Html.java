@@ -3,9 +3,8 @@ package com.singhand.seleniumcrawler.selenoium.locate;
 import org.openqa.selenium.WebDriver;
 
 /**
- * html抓取
  * @author Kwon
- * @Title:
+ * @Title: html抓取方式 抽象
  * @Description:
  * @date 2020/12/10 14:56
  */
