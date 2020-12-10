@@ -3,6 +3,7 @@ package com.singhand.seleniumcrawler.webdriver;
 import org.openqa.selenium.WebDriver;
 
 /**
+ * html抓取
  * @author Kwon
  * @Title:
  * @Description:

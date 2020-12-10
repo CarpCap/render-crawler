@@ -1,6 +1,8 @@
 package com.singhand.seleniumcrawler.webdriver;
 
 /**
+ * 页面抓取环境类
+ *
  * @author Kwon
  * @Title:
  * @Description:

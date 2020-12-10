@@ -14,8 +14,6 @@ import java.util.concurrent.*;
  */
 @Component
 public class SeleniumThreadPool {
-    @Autowired
-    private SeleniumThreadFactory seleniumThreadFactory;
     public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
     //    public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
     public final static Integer MAXIMUM_POOL_SIZE = 3;
