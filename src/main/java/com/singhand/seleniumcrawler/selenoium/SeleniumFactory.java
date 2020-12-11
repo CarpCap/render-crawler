@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Component
 @Log4j2
-public class SeleniumFactor {
+public class SeleniumFactory {
 
     @Autowired
     private ProxyDispatchFeign proxyDispatchFeign;

@@ -27,11 +27,9 @@ public class  SeleniumTask implements Callable<String> {
     private ProxyType proxyType;
     private Integer pageLoadTimeout = 5;
 
-    @Autowired
-    ProxyDispatchFeign proxyDispatchFeign;
 
     @Autowired
-    SeleniumFactor seleniumFactor;
+    private SeleniumFactory seleniumFactory;
 
 
     @Override
@@ -39,7 +37,7 @@ public class  SeleniumTask implements Callable<String> {
         //get WebDriver
         Selenium selenium = SeleniumSelector.getAvailableSelenium(proxyType);
         if (selenium==null) {
-            selenium=seleniumFactor.createSelenium(proxyType);
+            selenium=seleniumFactory.createSelenium(proxyType);
         }
         return selenium.getPageSource(url,locateValue,locateType,pageLoadTimeout);
     }
