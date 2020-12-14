@@ -26,7 +26,7 @@ public class SeleniumSelector {
     /**
      * 浏览器单例执行任务最大次数.
      */
-    private static final Integer REOPEN_REQUEST_SUM = 10;
+    private static final Integer REOPEN_REQUEST_SUM = 60;
 
 
 

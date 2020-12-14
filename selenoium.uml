@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.singhand.seleniumcrawler.selenoium</OriginalElement>
+  <nodes>
+    <node x="181.57638888888903" y="13.201171875">com.singhand.seleniumcrawler.selenoium.locate</node>
+    <node x="37.69606481481486" y="123.201171875">com.singhand.seleniumcrawler.selenoium.Selenium</node>
+    <node x="10.5" y="1083.701171875">com.singhand.seleniumcrawler.selenoium.SeleniumFactory</node>
+    <node x="290.51574074074074" y="774.201171875">com.singhand.seleniumcrawler.selenoium.SeleniumSelector</node>
+    <node x="441.54907407407404" y="1198.701171875">com.singhand.seleniumcrawler.selenoium.SeleniumTask</node>
+    <node x="368.01574074074074" y="971.201171875">com.singhand.seleniumcrawler.selenoium.SeleniumManage</node>
+    <node x="161.79513888888894" y="983.701171875">com.singhand.seleniumcrawler.selenoium.observer</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumManage" target="com.singhand.seleniumcrawler.selenoium.SeleniumSelector">
+      <point x="0.0" y="-27.5" />
+      <point x="0.0" y="73.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumTask" target="com.singhand.seleniumcrawler.selenoium.SeleniumSelector">
+      <point x="0.0" y="-96.5" />
+      <point x="588.549074074074" y="1158.701171875" />
+      <point x="645.7273148148149" y="1158.701171875" />
+      <point x="645.7273148148149" y="951.201171875" />
+      <point x="630.5157407407407" y="951.201171875" />
+      <point x="136.00000000000003" y="73.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.Selenium" target="com.singhand.seleniumcrawler.selenoium.observer">
+      <point x="-32.8125" y="300.5" />
+      <point x="267.38356481481486" y="744.201171875" />
+      <point x="258.5157407407407" y="744.201171875" />
+      <point x="258.5157407407407" y="941.201171875" />
+      <point x="221.7951388888889" y="941.201171875" />
+      <point x="-20.00000000000003" y="-15.0" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.Selenium" target="com.singhand.seleniumcrawler.selenoium.locate">
+      <point x="131.25000000000006" y="-300.5" />
+      <point x="431.4460648148149" y="103.201171875" />
+      <point x="289.576388888889" y="103.201171875" />
+      <point x="35.99999999999997" y="15.0" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumTask" target="com.singhand.seleniumcrawler.selenoium.locate">
+      <point x="117.60000000000002" y="-96.5" />
+      <point x="706.1490740740741" y="1178.701171875" />
+      <point x="720.0157407407407" y="1178.701171875" />
+      <point x="720.0157407407407" y="93.201171875" />
+      <point x="313.576388888889" y="93.201171875" />
+      <point x="59.99999999999997" y="15.0" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumTask" target="com.singhand.seleniumcrawler.selenoium.Selenium">
+      <point x="58.799999999999955" y="-96.5" />
+      <point x="647.349074074074" y="1168.701171875" />
+      <point x="709.0157407407407" y="1168.701171875" />
+      <point x="709.0157407407407" y="744.201171875" />
+      <point x="529.8835648148149" y="744.201171875" />
+      <point x="229.68750000000006" y="300.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumTask" target="com.singhand.seleniumcrawler.selenoium.SeleniumFactory">
+      <point x="-58.80000000000007" y="-96.5" />
+      <point x="529.749074074074" y="1168.701171875" />
+      <point x="197.0" y="1168.701171875" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumFactory" target="com.singhand.seleniumcrawler.selenoium.observer">
+      <point x="46.625" y="-27.5" />
+      <point x="243.625" y="1063.701171875" />
+      <point x="261.7951388888889" y="1063.701171875" />
+      <point x="19.99999999999997" y="15.0" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.observer" target="com.singhand.seleniumcrawler.selenoium.observer">
+      <point x="-20.0" y="15.0" />
+      <point x="221.79513888888894" y="1043.701171875" />
+      <point x="131.79513888888894" y="1043.701171875" />
+      <point x="131.79513888888894" y="991.201171875" />
+      <point x="-80.0" y="-7.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.locate" target="com.singhand.seleniumcrawler.selenoium.locate">
+      <point x="-60.0" y="15.0" />
+      <point x="193.57638888888903" y="63.201171875" />
+      <point x="161.57638888888903" y="63.201171875" />
+      <point x="161.57638888888903" y="35.701171875" />
+      <point x="-72.0" y="7.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumFactory" target="com.singhand.seleniumcrawler.selenoium.Selenium">
+      <point x="-46.625" y="-27.5" />
+      <point x="150.375" y="1063.701171875" />
+      <point x="121.29513888888894" y="1063.701171875" />
+      <point x="121.29513888888894" y="754.201171875" />
+      <point x="136.13356481481486" y="754.201171875" />
+      <point x="-164.0625" y="300.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.SeleniumSelector" target="com.singhand.seleniumcrawler.selenoium.Selenium">
+      <point x="102.0" y="-73.5" />
+      <point x="596.5157407407407" y="754.201171875" />
+      <point x="464.25856481481486" y="754.201171875" />
+      <point x="164.0625" y="300.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.observer" target="com.singhand.seleniumcrawler.selenoium.SeleniumSelector">
+      <point x="59.99999999999997" y="-15.0" />
+      <point x="301.7951388888889" y="951.201171875" />
+      <point x="358.51574074074074" y="951.201171875" />
+      <point x="-136.0" y="73.5" />
+    </edge>
+    <edge source="com.singhand.seleniumcrawler.selenoium.observer" target="com.singhand.seleniumcrawler.selenoium.Selenium">
+      <point x="-60.00000000000003" y="-15.0" />
+      <point x="181.7951388888889" y="951.201171875" />
+      <point x="194.02939814814818" y="951.201171875" />
+      <point x="194.02939814814818" y="754.201171875" />
+      <point x="201.75856481481486" y="754.201171875" />
+      <point x="-98.4375" y="300.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.999899295065458" x="283.56400443146345" y="532.5349984892739" />
+  <SelectedNodes>
+    <node>com.singhand.seleniumcrawler.selenoium.locate</node>
+    <node>com.singhand.seleniumcrawler.selenoium.Selenium</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumFactory</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumSelector</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumTask</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumManage</node>
+    <node>com.singhand.seleniumcrawler.selenoium.observer</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

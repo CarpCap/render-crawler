@@ -185,8 +185,6 @@ public class Selenium extends SeleniumAbstract {
                     break;
             }
 
-            log.info("page:{}",pageSource);
-
             if (StringUtils.isNotBlank(pageSource)){
                 selenium.setTime(System.currentTimeMillis());
             }else {
