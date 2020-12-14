@@ -26,16 +26,13 @@ public class Css extends Html {
     public String getPageSource() {
         for (int i = 0; i < pageLoadTimeout; i++) {
             try {
-                System.out.println("start");
                 String page = webDriver.getPageSource();
                 Document document = Jsoup.parse(page);
                 Elements select = document.select(locateValue);
                 if (select.size() > 0) {
                     return webDriver.getPageSource();
                 }
-                System.out.println("end");
             } catch (JavascriptException e) {
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

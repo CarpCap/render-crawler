@@ -31,9 +31,7 @@ public class Xpath extends Html {
     public String getPageSource() {
         for (int i = 0; i < pageLoadTimeout; i++) {
             try {
-                System.out.println("start");
                 List<WebElement> elements = webDriver.findElements(By.xpath(locateValue));
-                System.out.println("end");
                 if (elements.size() > 0) {
                     return webDriver.getPageSource();
                 }

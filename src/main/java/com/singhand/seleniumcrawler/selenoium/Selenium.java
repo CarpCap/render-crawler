@@ -10,6 +10,7 @@ import com.singhand.seleniumcrawler.selenoium.locate.Xpath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -48,6 +49,10 @@ public class Selenium extends SeleniumAbstract {
      * 代理类型
      */
     private ProxyType proxyType;
+    /**
+     * 页面加载策略
+     */
+    private PageLoadStrategy pageLoadStrategy;
 
     /**
      * 最后一次活跃时间
@@ -73,11 +78,12 @@ public class Selenium extends SeleniumAbstract {
      * @author Kwon
      * @date 2020/12/1 10:41
      */
-    public Selenium(List<ObserverSelenium> observerSeleniumList, ProxyType proxyType, String host, Integer port) {
+    public Selenium(ProxyType proxyType, String host, Integer port, PageLoadStrategy pageLoadStrategy, List<ObserverSelenium> observerSeleniumList) {
         this.proxyType = proxyType;
         this.observerSeleniumList = observerSeleniumList;
         this.host = host;
         this.port = port;
+        this.pageLoadStrategy = pageLoadStrategy;
         init();
     }
 
@@ -91,7 +97,8 @@ public class Selenium extends SeleniumAbstract {
         proxy.setSslProxy(host + ":" + port);
         chromeOptions.setProxy(proxy);
         //当访问网站 不会等待渲染全部完成就可以拿到html
-        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
+        //默认normal
+        chromeOptions.setPageLoadStrategy(pageLoadStrategy);
         //new webDriver
         webDriver = new ChromeDriver(chromeOptions);
         //notify Create event
@@ -101,22 +108,22 @@ public class Selenium extends SeleniumAbstract {
     /**
      * 关闭Selenium
      *
-     * @author Kwon
-     * @date 2020/12/10 14:50
      * @param
      * @return
+     * @author Kwon
+     * @date 2020/12/10 14:50
      */
     public void closeSelenium() {
         if (!status.get()) {
             reentrantLock.lock();
             try {
                 if (!status.get()) {
+                    log.info("关闭浏览器实例：" + webDriver);
                     status.set(true);
                     webDriver.quit();
                     webDriver = null;
                     //notify Close event
                     notifyObserverSeleniumClose();
-                    log.info("关闭浏览器实例：" + webDriver);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -128,17 +135,15 @@ public class Selenium extends SeleniumAbstract {
     }
 
     /**
-     *
-     *
-     * @author Kwon
-     * @date 2020/12/10 14:35
      * @param url
-     * @param locateValue 定位值
-     * @param locateType 定位类型
+     * @param locateValue     定位值
+     * @param locateType      定位类型
      * @param pageLoadTimeout 最长等待页面加载时间
      * @return
+     * @author Kwon
+     * @date 2020/12/10 14:35
      */
-    public String getPageSource(String url, String locateValue, LocateType locateType, Integer pageLoadTimeout){
+    public String getPageSource(String url, String locateValue, LocateType locateType, Integer pageLoadTimeout) {
         Selenium selenium = this;
         reentrantLock.lock();
         try {
@@ -146,25 +151,46 @@ public class Selenium extends SeleniumAbstract {
             //重新创建一个Selenium 进行抓取
             if (selenium.webDriver == null) {
                 log.warn("webDriver deleted reCreate");
-                selenium = new Selenium(observerSeleniumList, proxyType, host, port);
-                return selenium.getPageSource(url, locateValue,locateType,pageLoadTimeout);
+                selenium = new Selenium(proxyType, host, port, pageLoadStrategy, observerSeleniumList);
+                return selenium.getPageSource(url, locateValue, locateType, pageLoadTimeout);
             }
             selenium.status.set(true);
 
             //http Request
-            selenium.webDriver.get(url);
-            //
-            selenium.setTime(System.currentTimeMillis());
-
-            //抓取方式
-            switch(locateType){
-                case css:
-                    return new CrawlerMethod(new Css(webDriver,locateValue,pageLoadTimeout)).getPageSource();
-                case xpath:
-                    return new CrawlerMethod(new Xpath(webDriver,locateValue,pageLoadTimeout)).getPageSource();
+            try {
+                selenium.webDriver.get(url);
+            } catch (WebDriverException e) {
+                e.printStackTrace();
+                status.set(false);
+                closeSelenium();
+                return null;
             }
 
-            return null;
+
+
+            String pageSource = null;
+            //抓取方式
+            switch (locateType) {
+                case css:
+                    pageSource = new CrawlerMethod(new Css(webDriver, locateValue, pageLoadTimeout)).getPageSource();
+                    break;
+                case xpath:
+                    pageSource = new CrawlerMethod(new Xpath(webDriver, locateValue, pageLoadTimeout)).getPageSource();
+                    break;
+                default:
+                    break;
+            }
+
+            log.info("page:{}",pageSource);
+
+            if (StringUtils.isNotBlank(pageSource)){
+                selenium.setTime(System.currentTimeMillis());
+            }else {
+                status.set(false);
+                closeSelenium();
+            }
+
+            return pageSource;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -176,15 +202,13 @@ public class Selenium extends SeleniumAbstract {
     }
 
 
-
-
     /**
      * 通知观察者 发生了创建事件
      *
-     * @author Kwon
-     * @date 2020/12/10 14:37
      * @param
      * @return
+     * @author Kwon
+     * @date 2020/12/10 14:37
      */
     private void notifyObserverSeleniumCreate() {
         observerSeleniumList.forEach(os -> {
@@ -195,10 +219,10 @@ public class Selenium extends SeleniumAbstract {
     /**
      * 通知观察者 发生了关闭事件
      *
-     * @author Kwon
-     * @date 2020/12/10 14:38
      * @param
      * @return
+     * @author Kwon
+     * @date 2020/12/10 14:38
      */
     private void notifyObserverSeleniumClose() {
         observerSeleniumList.forEach(os -> {

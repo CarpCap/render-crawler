@@ -3,6 +3,7 @@ package com.singhand.seleniumcrawler.selenoium;
 
 import com.google.common.collect.Sets;
 import com.singhand.seleniumcrawler.proxy.ProxyType;
+import org.openqa.selenium.PageLoadStrategy;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,11 +20,11 @@ public class SeleniumSelector {
     private volatile static Set<Selenium> selectedKey = Collections.synchronizedSet(Sets.newLinkedHashSet());
 
     /**
-     * 超时时间，毫秒
+     * 活跃判定时间，毫秒
      */
     private static Long TIME = 60000L;
     /**
-     * 浏览器实例最大请求次数.
+     * 浏览器单例执行任务最大次数.
      */
     private static final Integer REOPEN_REQUEST_SUM = 10;
 
@@ -31,6 +32,7 @@ public class SeleniumSelector {
 
     /**
      * 获取可用的Selenium
+     * 没有在执行任务的Selenium
      *
      * @author Kwon
      * @date 2020/12/2 10:08
@@ -43,12 +45,31 @@ public class SeleniumSelector {
                 return s;
             }
         }
-
         return null;
     }
 
     /**
-     * 返回 超时的 or 超过请求数的 selenium 集合
+     * 获取可用的Selenium
+     * 没有在执行任务的Selenium
+     *
+     * @author Kwon
+     * @date 2020/12/2 10:08
+     * @param proxyType
+     * @return
+     */
+    public static Selenium getAvailableSelenium(ProxyType proxyType, PageLoadStrategy pageLoadType)  {
+        for (Selenium s : selectedKey) {
+            if (proxyType.equals(s.getProxyType()) && s.getStatus().get() == false && s.getPageLoadStrategy()==pageLoadType) {
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * 返回 活跃性低 or 执行过多任务 的 selenium 集合
      *
      * @param
      * @return

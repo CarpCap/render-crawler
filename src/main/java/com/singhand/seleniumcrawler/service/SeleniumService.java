@@ -5,6 +5,7 @@ import com.singhand.seleniumcrawler.selenoium.locate.LocateType;
 import com.singhand.seleniumcrawler.selenoium.SeleniumTask;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.PageLoadStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- *
- *
  * @author Kwon
  * @Title:
  * @Description:
@@ -27,22 +26,28 @@ public class SeleniumService {
     @Autowired
     private SeleniumTask seleniumTask;
 
-    public String css(String url, String css, ProxyType isDomestic, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
-        return getString(url, css, isDomestic, pageLoadTimeout, LocateType.css);
+    public String css(String url, String css, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
+        return getString(url, css, proxyType, pageLoadType, pageLoadTimeout, LocateType.css);
     }
-    public String xpath(String url, String xpath, ProxyType isDomestic, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
-        return getString(url, xpath, isDomestic, pageLoadTimeout, LocateType.xpath);
+
+    public String xpath(String url, String xpath, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
+        return getString(url, xpath, proxyType, pageLoadType, pageLoadTimeout, LocateType.xpath);
     }
 
 
-    private String getString(String url, String locateValue, ProxyType isDomestic, Integer pageLoadTimeout, LocateType locateType) throws InterruptedException, ExecutionException {
-        if (pageLoadTimeout!=null && pageLoadTimeout!=0){
+    private String getString(String url, String locateValue, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, LocateType locateType) throws InterruptedException, ExecutionException {
+        if (pageLoadTimeout != null && pageLoadTimeout != 0) {
             seleniumTask.setPageLoadTimeout(pageLoadTimeout);
         }
+        if (pageLoadType==null){
+            pageLoadType=PageLoadStrategy.NONE;
+        }
+
         seleniumTask.setLocateValue(locateValue);
         seleniumTask.setLocateType(locateType);
         seleniumTask.setUrl(url);
-        seleniumTask.setProxyType(isDomestic);
+        seleniumTask.setProxyType(proxyType);
+        seleniumTask.setPageLoadType(pageLoadType);
         Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumTask);
         return future.get();
     }

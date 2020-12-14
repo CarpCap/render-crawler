@@ -1,5 +1,7 @@
 package com.singhand.seleniumcrawler.selenoium;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Set;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Set;
  * @Description:
  * @date 2020/12/10 17:26
  */
+@Component
 public class SeleniumManage {
 
     /**
@@ -40,8 +43,7 @@ public class SeleniumManage {
      * @date 2020/11/26 10:15
      */
     public static boolean removeTimeOutSelenium() {
-        Set<Selenium> seleniumSet = SeleniumSelector.selectedKeys();
-        seleniumSet.forEach(selenium -> {
+        SeleniumSelector.selectedKeys().forEach(selenium -> {
             selenium.closeSelenium();
         });
         return true;

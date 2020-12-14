@@ -3,6 +3,7 @@ package com.singhand.seleniumcrawler.selenoium;
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
 import com.singhand.seleniumcrawler.proxy.ProxyType;
 import com.singhand.seleniumcrawler.selenoium.locate.LocateType;
+import org.openqa.selenium.PageLoadStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ public class  SeleniumTask implements Callable<String> {
     private String locateValue;
     private LocateType locateType;
     private ProxyType proxyType;
+    private PageLoadStrategy pageLoadType;
     private Integer pageLoadTimeout = 5;
 
 
@@ -35,9 +37,9 @@ public class  SeleniumTask implements Callable<String> {
     @Override
     public String call() throws Exception {
         //get WebDriver
-        Selenium selenium = SeleniumSelector.getAvailableSelenium(proxyType);
+        Selenium selenium = SeleniumSelector.getAvailableSelenium(proxyType,pageLoadType);
         if (selenium==null) {
-            selenium=seleniumFactory.createSelenium(proxyType);
+            selenium=seleniumFactory.createSelenium(proxyType,pageLoadType);
         }
         return selenium.getPageSource(url,locateValue,locateType,pageLoadTimeout);
     }
@@ -61,5 +63,9 @@ public class  SeleniumTask implements Callable<String> {
 
     public void setLocateType(LocateType locateType) {
         this.locateType = locateType;
+    }
+
+    public void setPageLoadType(PageLoadStrategy pageLoadType) {
+        this.pageLoadType = pageLoadType;
     }
 }
