@@ -30,7 +30,7 @@ public class SeleniumFactory {
     private ProxyDispatchFeign proxyDispatchFeign;
 
     /**
-     * 工厂模式 抽象工厂
+     * 工厂模式
      *
      * @param proxyType
      * @return

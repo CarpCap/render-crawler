@@ -63,7 +63,6 @@ public class SeleniumSelector {
                 return s;
             }
         }
-
         return null;
     }
 

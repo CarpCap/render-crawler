@@ -14,9 +14,6 @@ public class CrawlerMethod {
         this.html=html;
     }
 
-    public Html getStrategy() {
-        return html;
-    }
 
     public String getPageSource ()  {
         return html.getPageSource();

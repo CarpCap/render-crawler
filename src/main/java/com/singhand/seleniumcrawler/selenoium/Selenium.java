@@ -90,12 +90,16 @@ public class Selenium extends SeleniumAbstract {
 
     public void init() {
         ChromeOptions chromeOptions = new ChromeOptions();
-//        chromeOptions.addArguments("-headless");
+        //无头设置
+        chromeOptions.addArguments("-headless");
+        //禁用图片
+        chromeOptions.addArguments("blink-settings=imagesEnabled=false");
         Proxy proxy = new Proxy();
         log.info("create chrome. proxy info is：" + host + ":" + port);
         proxy.setHttpProxy(host + ":" + port);
         proxy.setSslProxy(host + ":" + port);
         chromeOptions.setProxy(proxy);
+
         //当访问网站 不会等待渲染全部完成就可以拿到html
         //默认normal
         chromeOptions.setPageLoadStrategy(pageLoadStrategy);
