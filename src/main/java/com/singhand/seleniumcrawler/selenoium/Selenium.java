@@ -55,6 +55,11 @@ public class Selenium extends SeleniumAbstract {
     private PageLoadStrategy pageLoadStrategy;
 
     /**
+     * 失败次数
+     */
+    private Integer failSum = 0;
+
+    /**
      * 最后一次活跃时间
      */
     private Long time = System.currentTimeMillis();
@@ -91,7 +96,7 @@ public class Selenium extends SeleniumAbstract {
     public void init() {
         ChromeOptions chromeOptions = new ChromeOptions();
         //无头设置
-        chromeOptions.addArguments("-headless");
+//        chromeOptions.addArguments("-headless");
         //禁用图片
         chromeOptions.addArguments("blink-settings=imagesEnabled=false");
         Proxy proxy = new Proxy();
@@ -164,12 +169,12 @@ public class Selenium extends SeleniumAbstract {
             try {
                 selenium.webDriver.get(url);
             } catch (WebDriverException e) {
+                //Exception close Selenium
                 e.printStackTrace();
                 status.set(false);
                 closeSelenium();
                 return null;
             }
-
 
 
             String pageSource = null;
@@ -185,13 +190,11 @@ public class Selenium extends SeleniumAbstract {
                     break;
             }
 
-            if (StringUtils.isNotBlank(pageSource)){
-                selenium.setTime(System.currentTimeMillis());
-            }else {
-                status.set(false);
-                closeSelenium();
+            if (StringUtils.isBlank(pageSource)) {
+                failSum++;
             }
 
+            selenium.setTime(System.currentTimeMillis());
             return pageSource;
         } catch (Exception e) {
             e.printStackTrace();
@@ -200,6 +203,8 @@ public class Selenium extends SeleniumAbstract {
             requestSum++;
             status.set(false);
         }
+
+        failSum++;
         return null;
     }
 

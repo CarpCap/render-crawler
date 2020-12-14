@@ -27,7 +27,10 @@ public class SeleniumSelector {
      * 浏览器单例执行任务最大次数.
      */
     private static final Integer REOPEN_REQUEST_SUM = 60;
-
+    /**
+     * 浏览器允许最大失败次数
+     */
+    private static final Integer REOPEN_FAIL_SUM = 3;
 
 
     /**
@@ -68,7 +71,11 @@ public class SeleniumSelector {
 
 
     /**
-     * 返回 活跃性低 or 执行过多任务 的 selenium 集合
+     * 
+     * 活跃性低
+     * 执行过多任务
+     * 失败过多
+     * 的 selenium 集合
      *
      * @param
      * @return
@@ -78,7 +85,7 @@ public class SeleniumSelector {
     public static Set<Selenium> selectedKeys() {
         Set<Selenium> seleniumSet = new HashSet<>();
         selectedKey.forEach(s -> {
-            if (System.currentTimeMillis() - TIME > s.getTime() || s.getRequestSum()>=REOPEN_REQUEST_SUM) {
+            if (System.currentTimeMillis() - TIME > s.getTime() || s.getRequestSum()>=REOPEN_REQUEST_SUM || s.getFailSum() >=REOPEN_FAIL_SUM) {
                 seleniumSet.add(s);
             }
         });
