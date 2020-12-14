@@ -38,7 +38,7 @@ public class SeleniumController {
      * @date 2020/11/20 17:26
      */
     @GetMapping("css/{proxyType}")
-    public String css(String url, String css, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, @PathVariable ProxyType proxyType) throws ExecutionException, InterruptedException {
+    public String css(@RequestParam String url, @RequestParam String css, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10")  Integer pageLoadTimeout, @PathVariable ProxyType proxyType) throws ExecutionException, InterruptedException {
         long startTime = System.currentTimeMillis();
         String result = seleniumService.css(url, css, proxyType, pageLoadType, pageLoadTimeout);
         log.info("消耗时间：{}", System.currentTimeMillis() - startTime);
@@ -55,7 +55,7 @@ public class SeleniumController {
      * @date 2020/11/20 17:26
      */
     @GetMapping("xpath/{proxyType}")
-    public String xpath(String url, @RequestBody String xpath, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, @PathVariable ProxyType proxyType) throws ExecutionException, InterruptedException {
+    public String xpath(@RequestParam String url, @RequestBody String xpath, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType,@RequestParam(defaultValue = "10") Integer pageLoadTimeout, @PathVariable ProxyType proxyType) throws ExecutionException, InterruptedException {
         long startTime = System.currentTimeMillis();
         String result = seleniumService.xpath(url, xpath, proxyType, pageLoadType, pageLoadTimeout);
         log.info("消耗时间：{}", System.currentTimeMillis() - startTime);

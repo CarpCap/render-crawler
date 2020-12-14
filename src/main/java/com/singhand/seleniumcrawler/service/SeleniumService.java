@@ -36,13 +36,10 @@ public class SeleniumService {
 
 
     private String getString(String url, String locateValue, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, LocateType locateType) throws InterruptedException, ExecutionException {
-        if (pageLoadTimeout != null && pageLoadTimeout != 0) {
-            seleniumTask.setPageLoadTimeout(pageLoadTimeout);
-        }
         if (pageLoadType==null){
-            pageLoadType=PageLoadStrategy.NONE;
+            pageLoadType=PageLoadStrategy.NORMAL;
         }
-
+        seleniumTask.setPageLoadTimeout(pageLoadTimeout);
         seleniumTask.setLocateValue(locateValue);
         seleniumTask.setLocateType(locateType);
         seleniumTask.setUrl(url);
