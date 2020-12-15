@@ -10,22 +10,32 @@ import com.singhand.seleniumcrawler.selenoium.Selenium;
  */
 public interface ObserverSelenium {
     /**
-     * selenium关闭事件
+     * selenium 关闭完成
      *
      * @author Kwon
      * @date 2020/12/1 10:55
      * @param selenium
      * @return
      */
-    void seleniumClosed(Selenium selenium);
+    void closed(Selenium selenium);
 
     /**
-     *selenium创建事件
+     *selenium 创建完成
      *
      * @author Kwon
      * @date 2020/12/1 10:56
      * @param selenium
      * @return
      */
-    void seleniumCreated(Selenium selenium);
+    void created(Selenium selenium);
+    /**
+     *selenium 请求完成
+     *
+     * @author Kwon
+     * @date 2020/12/1 10:56
+     * @param selenium
+     * @return
+     */
+    void requested(Selenium selenium);
+
 }

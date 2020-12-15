@@ -11,7 +11,8 @@ import java.util.List;
  */
 public abstract class SeleniumAbstract {
     /**
-     * selenium事件观察者
+     * selenium
+     * 创建 关闭 事件观察者
      *
      * @author Kwon
      * @date 2020/12/1 9:54
@@ -19,6 +20,7 @@ public abstract class SeleniumAbstract {
      * @return
      */
     protected List<ObserverSelenium> observerSeleniumList;
+
 
     public List<ObserverSelenium> getObserverSeleniumList() {
         return observerSeleniumList;

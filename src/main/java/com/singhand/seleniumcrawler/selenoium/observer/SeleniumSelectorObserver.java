@@ -10,7 +10,6 @@ import com.singhand.seleniumcrawler.selenoium.SeleniumSelector;
  * @date 2020/12/1 16:02
  */
 public class SeleniumSelectorObserver implements ObserverSelenium {
-
     /**
      * 注销
      *
@@ -20,7 +19,7 @@ public class SeleniumSelectorObserver implements ObserverSelenium {
      * @return
      */
     @Override
-    public void seleniumClosed(Selenium selenium) {
+    public void closed(Selenium selenium) {
         SeleniumSelector.unRegister(selenium);
     }
 
@@ -34,7 +33,12 @@ public class SeleniumSelectorObserver implements ObserverSelenium {
      * @return
      */
     @Override
-    public void seleniumCreated(Selenium selenium) {
+    public void created(Selenium selenium) {
         SeleniumSelector.register(selenium);
     }
+
+    @Override
+    public void requested(Selenium selenium) {}
+
+
 }

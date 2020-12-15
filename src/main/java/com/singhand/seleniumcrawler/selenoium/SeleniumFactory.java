@@ -5,6 +5,7 @@ import com.singhand.bidcrawler.commons.entity.ApplyRequest;
 import com.singhand.seleniumcrawler.feign.ProxyDispatchFeign;
 import com.singhand.seleniumcrawler.proxy.ProxyType;
 import com.singhand.seleniumcrawler.selenoium.observer.ObserverSelenium;
+import com.singhand.seleniumcrawler.selenoium.observer.SeleniumManageObserver;
 import com.singhand.seleniumcrawler.selenoium.observer.SeleniumSelectorObserver;
 import com.singhand.tinycrawler.managercenter.entities.DataPackage;
 import com.singhand.tinycrawler.managercenter.entities.Proxy;
@@ -83,7 +84,6 @@ public class SeleniumFactory {
 
     /**
      * 默认观察者
-     *
      * @author Kwon
      * @date 2020/12/10 17:08
      * @param
@@ -91,7 +91,8 @@ public class SeleniumFactory {
      */
     private List<ObserverSelenium> defaultObserver(){
         SeleniumSelectorObserver seleniumSelectorObserver = new SeleniumSelectorObserver();
-        List<ObserverSelenium> observerSeleniumList = Lists.newArrayList(seleniumSelectorObserver);
+        SeleniumManageObserver seleniumManageObserver=new SeleniumManageObserver();
+        List<ObserverSelenium> observerSeleniumList = Lists.newArrayList(seleniumSelectorObserver,seleniumManageObserver);
         return observerSeleniumList;
     }
 }

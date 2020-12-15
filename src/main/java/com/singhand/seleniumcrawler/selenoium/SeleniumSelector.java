@@ -71,11 +71,8 @@ public class SeleniumSelector {
 
 
     /**
-     * 
-     * 活跃性低
-     * 执行过多任务
-     * 失败过多
-     * 的 selenium 集合
+     *
+     * 活跃性低的 selenium 集合
      *
      * @param
      * @return
@@ -85,15 +82,12 @@ public class SeleniumSelector {
     public static Set<Selenium> selectedKeys() {
         Set<Selenium> seleniumSet = new HashSet<>();
         selectedKey.forEach(s -> {
-            if (System.currentTimeMillis() - TIME > s.getTime() || s.getRequestSum()>=REOPEN_REQUEST_SUM || s.getFailSum() >=REOPEN_FAIL_SUM) {
+            if (System.currentTimeMillis() - TIME > s.getTime()) {
                 seleniumSet.add(s);
             }
         });
         return seleniumSet;
     }
-
-
-
 
     /**
      * 注销

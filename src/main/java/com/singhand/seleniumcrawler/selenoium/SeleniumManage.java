@@ -12,6 +12,15 @@ import java.util.Set;
  */
 @Component
 public class SeleniumManage {
+    /**
+     * 浏览器单例执行任务最大次数.
+     */
+    private static final Integer REOPEN_REQUEST_SUM = 60;
+    /**
+     * 浏览器允许最大失败次数
+     */
+    private static final Integer REOPEN_FAIL_SUM = 3;
+
 
     /**
      * 清理掉活跃的浏览器
@@ -29,7 +38,6 @@ public class SeleniumManage {
                     e.printStackTrace();
                 }
             }
-
         }).start();
     }
 
@@ -47,6 +55,21 @@ public class SeleniumManage {
             selenium.closeSelenium();
         });
         return true;
+    }
+
+
+    /**
+     * 如果Selenium参数
+     *
+     * @author Kwon
+     * @date 2020/12/15 10:34
+     * @param selenium
+     * @return
+     */
+    public static void removeFailSelenium(Selenium selenium){
+        if (selenium.getRequestSum()>=REOPEN_REQUEST_SUM || selenium.getFailSum() >=REOPEN_FAIL_SUM){
+            selenium.closeSelenium();
+        }
     }
 
 

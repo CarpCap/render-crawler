@@ -123,24 +123,22 @@ public class Selenium extends SeleniumAbstract {
      * @date 2020/12/10 14:50
      */
     public void closeSelenium() {
-        if (!status.get()) {
-            reentrantLock.lock();
-            try {
-                if (!status.get()) {
-                    log.info("关闭浏览器实例：" + webDriver);
-                    status.set(true);
-                    webDriver.quit();
-                    webDriver = null;
-                    //notify Close event
-                    notifyObserverSeleniumClose();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                reentrantLock.unlock();
-                status.set(false);
-            }
+        reentrantLock.lock();
+        try {
+            log.info("关闭浏览器实例：" + webDriver);
+            status.set(true);
+            webDriver.quit();
+            webDriver = null;
+            //notify Close event
+            notifyObserverSeleniumClose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            reentrantLock.unlock();
+            status.set(false);
         }
+
     }
 
     /**
@@ -150,12 +148,15 @@ public class Selenium extends SeleniumAbstract {
      * @param pageLoadTimeout 最长等待页面加载时间
      * @return
      * @author Kwon
-     * @date 2020/12/10 14:35
+     * @date 2020/12/10 1
+     * 4:35
      */
     public String getPageSource(String url, String locateValue, LocateType locateType, Integer pageLoadTimeout) {
         Selenium selenium = this;
         reentrantLock.lock();
         try {
+            selenium.status.set(true);
+
             //如果为空代表 浏览器被关闭了
             //重新创建一个Selenium 进行抓取
             if (selenium.webDriver == null) {
@@ -163,7 +164,7 @@ public class Selenium extends SeleniumAbstract {
                 selenium = new Selenium(proxyType, host, port, pageLoadStrategy, observerSeleniumList);
                 return selenium.getPageSource(url, locateValue, locateType, pageLoadTimeout);
             }
-            selenium.status.set(true);
+
 
             //http Request
             try {
@@ -171,7 +172,6 @@ public class Selenium extends SeleniumAbstract {
             } catch (WebDriverException e) {
                 //Exception close Selenium
                 e.printStackTrace();
-                status.set(false);
                 closeSelenium();
                 return null;
             }
@@ -190,23 +190,22 @@ public class Selenium extends SeleniumAbstract {
                     break;
             }
 
-            if (StringUtils.isBlank(pageSource)) {
-                failSum++;
+            if (StringUtils.isNotBlank(pageSource)) {
+                selenium.setTime(System.currentTimeMillis());
+                return pageSource;
             }
-
-            selenium.setTime(System.currentTimeMillis());
-            return pageSource;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             reentrantLock.unlock();
-            requestSum++;
             status.set(false);
+            requestSum++;
+            notifyObserverSeleniumRequested();
         }
-
         failSum++;
         return null;
     }
+
 
 
     /**
@@ -219,7 +218,7 @@ public class Selenium extends SeleniumAbstract {
      */
     private void notifyObserverSeleniumCreate() {
         observerSeleniumList.forEach(os -> {
-            os.seleniumCreated(this);
+            os.created(this);
         });
     }
 
@@ -233,9 +232,16 @@ public class Selenium extends SeleniumAbstract {
      */
     private void notifyObserverSeleniumClose() {
         observerSeleniumList.forEach(os -> {
-            os.seleniumClosed(this);
+            os.closed(this);
         });
     }
+
+    private void notifyObserverSeleniumRequested(){
+        observerSeleniumList.forEach(os -> {
+            os.requested(this);
+        });
+    }
+
 
 
 }
