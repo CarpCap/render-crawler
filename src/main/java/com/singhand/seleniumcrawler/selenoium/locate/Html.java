@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
  * @Description:
  * @date 2020/12/10 14:56
  */
-public class Html {
+public abstract class Html {
     WebDriver webDriver;
     String locateValue;
     Integer pageLoadTimeout;
@@ -25,7 +25,5 @@ public class Html {
     /**
      * 获得html页面
      */
-    public String getPageSource() {
-        return null;
-    }
+    public abstract String getPageSource();
 }
