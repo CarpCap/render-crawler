@@ -1,5 +1,7 @@
 package com.singhand.seleniumcrawler.selenoium.locate;
 
+import org.openqa.selenium.WebDriver;
+
 /**
  * @author Kwon
  * @Title:  页面抓取环境类
@@ -10,8 +12,18 @@ public class CrawlerMethod {
 
     private Html html;
 
-    public CrawlerMethod(Html html){
-        this.html=html;
+    public CrawlerMethod(WebDriver webDriver, LocateType locateType, String locateValue, Integer pageLoadTimeout){
+        //抓取方式
+        switch (locateType) {
+            case css:
+                this.html = new Css(webDriver,locateValue,pageLoadTimeout);
+                break;
+            case xpath:
+                this.html = new Xpath(webDriver,locateValue,pageLoadTimeout);
+                break;
+            default:
+                break;
+        }
     }
 
 

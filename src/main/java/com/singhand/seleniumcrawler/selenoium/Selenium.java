@@ -1,12 +1,9 @@
 package com.singhand.seleniumcrawler.selenoium;
 
 import com.singhand.seleniumcrawler.proxy.ProxyType;
+import com.singhand.seleniumcrawler.selenoium.locate.*;
 import com.singhand.seleniumcrawler.selenoium.observer.ObserverSelenium;
 import com.singhand.seleniumcrawler.selenoium.observer.SeleniumAbstract;
-import com.singhand.seleniumcrawler.selenoium.locate.CrawlerMethod;
-import com.singhand.seleniumcrawler.selenoium.locate.Css;
-import com.singhand.seleniumcrawler.selenoium.locate.LocateType;
-import com.singhand.seleniumcrawler.selenoium.locate.Xpath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -179,16 +176,7 @@ public class Selenium extends SeleniumAbstract {
 
             String pageSource = null;
             //抓取方式
-            switch (locateType) {
-                case css:
-                    pageSource = new CrawlerMethod(new Css(webDriver, locateValue, pageLoadTimeout)).getPageSource();
-                    break;
-                case xpath:
-                    pageSource = new CrawlerMethod(new Xpath(webDriver, locateValue, pageLoadTimeout)).getPageSource();
-                    break;
-                default:
-                    break;
-            }
+            pageSource = new CrawlerMethod(webDriver,locateType, locateValue, pageLoadTimeout).getPageSource();
 
             if (StringUtils.isNotBlank(pageSource)) {
                 selenium.setTime(System.currentTimeMillis());
