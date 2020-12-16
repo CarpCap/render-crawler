@@ -27,19 +27,8 @@ public class SeleniumService {
     @Autowired
     private SeleniumTask seleniumTask;
 
-    public String css(String url, String css, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws Exception {
-        return getString(url, css, proxyType, pageLoadType, pageLoadTimeout, LocateType.css);
-    }
 
-    public String xpath(String url, String xpath, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws Exception {
-        return getString(url, xpath, proxyType, pageLoadType, pageLoadTimeout, LocateType.xpath);
-    }
-
-
-    private String getString(String url, String locateValue, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, LocateType locateType) throws Exception {
-        if (pageLoadType==null){
-            pageLoadType=PageLoadStrategy.NORMAL;
-        }
+    public String getPageSource(String url, String locateValue, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, LocateType locateType) throws Exception {
         seleniumTask.setPageLoadTimeout(pageLoadTimeout);
         seleniumTask.setLocateValue(locateValue);
         seleniumTask.setLocateType(locateType);

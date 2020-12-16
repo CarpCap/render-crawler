@@ -2,6 +2,7 @@ package com.singhand.seleniumcrawler.controller;
 
 
 import com.singhand.seleniumcrawler.proxy.ProxyType;
+import com.singhand.seleniumcrawler.selenoium.locate.LocateType;
 import com.singhand.seleniumcrawler.service.SeleniumService;
 import com.singhand.seleniumcrawler.utils.DataPackageUtil;
 import com.singhand.tinycrawler.managercenter.entities.DataPackage;
@@ -42,7 +43,7 @@ public class SeleniumController {
     @GetMapping("css")
     public DataPackage css(@RequestParam String url, @RequestParam String css, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
-        String result = seleniumService.css(url, css, proxyType, pageLoadType, pageLoadTimeout);
+        String result = seleniumService.getPageSource(url, css, proxyType, pageLoadType, pageLoadTimeout, LocateType.css);
         return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
     }
 
@@ -60,13 +61,8 @@ public class SeleniumController {
     @GetMapping("xpath")
     public DataPackage xpath(@RequestParam String url, @RequestBody String xpath, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout,  @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
-        String result = seleniumService.xpath(url, xpath, proxyType, pageLoadType, pageLoadTimeout);
+        String result = seleniumService.getPageSource(url, xpath, proxyType, pageLoadType, pageLoadTimeout, LocateType.xpath);
         return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
     }
-
-
-
-
-
 
 }
