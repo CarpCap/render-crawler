@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.*;
 
 /**
- *
  * @author Kwon
  * @Title: 自定义线程池
  * @Description:
@@ -14,14 +13,14 @@ import java.util.concurrent.*;
  */
 @Component
 public class SeleniumThreadPool {
-    public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
-    //    public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
-    public final static Integer MAXIMUM_POOL_SIZE = 3;
-    public final static Integer QUEUE_SIZE = 1;
+    public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 4;
+    public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
+//    public final static Integer MAXIMUM_POOL_SIZE = 3;
+    public final static Integer QUEUE_SIZE = 6;
     public static ThreadPoolExecutor seleniumThreadPool;
 
-    public SeleniumThreadPool(){
-        seleniumThreadPool=new ThreadPoolExecutor(MAXIMUM_POOL_SIZE, MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(QUEUE_SIZE));
+    public SeleniumThreadPool() {
+        seleniumThreadPool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(QUEUE_SIZE));
     }
 
 }
