@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * @author Kwon
@@ -35,7 +36,14 @@ public class SeleniumService {
         seleniumTask.setUrl(url);
         seleniumTask.setProxyType(proxyType);
         seleniumTask.setPageLoadType(pageLoadType);
-        Future<String> future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumTask);
+        Future<String> future;
+        try {
+            future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumTask);
+        }catch (RejectedExecutionException ex){
+            log.warn("线程池队列已满");
+            throw new RejectedExecutionException("负载已满，拒绝本次请求");
+        }
+
         return future.get();
     }
 }
