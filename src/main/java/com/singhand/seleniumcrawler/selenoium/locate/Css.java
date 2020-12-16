@@ -3,16 +3,13 @@ package com.singhand.seleniumcrawler.selenoium.locate;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
-import java.util.List;
 
 /**
  * @author Kwon
- * @Title: css 定位
+ * @Title: css
  * @Description:
  * @date 2020/12/10 14:54
  */

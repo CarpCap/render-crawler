@@ -17,11 +17,11 @@ public class SeleniumThreadPool {
     public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
     //    public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
     public final static Integer MAXIMUM_POOL_SIZE = 3;
-    public final static Integer QUEUE_SIZE = 10;
+    public final static Integer QUEUE_SIZE = 1;
     public static ThreadPoolExecutor seleniumThreadPool;
 
     public SeleniumThreadPool(){
-        seleniumThreadPool=new ThreadPoolExecutor(MAXIMUM_POOL_SIZE, MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(QUEUE_SIZE),Executors.defaultThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
+        seleniumThreadPool=new ThreadPoolExecutor(MAXIMUM_POOL_SIZE, MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(QUEUE_SIZE));
     }
 
 }

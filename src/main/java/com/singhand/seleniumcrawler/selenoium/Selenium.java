@@ -148,7 +148,7 @@ public class Selenium extends SeleniumAbstract {
      * @date 2020/12/10 1
      * 4:35
      */
-    public String getPageSource(String url, String locateValue, LocateType locateType, Integer pageLoadTimeout) {
+    public String getPageSource(String url, String locateValue, LocateType locateType, Integer pageLoadTimeout) throws Exception {
         Selenium selenium = this;
         reentrantLock.lock();
         try {
@@ -170,13 +170,13 @@ public class Selenium extends SeleniumAbstract {
                 //Exception close Selenium
                 e.printStackTrace();
                 closeSelenium();
-                return null;
+                throw e;
             }
 
 
             String pageSource = null;
             //抓取方式
-            pageSource = new CrawlerMethod(webDriver,locateType, locateValue, pageLoadTimeout).getPageSource();
+            pageSource = new CrawlerMethod(webDriver, locateType, locateValue, pageLoadTimeout).getPageSource();
 
             if (StringUtils.isNotBlank(pageSource)) {
                 selenium.setTime(System.currentTimeMillis());
@@ -191,9 +191,8 @@ public class Selenium extends SeleniumAbstract {
             notifyObserverSeleniumRequested();
         }
         failSum++;
-        return null;
+        throw new Exception("get pageSource fail");
     }
-
 
 
     /**
@@ -224,12 +223,11 @@ public class Selenium extends SeleniumAbstract {
         });
     }
 
-    private void notifyObserverSeleniumRequested(){
+    private void notifyObserverSeleniumRequested() {
         observerSeleniumList.forEach(os -> {
             os.requested(this);
         });
     }
-
 
 
 }

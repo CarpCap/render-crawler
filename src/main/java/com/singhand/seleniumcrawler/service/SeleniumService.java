@@ -5,6 +5,7 @@ import com.singhand.seleniumcrawler.selenoium.locate.LocateType;
 import com.singhand.seleniumcrawler.selenoium.SeleniumTask;
 import com.singhand.seleniumcrawler.threadpool.SeleniumThreadPool;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.PageLoadStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,16 +27,16 @@ public class SeleniumService {
     @Autowired
     private SeleniumTask seleniumTask;
 
-    public String css(String url, String css, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
+    public String css(String url, String css, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws Exception {
         return getString(url, css, proxyType, pageLoadType, pageLoadTimeout, LocateType.css);
     }
 
-    public String xpath(String url, String xpath, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws ExecutionException, InterruptedException {
+    public String xpath(String url, String xpath, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws Exception {
         return getString(url, xpath, proxyType, pageLoadType, pageLoadTimeout, LocateType.xpath);
     }
 
 
-    private String getString(String url, String locateValue, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, LocateType locateType) throws InterruptedException, ExecutionException {
+    private String getString(String url, String locateValue, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, LocateType locateType) throws Exception {
         if (pageLoadType==null){
             pageLoadType=PageLoadStrategy.NORMAL;
         }

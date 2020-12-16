@@ -1,12 +1,5 @@
 package com.singhand.seleniumcrawler.selenoium.locate;
 
-import cn.wanghaomiao.xpath.model.JXDocument;
-import cn.wanghaomiao.xpath.model.JXNode;
-import org.apache.commons.lang.StringUtils;
-import org.dom4j.io.SAXReader;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.WebDriver;
