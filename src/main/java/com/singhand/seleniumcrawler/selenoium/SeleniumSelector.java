@@ -23,14 +23,6 @@ public class SeleniumSelector {
      * 活跃判定时间，毫秒
      */
     private static Long TIME = 60000L;
-    /**
-     * 浏览器单例执行任务最大次数.
-     */
-    private static final Integer REOPEN_REQUEST_SUM = 60;
-    /**
-     * 浏览器允许最大失败次数
-     */
-    private static final Integer REOPEN_FAIL_SUM = 3;
 
 
     /**

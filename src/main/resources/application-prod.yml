@@ -1,3 +1,3 @@
 webdriver:
  chrome:
-  driver: C:\Users\aa3\Downloads\chromedriver_win32\chromedriver.exe
+  driver: http://192.168.209.128:4444/wd/hub/

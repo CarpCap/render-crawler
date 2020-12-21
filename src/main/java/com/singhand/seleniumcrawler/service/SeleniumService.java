@@ -43,7 +43,6 @@ public class SeleniumService {
             log.warn("线程池队列已满");
             throw new RejectedExecutionException("负载已满，拒绝本次请求");
         }
-
         return future.get();
     }
 }

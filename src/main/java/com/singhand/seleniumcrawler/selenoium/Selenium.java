@@ -11,8 +11,11 @@ import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
@@ -90,10 +93,10 @@ public class Selenium extends SeleniumAbstract {
     }
 
 
-    public void init() {
+    public void init()   {
         ChromeOptions chromeOptions = new ChromeOptions();
         //无头设置
-//        chromeOptions.addArguments("-headless");
+        chromeOptions.addArguments("-headless");
         //禁用图片
         chromeOptions.addArguments("blink-settings=imagesEnabled=false");
         Proxy proxy = new Proxy();
@@ -106,7 +109,15 @@ public class Selenium extends SeleniumAbstract {
         //默认normal
         chromeOptions.setPageLoadStrategy(pageLoadStrategy);
         //new webDriver
-        webDriver = new ChromeDriver(chromeOptions);
+//        webDriver = new ChromeDriver(chromeOptions);
+
+        try {
+            webDriver =new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub/"), chromeOptions);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.info("hashcode :{}",webDriver.hashCode());
         //notify Create event
         notifyObserverSeleniumCreate();
     }
