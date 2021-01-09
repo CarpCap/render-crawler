@@ -34,24 +34,6 @@ public class SeleniumSelector {
      * @param proxyType
      * @return
      */
-    public static Selenium getAvailableSelenium(ProxyType proxyType)  {
-        for (Selenium s : selectedKey) {
-            if (proxyType.equals(s.getProxyType()) && s.getStatus().get() == false) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 获取可用的Selenium
-     * 没有在执行任务的Selenium
-     *
-     * @author Kwon
-     * @date 2020/12/2 10:08
-     * @param proxyType
-     * @return
-     */
     public static Selenium getAvailableSelenium(ProxyType proxyType, PageLoadStrategy pageLoadType)  {
         for (Selenium s : selectedKey) {
             if (proxyType.equals(s.getProxyType()) && s.getStatus().get() == false && s.getPageLoadStrategy()==pageLoadType) {

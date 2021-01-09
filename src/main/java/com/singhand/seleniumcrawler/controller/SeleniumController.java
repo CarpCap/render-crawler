@@ -43,7 +43,7 @@ public class SeleniumController {
     @GetMapping("css")
     public DataPackage css(@RequestParam String url, @RequestParam String css, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
-        String result = seleniumService.getPageSource(url, css, proxyType, pageLoadType, pageLoadTimeout, LocateType.css);
+        String result = seleniumService.getPageSource(url, proxyType, LocateType.css,css, pageLoadType, pageLoadTimeout);
         return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
     }
 
@@ -61,7 +61,7 @@ public class SeleniumController {
     @GetMapping("xpath")
     public DataPackage xpath(@RequestParam String url, @RequestBody String xpath, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout,  @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
-        String result = seleniumService.getPageSource(url, xpath, proxyType, pageLoadType, pageLoadTimeout, LocateType.xpath);
+        String result = seleniumService.getPageSource(url, proxyType, LocateType.xpath,xpath, pageLoadType, pageLoadTimeout);
         return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
     }
 

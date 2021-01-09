@@ -29,7 +29,7 @@ public class SeleniumService {
     private SeleniumTask seleniumTask;
 
 
-    public String getPageSource(String url, String locateValue, ProxyType proxyType, PageLoadStrategy pageLoadType, Integer pageLoadTimeout, LocateType locateType) throws Exception {
+    public String getPageSource(String url, ProxyType proxyType, LocateType locateType, String locateValue, PageLoadStrategy pageLoadType, Integer pageLoadTimeout) throws Exception {
         seleniumTask.setPageLoadTimeout(pageLoadTimeout);
         seleniumTask.setLocateValue(locateValue);
         seleniumTask.setLocateType(locateType);
@@ -39,7 +39,7 @@ public class SeleniumService {
         Future<String> future;
         try {
             future = SeleniumThreadPool.seleniumThreadPool.submit(seleniumTask);
-        }catch (RejectedExecutionException ex){
+        } catch (RejectedExecutionException ex) {
             log.warn("线程池队列已满");
             throw new RejectedExecutionException("负载已满，拒绝本次请求");
         }
