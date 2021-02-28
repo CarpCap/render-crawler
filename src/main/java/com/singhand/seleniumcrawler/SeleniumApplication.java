@@ -18,6 +18,4 @@ public class SeleniumApplication {
         SpringApplication.run(SeleniumApplication.class, args);
     }
 
-
-
 }

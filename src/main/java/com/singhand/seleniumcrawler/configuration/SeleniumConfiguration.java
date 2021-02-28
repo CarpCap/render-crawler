@@ -19,7 +19,7 @@ public class SeleniumConfiguration {
 
     @Autowired
     public void init() {
-//        System.getProperties().setProperty("webdriver.chrome.driver", fileName);
+        System.getProperties().setProperty("webdriver.chrome.driver", fileName);
     }
 
 }

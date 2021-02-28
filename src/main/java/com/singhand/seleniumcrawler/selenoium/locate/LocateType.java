@@ -7,7 +7,7 @@ package com.singhand.seleniumcrawler.selenoium.locate;
  * @date 2020/12/8 16:49
  */
 public enum LocateType {
-    css,xpath
+    css,xpath,time
 }
 
 

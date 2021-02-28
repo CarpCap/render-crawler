@@ -65,4 +65,11 @@ public class SeleniumController {
         return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
     }
 
+    @GetMapping("time")
+    public DataPackage time(@RequestParam String url, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType,  @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
+        long startTime = System.currentTimeMillis();
+        String result = seleniumService.getPageSource(url, proxyType, LocateType.time,null, pageLoadType, null);
+        return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
+    }
+
 }

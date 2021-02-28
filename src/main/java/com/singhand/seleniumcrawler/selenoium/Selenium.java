@@ -96,7 +96,7 @@ public class Selenium extends SeleniumAbstract {
     public void init()   {
         ChromeOptions chromeOptions = new ChromeOptions();
         //无头设置
-        chromeOptions.addArguments("-headless");
+//        chromeOptions.addArguments("-headless");
         //禁用图片
         chromeOptions.addArguments("blink-settings=imagesEnabled=false");
         Proxy proxy = new Proxy();
@@ -109,10 +109,10 @@ public class Selenium extends SeleniumAbstract {
         //默认normal
         chromeOptions.setPageLoadStrategy(pageLoadStrategy);
         //new webDriver
-//        webDriver = new ChromeDriver(chromeOptions);
+        webDriver = new ChromeDriver(chromeOptions);
 
         try {
-            webDriver =new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub/"), chromeOptions);
+//            webDriver =new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub/"), chromeOptions);
 
         } catch (Exception e) {
             e.printStackTrace();

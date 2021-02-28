@@ -20,6 +20,8 @@ public class CrawlerMethod {
                 break;
             case xpath:
                 this.html = new Xpath(webDriver,locateValue,pageLoadTimeout);
+            case time:
+                this.html = new Time(webDriver, pageLoadTimeout);
                 break;
             default:
                 break;
