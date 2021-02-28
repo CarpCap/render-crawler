@@ -21,7 +21,7 @@ public class CrawlerMethod {
             case xpath:
                 this.html = new Xpath(webDriver,locateValue,pageLoadTimeout);
             case time:
-                this.html = new Time(webDriver, pageLoadTimeout);
+                this.html = new Time(webDriver);
                 break;
             default:
                 break;

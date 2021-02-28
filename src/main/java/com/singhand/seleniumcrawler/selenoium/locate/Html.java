@@ -24,6 +24,11 @@ public abstract class Html {
 
     /**
      * 获得html页面
+     *
+     * @author Kwon
+     * @date 2021/2/28 17:13
+     * @param
+     * @return
      */
     public abstract String getPageSource();
 }
