@@ -43,8 +43,8 @@ public class SeleniumController {
     @GetMapping("css")
     public DataPackage css(@RequestParam String url, @RequestParam String css, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
-        String result = seleniumService.getPageSource(url, proxyType, LocateType.css,css, pageLoadType, pageLoadTimeout);
-        return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
+        String result = seleniumService.getPageSource(url, proxyType, LocateType.css, css, pageLoadType, pageLoadTimeout);
+        return DataPackageUtil.defaultResult(result, System.currentTimeMillis() - startTime);
     }
 
 
@@ -59,17 +59,25 @@ public class SeleniumController {
      * @date 2020/11/20 17:26
      */
     @GetMapping("xpath")
-    public DataPackage xpath(@RequestParam String url, @RequestBody String xpath, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout,  @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
+    public DataPackage xpath(@RequestParam String url, @RequestBody String xpath, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
-        String result = seleniumService.getPageSource(url, proxyType, LocateType.xpath,xpath, pageLoadType, pageLoadTimeout);
-        return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
+        String result = seleniumService.getPageSource(url, proxyType, LocateType.xpath, xpath, pageLoadType, pageLoadTimeout);
+        return DataPackageUtil.defaultResult(result, System.currentTimeMillis() - startTime);
     }
 
+    /**
+     * @param url  请求路径
+     * @param pageLoadType 页面加载类型
+     * @param proxyType 代理类型
+     * @return html格式，如果抓取失败返回null
+     * @author Kwon
+     * @date 2021/3/6 15:33
+     */
     @GetMapping("time")
-    public DataPackage time(@RequestParam String url, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType,  @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
+    public DataPackage time(@RequestParam String url, @RequestParam(defaultValue = "NORMAL") PageLoadStrategy pageLoadType, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
-        String result = seleniumService.getPageSource(url, proxyType, LocateType.time,null, pageLoadType, null);
-        return DataPackageUtil.defaultResult(result,System.currentTimeMillis() - startTime);
+        String result = seleniumService.getPageSource(url, proxyType, LocateType.time, null, pageLoadType, null);
+        return DataPackageUtil.defaultResult(result, System.currentTimeMillis() - startTime);
     }
 
 }
