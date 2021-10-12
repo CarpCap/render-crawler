@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.singhand.seleniumcrawler.selenoium</OriginalElement>
+  <nodes>
+    <node x="181.57638888888903" y="13.201171875">com.singhand.seleniumcrawler.selenoium.locate</node>
+    <node x="37.69606481481486" y="123.201171875">com.singhand.seleniumcrawler.selenoium.Selenium</node>
+    <node x="10.5" y="1083.701171875">com.singhand.seleniumcrawler.selenoium.SeleniumFactory</node>
+    <node x="290.51574074074074" y="774.201171875">com.singhand.seleniumcrawler.selenoium.SeleniumSelector</node>
+    <node x="441.54907407407404" y="1198.701171875">com.singhand.seleniumcrawler.selenoium.SeleniumTask</node>
+    <node x="368.01574074074074" y="971.201171875">com.singhand.seleniumcrawler.selenoium.SeleniumManage</node>
+    <node x="161.79513888888894" y="983.701171875">com.singhand.seleniumcrawler.selenoium.observer</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.singhand.seleniumcrawler.selenoium.Selenium" target="com.singhand.seleniumcrawler.selenoium.observer">
+      <point x="-32.8125" y="300.5" />
+      <point x="267.38356481481486" y="744.201171875" />
+      <point x="258.5157407407407" y="744.201171875" />
+      <point x="258.5157407407407" y="941.201171875" />
+      <point x="221.7951388888889" y="941.201171875" />
+      <point x="-20.00000000000003" y="-15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.38384560400285916" x="373.0" y="702.5" />
+  <SelectedNodes>
+    <node>com.singhand.seleniumcrawler.selenoium.locate</node>
+    <node>com.singhand.seleniumcrawler.selenoium.Selenium</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumFactory</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumSelector</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumTask</node>
+    <node>com.singhand.seleniumcrawler.selenoium.SeleniumManage</node>
+    <node>com.singhand.seleniumcrawler.selenoium.observer</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+
