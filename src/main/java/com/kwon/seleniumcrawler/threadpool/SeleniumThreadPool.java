@@ -1,6 +1,5 @@
 package com.kwon.seleniumcrawler.threadpool;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -15,7 +14,6 @@ import java.util.concurrent.*;
 public class SeleniumThreadPool {
     public final static Integer CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 4;
     public final static Integer MAXIMUM_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 10;
-//    public final static Integer MAXIMUM_POOL_SIZE = 3;
     public final static Integer QUEUE_SIZE = 6;
     public static ThreadPoolExecutor seleniumThreadPool;
 

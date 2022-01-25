@@ -1,5 +1,6 @@
 package com.kwon.seleniumcrawler.selenoium;
 
+import com.kwon.seleniumcrawler.SeleniumApplication;
 import com.kwon.seleniumcrawler.selenoium.locate.CrawlerMethod;
 import com.kwon.seleniumcrawler.selenoium.locate.LocateType;
 import com.kwon.seleniumcrawler.selenoium.observer.ObserverSelenium;
@@ -13,10 +14,17 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -74,6 +82,8 @@ public class Selenium extends SeleniumAbstract {
 
     private Integer port;
 
+    @Value("${webdriver.type}")
+    private String type;
 
     /**
      * 创建Selenium
@@ -112,18 +122,34 @@ public class Selenium extends SeleniumAbstract {
         //当访问网站 不会等待渲染全部完成就可以拿到html
         //默认normal
         chromeOptions.setPageLoadStrategy(pageLoadStrategy);
+
         //new webDriver
-        webDriver = new ChromeDriver(chromeOptions);
+        loadWebDriver(chromeOptions);
 
-        try {
-//            webDriver =new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub/"), chromeOptions);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         log.info("hashcode :{}",webDriver.hashCode());
         //notify Create event
         notifyObserverSeleniumCreate();
+    }
+
+    private void loadWebDriver(ChromeOptions chromeOptions)   {
+        ConfigurableEnvironment environment = SeleniumApplication.applicationContext.getEnvironment();
+        String property = environment.getProperty("webdriver.type");
+        if ("remote".equals(property)){
+            try {
+                webDriver =new RemoteWebDriver(new URL(environment.getProperty("webdriver.chrome.driver")), chromeOptions);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+            return;
+        }
+        if ("local".equals(property)){
+            webDriver = new ChromeDriver(chromeOptions);
+            return;
+        }
+
+        log.error("webdriver.type配置 为空");
+        System.exit(1);
     }
 
     /**
@@ -176,7 +202,6 @@ public class Selenium extends SeleniumAbstract {
                 selenium = new Selenium(proxyType, host, port, pageLoadStrategy, observerSeleniumList);
                 return selenium.getPageSource(url, locateValue, locateType, pageLoadTimeout);
             }
-
 
             //http Request
             try {

@@ -1,3 +1,4 @@
 webdriver:
+ type: local
  chrome:
   driver: C:\Users\aa2\Downloads\chromedriver_win32\chromedriver.exe

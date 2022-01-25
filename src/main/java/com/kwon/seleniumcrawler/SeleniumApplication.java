@@ -3,6 +3,7 @@ package com.kwon.seleniumcrawler;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Kwon
@@ -12,8 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class SeleniumApplication {
+    public static ConfigurableApplicationContext applicationContext;
     public static void main(String[] args) {
-        SpringApplication.run(SeleniumApplication.class, args);
+        applicationContext= SpringApplication.run(SeleniumApplication.class, args);
+
     }
 
 }
