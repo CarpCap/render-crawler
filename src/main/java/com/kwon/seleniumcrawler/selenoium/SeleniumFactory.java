@@ -38,6 +38,7 @@ public class SeleniumFactory {
      */
     public Selenium createSelenium(ProxyType proxyType,PageLoadStrategy pageLoadType) {
         log.info("创建selenium proxy:{},加载策略:{}",proxyType,pageLoadType);
+        //TODO 2022/1/25 14:30 Kwon 调用代理工厂
         ProxyInfo proxyInfo = proxy.getProxy(proxyType);
         return new Selenium(proxyType, proxyInfo.getHost(), proxyInfo.getPort(),pageLoadType,defaultObserver());
     }
