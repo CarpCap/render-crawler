@@ -1,7 +1,7 @@
 package com.kwon.seleniumcrawler.selenoium;
 
 import com.google.common.collect.Lists;
-import com.kwon.seleniumcrawler.proxy.Proxy;
+import com.kwon.seleniumcrawler.proxy.ProxyFactory;
 import com.kwon.seleniumcrawler.proxy.ProxyInfo;
 import com.kwon.seleniumcrawler.selenoium.observer.ObserverSelenium;
 import com.kwon.seleniumcrawler.selenoium.observer.SeleniumManageObserver;
@@ -26,7 +26,7 @@ import java.util.List;
 public class SeleniumFactory {
 
     @Autowired
-    private Proxy proxy;
+    private ProxyFactory proxyFactory;
 
     /**
      * 工厂模式
@@ -38,8 +38,7 @@ public class SeleniumFactory {
      */
     public Selenium createSelenium(ProxyType proxyType,PageLoadStrategy pageLoadType) {
         log.info("创建selenium proxy:{},加载策略:{}",proxyType,pageLoadType);
-        //TODO 2022/1/25 14:30 Kwon 调用代理工厂
-        ProxyInfo proxyInfo = proxy.getProxy(proxyType);
+        ProxyInfo proxyInfo = proxyFactory.getProxy(proxyType);
         return new Selenium(proxyType, proxyInfo.getHost(), proxyInfo.getPort(),pageLoadType,defaultObserver());
     }
 
