@@ -17,9 +17,15 @@ public class SeleniumConfiguration {
     @Value("${webdriver.chrome.driver}")
     private String fileName;
 
+    @Value("${webdriver.type}")
+    private String type;
+
     @Autowired
     public void init() {
-        System.getProperties().setProperty("webdriver.chrome.driver", fileName);
+        if ("local".equals(type)){
+            System.getProperties().setProperty("webdriver.chrome.driver", fileName);
+
+        }
     }
 
 }

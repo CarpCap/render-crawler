@@ -1,4 +1,4 @@
 webdriver:
  type: local
  chrome:
-  driver: C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe
+  driver: C:\Users\Administrator\Downloads\chromedriver.exe
