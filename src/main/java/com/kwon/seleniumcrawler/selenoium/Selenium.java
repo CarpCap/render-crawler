@@ -106,7 +106,7 @@ public class Selenium extends SeleniumAbstract {
     public void init()   {
         ChromeOptions chromeOptions = new ChromeOptions();
         //无头设置
-//        chromeOptions.addArguments("-headless");
+        chromeOptions.addArguments("-headless");
         //禁用图片
         chromeOptions.addArguments("blink-settings=imagesEnabled=false");
         Proxy proxy = new Proxy();
