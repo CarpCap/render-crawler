@@ -21,7 +21,21 @@ AbroadProxyPool.class 国外代理池
 
 ##	直接使用公库docker
 
-docker run -di -p 10023:10023 --name scrawler carpcap/render-crawler
+docker run -di -p 10023:10023 --name render-crawler carpcap/render-crawler
+
+或者
+docker-compose.yml
+```
+version: '3.8'
+
+services:
+  render-crawler:
+    image: carpcap/render-crawler   # 使用的镜像
+    container_name: render-crawler        # 容器名称
+    ports:
+      - "10023:10023"               # 端口映射
+```
+
 
 
 
@@ -37,8 +51,8 @@ url值需要完整携带 http头
 
 ```{
 {
- "css": "#i_cecream > div.bili-header.large-header > div.bili-header__channel",
- "url": "http://www.bilibili.com"
+ "css": "#i_cecream",
+ "url": "https://www.bilibili.com"
 }
 ```
 
