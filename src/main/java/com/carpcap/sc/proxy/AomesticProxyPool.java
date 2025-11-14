@@ -12,17 +12,18 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 @Component
 public class AomesticProxyPool {
-    private ArrayBlockingQueue<ProxyInfo> poolQueue=new ArrayBlockingQueue(10);
+    private ArrayBlockingQueue<ProxyInfo> poolQueue = new ArrayBlockingQueue(10);
 
-    public ProxyInfo pop(){
+    public ProxyInfo pop() {
         ProxyInfo poll = poolQueue.poll();
-        if (poll==null){
+        if (poll == null) {
             replenish();
             return pop();
         }
 
         return poll;
     }
+
     /**
      * 补充代理池
      *
@@ -31,7 +32,9 @@ public class AomesticProxyPool {
      * @author CarpCap
      * @date 2022/1/25 14:47
      */
-    private void replenish(){
+    private void replenish() {
+//        ProxyInfo proxyInfo = new ProxyInfo().setHost("127.0.0.1").setPort(8080);
+//        poolQueue.add(proxyInfo);
 
     }
 }

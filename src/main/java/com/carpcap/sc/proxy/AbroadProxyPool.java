@@ -32,7 +32,8 @@ public class AbroadProxyPool  {
      * @date 2022/1/25 14:47
      */
     private void replenish(){
-
+//        ProxyInfo proxyInfo = new ProxyInfo().setHost("127.0.0.1").setPort(8080);
+//        poolQueue.add(proxyInfo);
     }
 
 }

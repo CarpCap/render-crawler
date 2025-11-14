@@ -2,3 +2,5 @@ webdriver:
  type: remote
  chrome:
   driver: http://127.0.0.1:4444/wd/hub/
+server:
+ port: 10023
