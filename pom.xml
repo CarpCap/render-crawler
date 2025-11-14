@@ -229,7 +229,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.kwon.seleniumcrawler.SeleniumApplication</mainClass>
+                    <mainClass>com.carpcap.sc.SeleniumApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
