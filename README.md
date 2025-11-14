@@ -21,7 +21,7 @@ AbroadProxyPool.class 国外代理池
 
 ##	直接使用公库docker
 
-docker run -di -p 10023:10023 --name scrawler carpcap/render-crawler:1.0.0
+docker run -di -p 10023:10023 --name scrawler carpcap/render-crawler
 
 
 
