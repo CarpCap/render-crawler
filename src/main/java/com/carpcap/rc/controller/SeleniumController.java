@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @Description:
  * @date 2020/11/20 14:42
  */
-@Api(description = "selenium API接口")
+@Api(description = "爬虫接口")
 @RestController
 @Scope("request")
 @RequestMapping("selenium")

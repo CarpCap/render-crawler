@@ -1,6 +1,6 @@
 package com.carpcap.rc.selenoium;
 
-import com.carpcap.rc.SeleniumApplication;
+import com.carpcap.rc.RcApplication;
 import com.carpcap.rc.selenoium.locate.CrawlerMethod;
 import com.carpcap.rc.selenoium.locate.LocateType;
 import com.carpcap.rc.selenoium.observer.ObserverSelenium;
@@ -128,7 +128,7 @@ public class Selenium extends SeleniumAbstract {
     }
 
     private void loadWebDriver(ChromeOptions chromeOptions)   {
-        ConfigurableEnvironment environment = SeleniumApplication.applicationContext.getEnvironment();
+        ConfigurableEnvironment environment = RcApplication.applicationContext.getEnvironment();
         String property = environment.getProperty("webdriver.type");
         if ("remote".equals(property)){
             try {
