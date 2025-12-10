@@ -11,7 +11,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @date 2022/1/25  14:41
  */
 @Component
-public class AbroadProxyPool  {
+public class IntlProxyPool {
     private ArrayBlockingQueue<ProxyInfo> poolQueue=new ArrayBlockingQueue(10);
 
     public ProxyInfo pop(){

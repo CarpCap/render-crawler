@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProxyFactory implements Proxy{
     @Autowired
-    private AbroadProxyPool abroadProxyPool;
+    private IntlProxyPool intlProxyPool;
     @Autowired
-    private AomesticProxyPool aomesticProxyPool;
+    private CnProxyPool cnProxyPool;
 
     @Override
     public ProxyInfo getProxy(ProxyType proxyType) {
         switch (proxyType){
-            case abroad:
-                return abroadProxyPool.pop();
-            case deactivate:
-                return aomesticProxyPool.pop();
+            case INTL:
+                return intlProxyPool.pop();
+            case CN:
+                return cnProxyPool.pop();
             default:
                 return new ProxyInfo();
         }

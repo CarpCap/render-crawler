@@ -51,10 +51,11 @@ public class SeleniumFactory {
      * @param
      * @return
      */
-    private List<ObserverSelenium> defaultObserver(){
+    private static List<ObserverSelenium> defaultObserver(){
         SeleniumSelectorObserver seleniumSelectorObserver = new SeleniumSelectorObserver();
         SeleniumManageObserver seleniumManageObserver=new SeleniumManageObserver();
         List<ObserverSelenium> observerSeleniumList = Lists.newArrayList(seleniumSelectorObserver,seleniumManageObserver);
         return observerSeleniumList;
     }
+
 }

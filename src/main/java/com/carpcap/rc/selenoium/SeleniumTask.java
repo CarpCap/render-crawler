@@ -68,3 +68,4 @@ public class  SeleniumTask implements Callable<String> {
         this.pageLoadType = pageLoadType;
     }
 }
+

@@ -14,7 +14,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 
@@ -78,8 +77,6 @@ public class Selenium extends SeleniumAbstract {
 
     private Integer port;
 
-    @Value("${webdriver.type}")
-    private String type;
 
     /**
      * 创建Selenium
@@ -99,47 +96,82 @@ public class Selenium extends SeleniumAbstract {
     }
 
 
-    public void init()   {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        //无头设置
-        chromeOptions.addArguments("-headless");
-        //禁用图片
-        chromeOptions.addArguments("blink-settings=imagesEnabled=false");
+    public void init() {
+
+        ChromeOptions options = getChromeOptions();
+
         Proxy proxy = new Proxy();
         log.info("create chrome. proxy info is：" + host + ":" + port);
         //如果有代理则设置
-        if (StringUtils.isNotBlank(host)&&StringUtils.isNotBlank(port.toString())){
+        if (StringUtils.isNotBlank(host) && StringUtils.isNotBlank(port.toString())) {
             proxy.setHttpProxy(host + ":" + port);
             proxy.setSslProxy(host + ":" + port);
-            chromeOptions.setProxy(proxy);
+            options.setProxy(proxy);
         }
 
 
         //当访问网站 不会等待渲染全部完成就可以拿到html
         //默认normal
-        chromeOptions.setPageLoadStrategy(pageLoadStrategy);
+        options.setPageLoadStrategy(pageLoadStrategy);
 
         //new webDriver
-        loadWebDriver(chromeOptions);
+        loadWebDriver(options);
 
-        log.info("hashcode :{}",webDriver.hashCode());
+        log.info("hashcode :{}", webDriver.hashCode());
         //notify Create event
         notifyObserverSeleniumCreate();
     }
 
-    private void loadWebDriver(ChromeOptions chromeOptions)   {
+
+    private ChromeOptions getChromeOptions() {
+        ChromeOptions options = new ChromeOptions();
+
+
+        // 必须：headless 模式（新 headless，稳定）
+        options.addArguments("--headless=new");
+
+        // 安全沙盒在 Docker 下会报错，必须关闭
+        options.addArguments("--no-sandbox");
+
+        // 避免某些环境下共享内存不足导致 crash（但不是万能）
+        options.addArguments("--disable-dev-shm-usage");
+
+        // 避免 GPU 相关错误（Linux 容器基本没 GPU）
+        options.addArguments("--disable-gpu");
+
+        // 禁用 Viz Display 合成器，降低 Chrome headless 的内存使用
+        options.addArguments("--disable-features=VizDisplayCompositor");
+
+        // 如果页面一定要显示图片，则开启
+        options.addArguments("--blink-settings=imagesEnabled=false");
+
+        // 提升稳定性：限制渲染线程数
+        options.addArguments("--disable-background-networking");
+        options.addArguments("--disable-background-timer-throttling");
+        options.addArguments("--disable-backgrounding-occluded-windows");
+        options.addArguments("--disable-breakpad");
+        options.addArguments("--disable-component-extensions-with-background-pages");
+
+        // 防止 DevTools 端口冲突
+        options.addArguments("--remote-debugging-port=0");
+
+        return options;
+    }
+
+    private void loadWebDriver(ChromeOptions chromeOptions) {
         ConfigurableEnvironment environment = RcApplication.applicationContext.getEnvironment();
         String property = environment.getProperty("webdriver.type");
-        if ("remote".equals(property)){
+        if ("remote".equals(property)) {
             try {
-                webDriver =new RemoteWebDriver(new URL(environment.getProperty("webdriver.chrome.driver")), chromeOptions);
+                webDriver = new RemoteWebDriver(new URL(environment.getProperty("webdriver.chrome.driver")), chromeOptions);
+                log.info("创建远程浏览器：" + webDriver);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 System.exit(1);
             }
             return;
         }
-        if ("local".equals(property)){
+        if ("local".equals(property)) {
             webDriver = new ChromeDriver(chromeOptions);
             return;
         }

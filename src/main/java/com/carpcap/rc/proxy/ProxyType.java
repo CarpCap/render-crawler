@@ -7,7 +7,7 @@ package com.carpcap.rc.proxy;
  * @date 2020/12/2 11:11
  */
 public enum ProxyType {
-    domestic, //国内
-    abroad,  //国外
-    deactivate //禁用
+    CN, //国内
+    INTL,  //国外
+    OFF //禁用
 }

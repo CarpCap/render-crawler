@@ -54,9 +54,9 @@ public class SeleniumController {
                     "\n" +
                     "(3) NORMAL: 即正常情况下，selenium会等待整个界面加载完成（指对html和子资源的下载与解析,如JS文件，图片等，不包括ajax）\n",defaultValue="NORMAL",paramType="query",dataType  = "PageLoadStrategyDto"),
             @ApiImplicitParam(name="pageLoadTimeout",value="加载超时时间 单位秒",defaultValue="10",paramType="query",dataType="Integer"),
-            @ApiImplicitParam(name="proxyType",value="代理类型",defaultValue="domestic",paramType="query",dataType="ProxyType")
+            @ApiImplicitParam(name="proxyType",value="代理类型",defaultValue="OFF",paramType="query",dataType="ProxyType")
             })
-    public ResponseResult<String> css(@RequestBody CssDto css, @RequestParam(defaultValue = "NORMAL") PageLoadStrategyDto pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
+    public ResponseResult<String> css(@RequestBody CssDto css, @RequestParam(defaultValue = "NORMAL") PageLoadStrategyDto pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "OFF") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
         String result = seleniumService.getPageSource(css.getUrl(), proxyType, LocateType.css, css.getCss(), PageLoadStrategy.valueOf(pageLoadType.name()), pageLoadTimeout);
         return ResponseResultUtil.defaultResult(result, System.currentTimeMillis() - startTime);
@@ -83,9 +83,9 @@ public class SeleniumController {
                     "\n" +
                     "(3) NORMAL: 即正常情况下，selenium会等待整个界面加载完成（指对html和子资源的下载与解析,如JS文件，图片等，不包括ajax）\n",defaultValue="NORMAL",paramType="query",dataType  = "PageLoadStrategyDto"),
             @ApiImplicitParam(name="pageLoadTimeout",value="加载超时时间 单位秒",defaultValue="10",paramType="query",dataType="Integer"),
-            @ApiImplicitParam(name="proxyType",value="代理类型",defaultValue="domestic",paramType="query",dataType="ProxyType")
+            @ApiImplicitParam(name="proxyType",value="代理类型",defaultValue="OFF",paramType="query",dataType="ProxyType")
     })
-    public ResponseResult<String> xpath(@RequestBody XpathDto xpath, @RequestParam(defaultValue = "NORMAL") PageLoadStrategyDto pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
+    public ResponseResult<String> xpath(@RequestBody XpathDto xpath, @RequestParam(defaultValue = "NORMAL") PageLoadStrategyDto pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "OFF") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
         String result = seleniumService.getPageSource(xpath.getUrl(), proxyType, LocateType.xpath, xpath.getXpath(), PageLoadStrategy.valueOf(pageLoadType.name()), pageLoadTimeout);
         return ResponseResultUtil.defaultResult(result, System.currentTimeMillis() - startTime);
@@ -108,9 +108,9 @@ public class SeleniumController {
                     "(2) EAGER: 要等待整个dom树加载完成，即DOMContentLoaded这个事件完成，仅对html的内容进行下载解析" +
                     "\n" +
                     "(3) NORMAL: 即正常情况下，selenium会等待整个界面加载完成（指对html和子资源的下载与解析,如JS文件，图片等，不包括ajax）\n",defaultValue="NORMAL",paramType="query",dataType  = "PageLoadStrategyDto"),
-            @ApiImplicitParam(name="proxyType",value="代理类型",defaultValue="domestic",paramType="query",dataType="ProxyType")
+            @ApiImplicitParam(name="proxyType",value="代理类型",defaultValue="OFF",paramType="query",dataType="ProxyType")
     })
-    public ResponseResult<String> time(@RequestBody TimeDto timeDto, @RequestParam(defaultValue = "NORMAL") PageLoadStrategyDto pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "domestic") ProxyType proxyType) throws Exception {
+    public ResponseResult<String> time(@RequestBody TimeDto timeDto, @RequestParam(defaultValue = "NORMAL") PageLoadStrategyDto pageLoadType, @RequestParam(defaultValue = "10") Integer pageLoadTimeout, @RequestParam(defaultValue = "OFF") ProxyType proxyType) throws Exception {
         long startTime = System.currentTimeMillis();
         String result = seleniumService.getPageSource(timeDto.getUrl(), proxyType, LocateType.time, null, PageLoadStrategy.valueOf(pageLoadType.name()), pageLoadTimeout);
         return ResponseResultUtil.defaultResult(result, System.currentTimeMillis() - startTime);
