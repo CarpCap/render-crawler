@@ -1,7 +1,0 @@
-webdriver:
- type: local
- chrome:
-  driver: C:\Users\Administrator\Downloads\chromedriver.exe
-server:
- port: 10023
-

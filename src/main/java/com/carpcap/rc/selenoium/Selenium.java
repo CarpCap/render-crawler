@@ -128,7 +128,7 @@ public class Selenium extends SeleniumAbstract {
 
 
         // 必须：headless 模式（新 headless，稳定）
-        options.addArguments("--headless=new");
+//        options.addArguments("--headless=new");
 
         // 安全沙盒在 Docker 下会报错，必须关闭
         options.addArguments("--no-sandbox");

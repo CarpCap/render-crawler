@@ -1,3 +1,11 @@
-spring:
-  profiles:
-    active: prod
+webdriver:
+  type: remote
+  chrome:
+    driver: http://192.168.10.101:4444/wd/hub/
+server:
+  port: 10023
+
+
+
+
+# 是否加载图片 、 是否展示浏览器 、

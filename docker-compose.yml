@@ -7,7 +7,7 @@ services:
       # Node 容器可以同时处理 5 个会话
       - SE_NODE_MAX_SESSIONS=5
       # 客户端请求新会话的最大等待时间
-      - SE_SESSION_REQUEST_TIMEOUT=300
+      # - SE_NODE_SESSION_TIMEOUT=300
     shm_size: 2g
     ports:
       - "10023:10023"
