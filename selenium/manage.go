@@ -2,7 +2,7 @@ package selenium
 
 import (
 	"fmt"
-	"render-crawler-go/config"
+	"render-crawler/config"
 	"time"
 )
 

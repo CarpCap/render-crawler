@@ -2,8 +2,8 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"render-crawler-go/mods"
-	"render-crawler-go/selenium"
+	"render-crawler/mods"
+	"render-crawler/selenium"
 )
 
 // @Summary	Css定位

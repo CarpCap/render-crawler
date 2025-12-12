@@ -1,7 +1,7 @@
 package selenium
 
 import (
-	"render-crawler-go/mods"
+	"render-crawler/mods"
 	"sync"
 )
 

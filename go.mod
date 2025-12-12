@@ -1,4 +1,4 @@
-module render-crawler-go
+module render-crawler
 
 go 1.24.0
 

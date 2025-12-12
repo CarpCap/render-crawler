@@ -1,9 +1,9 @@
 package main
 
 import (
-	"render-crawler-go/config"
-	"render-crawler-go/router"
-	"render-crawler-go/selenium"
+	"render-crawler/config"
+	"render-crawler/router"
+	"render-crawler/selenium"
 )
 
 // @title			rc api

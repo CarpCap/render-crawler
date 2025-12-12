@@ -3,8 +3,8 @@ package router
 
 import (
 	"net/http"
-	_ "render-crawler-go/docs"
-	"render-crawler-go/handler"
+	_ "render-crawler/docs"
+	"render-crawler/handler"
 
 	"embed" // 引入内置的 embed 包
 	"github.com/gin-gonic/gin"
@@ -22,7 +22,7 @@ func Router() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	htmlContent, err := content.ReadFile("index.html")
-	
+
 	r.GET("/", func(c *gin.Context) {
 		// 读取嵌入的 HTML 文件内容
 		if err != nil {
