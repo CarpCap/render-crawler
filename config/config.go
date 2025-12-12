@@ -23,15 +23,14 @@ type Config struct {
 
 var Cfg *Config
 
+// --config=./config.toml 指定配置文件
 // Init 函数添加了命令行参数逻辑
 func Init() {
 
-	// --config=./config.toml
 	// 1. 定义命令行参数变量
 	var cfgFile string
 
 	// 定义命令行标志：
-	// --config 或 -c：用于接收用户指定的配置文件路径。
 	pflag.StringVarP(&cfgFile, "config", "c", "", "指定配置文件路径，用于覆盖默认配置")
 
 	// 解析命令行参数
