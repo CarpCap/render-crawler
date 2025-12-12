@@ -6,7 +6,7 @@ services:
     environment:
       # Node 容器可以同时处理 6 个会话
       - SE_NODE_MAX_SESSIONS=6
-      # 客户端请求新会话的最大等待时间
+      # 客户端请求新会话的最大等待时间 秒
       # - SE_NODE_SESSION_TIMEOUT=300
     shm_size: 2g
     ports:

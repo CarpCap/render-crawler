@@ -5,7 +5,7 @@
         "title": "rc api",
         "contact": {},
         "version": "1.0"
-    },
+    }, 
     "paths": {
         "/web/css": {
             "post": {

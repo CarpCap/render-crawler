@@ -5,7 +5,7 @@ import "github.com/gin-gonic/gin"
 type WebReq struct {
 	// 请求路径，必须携带http头
 	Url string `json:"url" binding:"required" `
-	//加载类型
+	//加载类型 默认 NORMAL
 	PageLoadStrategy PageLoadStrategy `json:"pageLoadStrategy" default:"normal"`
 	// 代理类型 off cn intl
 	ProxyPoolType ProxyPoolType `json:"proxyPoolType"  default:"off"`

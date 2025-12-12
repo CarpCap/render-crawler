@@ -15,4 +15,3 @@ web_check_interval = 10
 web_check_idle = 60
 # 隐藏窗口
 headless = true
-
