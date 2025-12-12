@@ -15,12 +15,12 @@ func StartAutoCleanup() {
 		defer ticker.Stop() // 只在协程退出时调用
 
 		for range ticker.C {
-			fmt.Println("开始清理 ", time.Now().Format("15:04:05"))
+			//fmt.Println("开始清理 ", time.Now().Format("15:04:05"))
 			for _, web := range SelectedKeys() {
 				fmt.Println("清理浏览器 ", web.WebDriver)
 				web.CloseSelenium()
 			}
-			fmt.Println("清理结束 ", time.Now().Format("15:04:05"))
+			//fmt.Println("清理结束 ", time.Now().Format("15:04:05"))
 		}
 
 		// 这里永远不会执行到
