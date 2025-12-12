@@ -108,7 +108,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "pageLoadStrategy": {
-                    "description": "加载类型",
+                    "description": "加载类型 默认 NORMAL",
                     "default": "normal",
                     "allOf": [
                         {
@@ -170,7 +170,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "pageLoadStrategy": {
-                    "description": "加载类型",
+                    "description": "加载类型 默认 NORMAL",
                     "default": "normal",
                     "allOf": [
                         {
@@ -207,7 +207,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "pageLoadStrategy": {
-                    "description": "加载类型",
+                    "description": "加载类型 默认 NORMAL",
                     "default": "normal",
                     "allOf": [
                         {

@@ -8,7 +8,7 @@ definitions:
         allOf:
         - $ref: '#/definitions/mods.PageLoadStrategy'
         default: normal
-        description: 加载类型
+        description: 加载类型 默认 NORMAL
       proxyPoolType:
         allOf:
         - $ref: '#/definitions/mods.ProxyPoolType'
@@ -52,7 +52,7 @@ definitions:
         allOf:
         - $ref: '#/definitions/mods.PageLoadStrategy'
         default: normal
-        description: 加载类型
+        description: 加载类型 默认 NORMAL
       proxyPoolType:
         allOf:
         - $ref: '#/definitions/mods.ProxyPoolType'
@@ -75,7 +75,7 @@ definitions:
         allOf:
         - $ref: '#/definitions/mods.PageLoadStrategy'
         default: normal
-        description: 加载类型
+        description: 加载类型 默认 NORMAL
       proxyPoolType:
         allOf:
         - $ref: '#/definitions/mods.ProxyPoolType'

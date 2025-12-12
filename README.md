@@ -1,6 +1,25 @@
-# 介绍
+# Render Crawler
 
-基于 **Selenium** 的动态渲染爬虫，可获取 **JS 渲染后的完整网页数据**，解决直接发起 HTTP 请求无法加载前端渲染内容的问题。
+基于 **Selenium** 的动态渲染爬虫，可获取 **JS 渲染后的完整网页数据**
+
+解决直接发起 HTTP 请求无法加载前端渲染内容的问题。
+
+比如：通过http直接请求baidu
+返回结果大概是这样的，本身因为没有任何请求头以及js执行，本质只是一次get请求
+```
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr/>Powered by Tengine<hr><center>tengine</center>
+</body>
+</html>
+```
+
+但如果通过 Render Crawler 
+
+<img src="docs/img.png" width="500" style="border: 2px solid #ddd; border-radius: 8px;">
+
 
 ---
 
