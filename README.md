@@ -4,9 +4,32 @@
 
 ---
 
-## 在线体验
+## 🐳  快速搭建
 
-https://rc.carpcap.com/swagger-ui.html
+docker-compose.yml
+```docker
+version: '3.3'
+services:
+  render-crawler:
+    image: carpcap/render-crawler
+    container_name: render-crawler
+    environment:
+      # Node 容器可以同时处理 6 个会话
+      - SE_NODE_MAX_SESSIONS=6
+      # 客户端请求新会话的最大等待时间
+      # - SE_NODE_SESSION_TIMEOUT=300
+    shm_size: 2g
+    ports:
+      - "10034:10034"
+      # - "4444:4444" # 控制端口
+      # - "5900:5900" # nvc端口
+      # - "7900:7900" # 浏览器端口 默认密码secret
+```
+
+访问地址  http://127.0.0.1:10034
+
+swagger http://127.0.0.1:10034/swagger/index.html
+
 
 ## 🚀 代理
 
@@ -21,52 +44,17 @@ https://rc.carpcap.com/swagger-ui.html
 
 ## 🔧 自行编译
 
-项目提供了 `Dockerfile`，你可以在修改代码后重新构建镜像：
+项目提供了 `build.ps1` go打包脚本  `Dockerfile`，你可以在修改代码后重新构建镜像：
+
+
+```cmd
+.\build.ps1
+```
 
 ```bash
 docker build -t render-crawler .
 ```
 
----
-
-## 🐳  Docker 部署
-
-直接运行容器：
-
-```bash
-docker run -di -p 10023:10023 --name render-crawler carpcap/render-crawler
-```
-
-或使用 **docker-compose**：
-
-```yaml
-version: '3.8'
-
-services:
-  render-crawler:
-    image: carpcap/render-crawler
-    container_name: render-crawler
-    ports:
-      - "10023:10023"
-```
 
 ---
 
-## 📘 Swagger 文档访问
-
-在浏览器访问：
-
-```
-http://127.0.0.1:10023/swagger-ui.html
-```
-
-> **注意：请求中的 `url` 参数必须携带完整的 `http/https` 协议头。**
-
-示例：
-
-```json
-{
-  "css": "#i_cecream",
-  "url": "https://www.bilibili.com"
-}
-```
