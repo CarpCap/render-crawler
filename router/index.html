@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Selenium API Tester (rc api)</title>
+    <style>
+        /* 继承之前优化的“舒适与活跃”风格 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px;
+            background-color: #F0F4F8;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            color: #2196F3;
+            border-bottom: 2px solid #E0E0E0;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .param-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .param-group label {
+            flex-basis: 140px;
+            font-weight: 500;
+            color: #555;
+            text-align: right;
+            padding-right: 15px;
+        }
+        .param-group input, .param-group select {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #D0D0D0;
+            border-radius: 8px;
+            margin-right: 15px;
+            transition: border-color 0.3s;
+        }
+        .param-group input:focus, .param-group select:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+        }
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        #api-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-color: #2196F3;
+        }
+        button {
+            padding: 14px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+            width: 100%;
+            margin-top: 30px;
+        }
+        button:hover {
+            background-color: #388E3C;
+            transform: translateY(-1px);
+        }
+        #result-area {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #D0D0D0;
+            background-color: #F8F8F8;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            min-height: 150px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #000;
+        }
+        #request-body-container label {
+             flex-basis: 220px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🤖 render crawler API</h1>
+
+    <h2 class="section-title">💡 接口配置</h2>
+    <div class="param-group">
+        <label for="base-url-input" class="required">基础 URL:</label>
+        <input type="text" id="base-url-input" >
+    </div>
+
+    <div class="param-group">
+        <label for="api-select">选择接口:</label>
+        <select id="api-select" onchange="updateForm()">
+            <option value="" disabled selected>-- 请选择一个 API 接口 --</option>
+            <option value="/web/css">/web/css (Css定位)</option>
+            <option value="/web/xpath">/web/xpath (Xpath定位)</option>
+            <option value="/web/time">/web/time (Time)</option>
+        </select>
+    </div>
+
+    <h2 class="section-title">🔑 请求体参数 </h2>
+    <div id="request-body-container">
+        <p style="color: #666; text-align: center;">请先选择一个 API 接口...</p>
+    </div>
+
+    <button onclick="sendRequest()">✨ 发起 POST 请求</button>
+
+    <h2 class="section-title">✅ 结果反馈区域</h2>
+    <div id="result-area"></div>
+
+</div>
+
+<script>
+    // 定义 API 规范（与之前相同）
+    const API_SPEC = {
+        "/web/css": {
+            model: "mods.Css",
+            path: "/web/css",
+            required: ["css", "url", "waitTime"]
+        },
+        "/web/xpath": {
+            model: "mods.Xpath",
+            path: "/web/xpath",
+            required: ["xpath", "url", "waitTime"]
+        },
+        "/web/time": {
+            model: "mods.WebReq",
+            path: "/web/time",
+            required: ["url", "waitTime"]
+        }
+    };
+
+    const DEFINITIONS = {
+        "mods.Css": {
+            css: { desc: "css选择器", type: "string", default:"#i_cecream"},
+            url: { desc: "必须携带http头", type: "string", default: "https://www.bilibili.com" }, // 示例默认 URL
+            waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
+            pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
+            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" }
+        },
+        "mods.Xpath": {
+            xpath: { desc: "xpath选择器", type: "string",default:"//*[@id=\"i_cecream\"]" },
+            url: { desc: "必须携带http头", type: "string", default: "https://www.bilibili.com" },
+            waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
+            pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
+            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" }
+        },
+        "mods.WebReq": {
+            url: { desc: "必须携带http头", type: "string", default: "https://www.baidu.com" },
+            waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
+            pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
+            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" }
+        }
+    };
+
+    const container = document.getElementById('request-body-container');
+
+    /**
+     * 根据选中的 API 动态更新表单
+     */
+    function updateForm() {
+        const selectedPath = document.getElementById('api-select').value;
+        if (!selectedPath) return;
+
+        const spec = API_SPEC[selectedPath];
+        const modelDef = DEFINITIONS[spec.model];
+        container.innerHTML = '';
+
+        for (const key in modelDef) {
+            const prop = modelDef[key];
+            const isRequired = spec.required.includes(key);
+
+            const group = document.createElement('div');
+            group.className = 'param-group';
+
+            const label = document.createElement('label');
+            label.textContent = `${key} (${prop.desc})`;
+            if (isRequired) {
+                label.classList.add('required');
+            }
+
+            let inputElement;
+            if (prop.enum) {
+                // 枚举类型，创建选择框
+                inputElement = document.createElement('select');
+                prop.enum.forEach(val => {
+                    const option = document.createElement('option');
+                    option.value = val;
+                    option.textContent = val;
+                    if (val === prop.default) {
+                        option.selected = true;
+                    }
+                    inputElement.appendChild(option);
+                });
+            } else {
+                // 文本输入框
+                inputElement = document.createElement('input');
+                inputElement.type = 'text';
+                inputElement.id = `input-${key}`;
+                inputElement.placeholder = `${prop.desc} (${prop.type})`;
+                inputElement.value = prop.default || '';
+            }
+            inputElement.name = key;
+            inputElement.id = `input-${key}`;
+
+            group.appendChild(label);
+            group.appendChild(inputElement);
+            container.appendChild(group);
+        }
+    }
+
+    /**
+     * 发送 POST 请求
+     */
+    async function sendRequest() {
+        const resultArea = document.getElementById('result-area');
+        // 直接使用写死的 URL
+        const baseUrl = document.getElementById('base-url-input').value;
+        const selectedPath = document.getElementById('api-select').value;
+
+        if (!baseUrl || !selectedPath) {
+            resultArea.innerHTML = '<span style="color: red;">❌ 请选择一个 API 接口！</span>';
+            return;
+        }
+
+        const fullUrl = `${baseUrl}${selectedPath}`;
+        const requestBody = {};
+        let missingRequired = false;
+
+        // 收集表单数据
+        const spec = API_SPEC[selectedPath];
+        container.querySelectorAll('[name]').forEach(input => {
+            const key = input.name;
+            let value = input.value.trim();
+
+            if (spec.required.includes(key) && !value) {
+                missingRequired = true;
+            }
+
+            // 处理类型转换
+            const type = DEFINITIONS[spec.model][key].type;
+            if (type === 'integer' && value) {
+                value = parseInt(value, 10);
+                if (isNaN(value)) {
+                    // 如果转换失败，设为空或保留字符串以便后端处理
+                    value = null;
+                }
+            }
+
+            if (value !== null && value !== '') {
+                requestBody[key] = value;
+            }
+        });
+
+        if (missingRequired) {
+            resultArea.innerHTML = '<span style="color: red;">❌ 请求失败：必填字段不能为空！</span>';
+            return;
+        }
+
+        resultArea.innerHTML = `处理中...`;
+
+        try {
+            const response = await fetch(fullUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            const status = response.status;
+            let dataText;
+
+            try {
+                // 尝试读取响应体为 JSON 或文本
+                const json = await response.json();
+                dataText = JSON.stringify(json, null, 2);
+            } catch (e) {
+                dataText = await response.text();
+            }
+
+            const statusColor = response.ok ? 'green' : 'red';
+
+
+            // 2. 创建一个新的段落元素来承载内容和样式
+            const p = document.createElement('p');
+
+            // 3. 设置样式
+            p.style.color = statusColor;
+            p.style.fontWeight = 'bold';
+            // 4. 使用 textContent 安全地插入数据
+            p.textContent = dataText; // 👈 关键：这里 dataText 被视为纯文本
+            // 5. 将元素添加到结果区域
+            resultArea.appendChild(p);
+
+
+
+        } catch (error) {
+            resultArea.innerHTML = `
+            <span style="color: red; font-weight: bold;">❌ 请求失败：网络或 CORS 错误</span>
+            --------------------------------------
+            错误信息: ${error.message}
+            请检查后端服务  是否运行并配置了 CORS。`;
+            console.error('Fetch Error:', error);
+        }
+    }
+
+
+    function initializeBaseUrl() {
+        const baseUrlInput = document.getElementById('base-url-input');
+
+        // 获取当前页面的协议、主机名和端口 (例如: http://localhost:8080)
+        const currentOrigin = window.location.origin;
+
+        // 设置基础 URL。如果您的后端 API 运行在不同的端口，可能需要在此处修改。
+        // 假设 API 和前端运行在同一个 Origin，但 API 路径可能不同。
+        // 如果您想强制使用一个不同的端口，例如 10034：
+        // const customUrl = `${window.location.protocol}//${window.location.hostname}:10034`;
+
+        baseUrlInput.value = currentOrigin;
+    }
+
+    // 页面加载完成后调用初始化函数
+    window.onload = initializeBaseUrl;
+    window.onload = initializeBaseUrl;
+</script>
+
+</body>
+</html>

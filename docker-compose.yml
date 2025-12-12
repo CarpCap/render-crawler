@@ -4,13 +4,13 @@ services:
     image: carpcap/render-crawler
     container_name: render-crawler
     environment:
-      # Node 容器可以同时处理 5 个会话
-      - SE_NODE_MAX_SESSIONS=5
+      # Node 容器可以同时处理 6 个会话
+      - SE_NODE_MAX_SESSIONS=6
       # 客户端请求新会话的最大等待时间
       # - SE_NODE_SESSION_TIMEOUT=300
     shm_size: 2g
     ports:
-      - "10023:10023"
-      - "4444:4444"
-      - "5900:5900"
-      - "7900:7900"
+      - "10034:10034"
+      # - "4444:4444" # 控制端口
+      # - "5900:5900" # nvc端口
+      # - "7900:7900" # 浏览器端口 默认密码secret

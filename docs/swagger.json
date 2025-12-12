@@ -1,0 +1,235 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "这是一个使用 Gin 框架和 Swag 生成的 API 文档示例。",
+        "title": "rc api",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/web/css": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "selenium"
+                ],
+                "summary": "Css定位",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mods.Css"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/web/time": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "selenium"
+                ],
+                "summary": "Time",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mods.WebReq"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/web/xpath": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "selenium"
+                ],
+                "summary": "Xpath定位",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mods.Xpath"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "mods.Css": {
+            "type": "object",
+            "required": [
+                "css",
+                "url",
+                "waitTime"
+            ],
+            "properties": {
+                "css": {
+                    "description": "css选择器",
+                    "type": "string"
+                },
+                "pageLoadStrategy": {
+                    "description": "加载类型",
+                    "default": "normal",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/mods.PageLoadStrategy"
+                        }
+                    ]
+                },
+                "proxyPoolType": {
+                    "description": "代理类型 off cn intl",
+                    "default": "off",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/mods.ProxyPoolType"
+                        }
+                    ]
+                },
+                "url": {
+                    "description": "请求路径，必须携带http头",
+                    "type": "string"
+                },
+                "waitTime": {
+                    "description": "等待时间 默认10秒",
+                    "type": "integer",
+                    "default": 10
+                }
+            }
+        },
+        "mods.PageLoadStrategy": {
+            "type": "string",
+            "enum": [
+                "none",
+                "eager",
+                "normal"
+            ],
+            "x-enum-varnames": [
+                "NONE",
+                "EAGER",
+                "NORMAL"
+            ]
+        },
+        "mods.ProxyPoolType": {
+            "type": "string",
+            "enum": [
+                "off",
+                "cn",
+                "intl"
+            ],
+            "x-enum-varnames": [
+                "OFF",
+                "CN",
+                "INTL"
+            ]
+        },
+        "mods.WebReq": {
+            "type": "object",
+            "required": [
+                "url",
+                "waitTime"
+            ],
+            "properties": {
+                "pageLoadStrategy": {
+                    "description": "加载类型",
+                    "default": "normal",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/mods.PageLoadStrategy"
+                        }
+                    ]
+                },
+                "proxyPoolType": {
+                    "description": "代理类型 off cn intl",
+                    "default": "off",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/mods.ProxyPoolType"
+                        }
+                    ]
+                },
+                "url": {
+                    "description": "请求路径，必须携带http头",
+                    "type": "string"
+                },
+                "waitTime": {
+                    "description": "等待时间 默认10秒",
+                    "type": "integer",
+                    "default": 10
+                }
+            }
+        },
+        "mods.Xpath": {
+            "type": "object",
+            "required": [
+                "url",
+                "waitTime",
+                "xpath"
+            ],
+            "properties": {
+                "pageLoadStrategy": {
+                    "description": "加载类型",
+                    "default": "normal",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/mods.PageLoadStrategy"
+                        }
+                    ]
+                },
+                "proxyPoolType": {
+                    "description": "代理类型 off cn intl",
+                    "default": "off",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/mods.ProxyPoolType"
+                        }
+                    ]
+                },
+                "url": {
+                    "description": "请求路径，必须携带http头",
+                    "type": "string"
+                },
+                "waitTime": {
+                    "description": "等待时间 默认10秒",
+                    "type": "integer",
+                    "default": 10
+                },
+                "xpath": {
+                    "description": "xpath选择器",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
