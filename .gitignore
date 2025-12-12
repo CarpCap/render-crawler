@@ -1,48 +1,78 @@
-##ignore this file##
-**/target/
-.classpath
-.project
+# ----------------------------------------
+# Go 语言编译和模块相关
+# ----------------------------------------
 
-.settings     
+/build/
 
- ##filter databfile、sln file##
-*.mdb  
-*.ldb  
-*.sln    
-##class file##
-*.com  
-*.class  
-*.dll  
-*.exe  
-*.o  
-*.so  
+# 忽略 Go 模块下载和缓存目录
+/pkg/
+# 忽略 Go 模块依赖的 Vendor 目录 (如果手动启用 vendor 模式)
+/vendor/
+# 忽略 Go 语言构建缓存目录
+.go/
 
-# compression file
-*.7z  
-*.dmg  
-*.gz  
-*.iso  
-*.jar  
-*.rar  
-*.tar  
-*.zip  
-*.via
-*.tmp
-*.err
+# 忽略 Go 自动生成的二进制文件和可执行文件
+# 它们通常在项目根目录或子目录中生成
+*.exe
+*.dll
+*.so
+*.o
+*.test
+*/[!_]*.test   # 忽略非下划线开头的测试文件（例如：mytest.test）
+*/[!]main.exe
+*/[!]main.dll
 
+# ----------------------------------------
+# IDE 和操作系统文件
+# ----------------------------------------
 
-# OS generated files #  
-.DS_Store  
-.DS_Store?  
-._*  
-.Spotlight-V100  
-.Trashes  
-Icon?  
-ehthumbs.db  
-Thumbs.db  
-
-### IntelliJ IDEA ###
-.idea
+### IntelliJ IDEA / GoLand ###
+.idea/
 *.iws
 *.iml
 *.ipr
+
+### Visual Studio Code ###
+.vscode/
+
+### VS SDK / Visual Studio (通常用于 Windows/C#，但以防万一保留关键项) ###
+**/.vs/
+**/x64/
+**/x86/
+/logs
+
+# ----------------------------------------
+# 临时和系统文件 (根据你提供的列表进行优化)
+# ----------------------------------------
+
+# macOS 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+
+# Windows 系统文件
+Thumbs.db
+*.tmp
+*.err
+
+# 压缩文件（通常不需要加入版本控制）
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.via
+
+# 其他编译和中间文件（根据你提供的列表进行优化）
+*.com
+*.class
+*.mdb
+*.ldb
+*.sln

@@ -1,0 +1,18 @@
+# 服务器HTTP监听地址
+listen = ":10034"
+# 远程 WebDriver 服务的地址
+selenium_path = "http://127.0.0.1:4444/wd/hub"
+
+
+[web]
+# 浏览器session 最大请求数量
+web_check_request_sum = 60
+# 浏览器session 最大失败次数
+web_check_fail_sum = 2
+# 浏览器session 清理空闲session 执行间隔 秒
+web_check_interval = 10
+# 浏览器闲置时间 秒
+web_check_idle = 60
+# 隐藏窗口
+headless = true
+

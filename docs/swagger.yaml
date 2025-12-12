@@ -1,0 +1,156 @@
+definitions:
+  mods.Css:
+    properties:
+      css:
+        description: css选择器
+        type: string
+      pageLoadStrategy:
+        allOf:
+        - $ref: '#/definitions/mods.PageLoadStrategy'
+        default: normal
+        description: 加载类型
+      proxyPoolType:
+        allOf:
+        - $ref: '#/definitions/mods.ProxyPoolType'
+        default: "off"
+        description: 代理类型 off cn intl
+      url:
+        description: 请求路径，必须携带http头
+        type: string
+      waitTime:
+        default: 10
+        description: 等待时间 默认10秒
+        type: integer
+    required:
+    - css
+    - url
+    - waitTime
+    type: object
+  mods.PageLoadStrategy:
+    enum:
+    - none
+    - eager
+    - normal
+    type: string
+    x-enum-varnames:
+    - NONE
+    - EAGER
+    - NORMAL
+  mods.ProxyPoolType:
+    enum:
+    - "off"
+    - cn
+    - intl
+    type: string
+    x-enum-varnames:
+    - "OFF"
+    - CN
+    - INTL
+  mods.WebReq:
+    properties:
+      pageLoadStrategy:
+        allOf:
+        - $ref: '#/definitions/mods.PageLoadStrategy'
+        default: normal
+        description: 加载类型
+      proxyPoolType:
+        allOf:
+        - $ref: '#/definitions/mods.ProxyPoolType'
+        default: "off"
+        description: 代理类型 off cn intl
+      url:
+        description: 请求路径，必须携带http头
+        type: string
+      waitTime:
+        default: 10
+        description: 等待时间 默认10秒
+        type: integer
+    required:
+    - url
+    - waitTime
+    type: object
+  mods.Xpath:
+    properties:
+      pageLoadStrategy:
+        allOf:
+        - $ref: '#/definitions/mods.PageLoadStrategy'
+        default: normal
+        description: 加载类型
+      proxyPoolType:
+        allOf:
+        - $ref: '#/definitions/mods.ProxyPoolType'
+        default: "off"
+        description: 代理类型 off cn intl
+      url:
+        description: 请求路径，必须携带http头
+        type: string
+      waitTime:
+        default: 10
+        description: 等待时间 默认10秒
+        type: integer
+      xpath:
+        description: xpath选择器
+        type: string
+    required:
+    - url
+    - waitTime
+    - xpath
+    type: object
+info:
+  contact: {}
+  description: 这是一个使用 Gin 框架和 Swag 生成的 API 文档示例。
+  title: rc api
+  version: "1.0"
+paths:
+  /web/css:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/mods.Css'
+      produces:
+      - application/json
+      responses: {}
+      summary: Css定位
+      tags:
+      - selenium
+  /web/time:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/mods.WebReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Time
+      tags:
+      - selenium
+  /web/xpath:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/mods.Xpath'
+      produces:
+      - application/json
+      responses: {}
+      summary: Xpath定位
+      tags:
+      - selenium
+swagger: "2.0"
