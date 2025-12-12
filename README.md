@@ -12,7 +12,7 @@
 
 https://rc.carpcap.com/
 
-## 🌭  快速搭建
+## 🌭  功能说明
 
 
 比如：通过http直接请求baidu
