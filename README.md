@@ -35,8 +35,10 @@ swagger http://127.0.0.1:10034/swagger/index.html
 
 代码中内置了 **两套代理池**，用以区分代理策略：
 
-* **AomesticProxyPool.class** —— 国内代理池
-* **AbroadProxyPool.class** —— 国外代理池
+proxy_pool.go
+
+* **CnProxyPool** —— 国内代理池
+* **IntlProxyPool** —— 国外代理池
 
 你需要自行实现其中的 `replenish` 方法（项目内已提供示例）。
 
