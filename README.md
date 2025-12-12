@@ -4,8 +4,20 @@
 
 解决直接发起 HTTP 请求无法加载前端渲染内容的问题。
 
+
+
+## 🍕  在线体验
+
+海外服务器，延迟比较高
+
+https://rc.carpcap.com/
+
+## 🌭  快速搭建
+
+
 比如：通过http直接请求baidu
 返回结果大概是这样的，本身因为没有任何请求头以及js执行，本质只是一次get请求
+
 ```
 <html>
 <head><title>301 Moved Permanently</title></head>
