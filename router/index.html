@@ -123,7 +123,7 @@
         <p style="color: #666; text-align: center;">请先选择一个 API 接口...</p>
     </div>
 
-    <button onclick="sendRequest()">✨ 发起 POST 请求</button>
+    <button id="btbt" onclick="sendRequest()">✨ 发起 POST 请求</button>
 
     <h2 class="section-title">✅ 结果反馈区域</h2>
     <div id="result-area"></div>
@@ -238,6 +238,9 @@
         const baseUrl = document.getElementById('base-url-input').value;
         const selectedPath = document.getElementById('api-select').value;
 
+        const btbt = document.getElementById('btbt');
+
+
         if (!baseUrl || !selectedPath) {
             resultArea.innerHTML = '<span style="color: red;">❌ 请选择一个 API 接口！</span>';
             return;
@@ -280,6 +283,11 @@
         resultArea.innerHTML = `处理中...`;
 
         try {
+
+            btbt.setAttribute("disabled", true);
+            btbt.style.backgroundColor = "gray";
+
+
             const response = await fetch(fullUrl, {
                 method: 'POST',
                 headers: {
@@ -316,13 +324,20 @@
 
 
         } catch (error) {
+
             resultArea.innerHTML = `
             <span style="color: red; font-weight: bold;">❌ 请求失败：网络或 CORS 错误</span>
             --------------------------------------
             错误信息: ${error.message}
             请检查后端服务  是否运行并配置了 CORS。`;
             console.error('Fetch Error:', error);
+        }finally {
+            // btbt.hidden=false
+            btbt.removeAttribute("disabled");
+            btbt.style.backgroundColor = "#388E3C";
+
         }
+
     }
 
 
