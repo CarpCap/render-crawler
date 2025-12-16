@@ -152,14 +152,14 @@
 
     const DEFINITIONS = {
         "mods.Css": {
-            css: { desc: "css选择器", type: "string", default:"#i_cecream"},
+            css: { desc: "css选择器", type: "string", default:"#app"},
             url: { desc: "必须携带http头", type: "string", default: "https://www.bilibili.com" }, // 示例默认 URL
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
             proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" }
         },
         "mods.Xpath": {
-            xpath: { desc: "xpath选择器", type: "string",default:"//*[@id=\"i_cecream\"]" },
+            xpath: { desc: "xpath选择器", type: "string",default:"//*[@id=\"app\"]" },
             url: { desc: "必须携带http头", type: "string", default: "https://www.bilibili.com" },
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
