@@ -32,7 +32,7 @@ https://rc.carpcap.com/
 
 但如果通过 Render Crawler 
 
-<img src="docs/img.png" width="500" style="border: 2px solid #ddd; border-radius: 8px;">
+<img src="docs/img1.png" width="500" style="border: 2px solid #ddd; border-radius: 8px;">
 
 
 ---
