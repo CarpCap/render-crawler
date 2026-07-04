@@ -133,7 +133,13 @@
 
     <button id="btbt" onclick="sendRequest()">✨ 发起 POST 请求</button>
 
-    <h2 class="section-title">✅ 结果反馈区域</h2>
+    <!-- 截图展示区域 -->
+    <div id="screenshot-area" style="display: none; margin-top: 20px;">
+        <h2 class="section-title">📸 截图</h2>
+        <img id="screenshot-img" style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px;" alt="截图" />
+    </div>
+
+<h2 class="section-title">✅ 结果反馈区域</h2>
     <div id="result-area"></div>
 
 </div>
@@ -251,6 +257,9 @@
      */
     async function sendRequest() {
         const resultArea = document.getElementById('result-area');
+        
+        const screenshotArea = document.getElementById('screenshot-area');
+        const screenshotImg = document.getElementById('screenshot-img');
         // 直接使用写死的 URL
         const baseUrl = document.getElementById('base-url-input').value;
         const selectedPath = document.getElementById('api-select').value;
@@ -323,9 +332,18 @@
             let dataText;
 
             try {
-                // 尝试读取响应体为 JSON 或文本
+                
                 const json = await response.json();
+                const responseJson = json;
                 dataText = JSON.stringify(json, null, 2);
+                // 处理截图：存在非空截图时展示
+                if (responseJson.screenshot) {
+                    screenshotImg.src = 'data:image/png;base64,' + responseJson.screenshot;
+                    screenshotArea.style.display = 'block';
+                } else {
+                    screenshotArea.style.display = 'none';
+                    screenshotImg.src = '';
+                }
             } catch (e) {
                 dataText = await response.text();
             }
@@ -380,3 +398,4 @@
 
 </body>
 </html>
+
