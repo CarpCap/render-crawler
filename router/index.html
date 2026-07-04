@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -171,7 +171,8 @@
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
             proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" },
-            screenshot: { desc: "截图", type: "boolean", default: false }
+            screenshot: { desc: "截图", type: "boolean", default: false },
+            fullscreen: { desc: "全屏", type: "boolean", default: false }
         },
         "mods.Xpath": {
             xpath: { desc: "xpath选择器", type: "string",default:"//*[@id=\"app\"]" },
@@ -179,14 +180,16 @@
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
             proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" },
-            screenshot: { desc: "截图", type: "boolean", default: false }
+            screenshot: { desc: "截图", type: "boolean", default: false },
+            fullscreen: { desc: "全屏", type: "boolean", default: false }
         },
         "mods.WebReq": {
             url: { desc: "必须携带http头", type: "string", default: "https://www.baidu.com" },
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
             proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" },
-            screenshot: { desc: "截图", type: "boolean", default: false }
+            screenshot: { desc: "截图", type: "boolean", default: false },
+            fullscreen: { desc: "全屏", type: "boolean", default: false }
         }
     };
 

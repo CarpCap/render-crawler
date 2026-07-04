@@ -18,7 +18,7 @@ func Css(c *gin.Context) {
 		return
 	}
 
-	result, err := call(req.Url, req.ProxyPoolType, req.Css, selenium.CSS, req.WebReq.PageLoadStrategy, req.WebReq.WaitTime, req.WebReq.Screenshot)
+	result, err := call(req.Url, req.ProxyPoolType, req.Css, selenium.CSS, req.WebReq.PageLoadStrategy, req.WebReq.WaitTime, req.WebReq.Screenshot, req.Fullscreen)
 
 	if err != nil {
 		mods.Fail(c, 500, err.Error())
@@ -40,7 +40,7 @@ func Xpath(c *gin.Context) {
 		return
 	}
 
-	result, err := call(req.Url, req.ProxyPoolType, req.Xpath, selenium.XPATH, req.WebReq.PageLoadStrategy, req.WebReq.WaitTime, req.WebReq.Screenshot)
+	result, err := call(req.Url, req.ProxyPoolType, req.Xpath, selenium.XPATH, req.WebReq.PageLoadStrategy, req.WebReq.WaitTime, req.WebReq.Screenshot, req.Fullscreen)
 
 	if err != nil {
 		mods.Fail(c, 500, err.Error())
@@ -62,7 +62,7 @@ func Time(c *gin.Context) {
 		return
 	}
 
-	result, err := call(req.Url, req.ProxyPoolType, "", selenium.TIME, req.PageLoadStrategy, req.WaitTime, req.Screenshot)
+	result, err := call(req.Url, req.ProxyPoolType, "", selenium.TIME, req.PageLoadStrategy, req.WaitTime, req.Screenshot, req.Fullscreen)
 
 	if err != nil {
 		mods.Fail(c, 500, err.Error())
@@ -72,14 +72,14 @@ func Time(c *gin.Context) {
 	writeResult(c, result, req.Screenshot)
 }
 
-func call(url string, proxyType mods.ProxyPoolType, locateValue string, locateType selenium.LocateType, strategy mods.PageLoadStrategy, pageLoadTimeout int, screenshot bool) (*mods.PageResult, error) {
+func call(url string, proxyType mods.ProxyPoolType, locateValue string, locateType selenium.LocateType, strategy mods.PageLoadStrategy, pageLoadTimeout int, screenshot bool, fullscreen bool) (*mods.PageResult, error) {
 	web := selenium.GetAvailableSelenium(proxyType, strategy)
 
 	if web == nil {
 		web = selenium.CreateSelenium(proxyType, strategy, proxyType)
 	}
 
-	html, screenData, err := web.GetPageSource(url, locateValue, locateType, pageLoadTimeout, screenshot)
+	html, screenData, err := web.GetPageSource(url, locateValue, locateType, pageLoadTimeout, screenshot, fullscreen)
 	if err != nil {
 		return nil, err
 	}

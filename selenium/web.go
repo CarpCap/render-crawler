@@ -1,8 +1,9 @@
-package selenium
+﻿package selenium
 
 import (
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"github.com/tebeka/selenium"
 	"log"
 	"render-crawler/config"
@@ -94,9 +95,6 @@ func (s *Web) initWeb() {
 		// 避免 GPU 相关错误（Linux 容器基本没 GPU）
 		"--disable-gpu",
 
-		// 如果页面一定要显示图片，则开启
-		"--blink-settings=imagesEnabled=false",
-
 		// 禁用 Viz Display 合成器，降低 Chrome headless 的内存使用
 		"--disable-features=VizDisplayCompositor",
 
@@ -112,7 +110,15 @@ func (s *Web) initWeb() {
 	}
 
 	if config.Cfg.Web.Headless {
-		chromeArgs = append(chromeArgs, "--headless=new")
+		chromeArgs = append(chromeArgs, "--headless")
+	}
+
+	if config.Cfg.Web.WebLoadImg {
+		// 如果页面一定要显示图片，则开启
+		fmt.Println("开启图片显示")
+		//chromeArgs = append(chromeArgs, "--window-size=1920,1080")
+	} else {
+		chromeArgs = append(chromeArgs, "--blink-settings=imagesEnabled=false")
 	}
 
 	//添加proxy
@@ -178,7 +184,7 @@ func (s *Web) CloseSelenium() {
 }
 
 // 获取页面
-func (s *Web) GetPageSource(url string, localValue string, locateType LocateType, pageLoadTimeout int, screenshot bool) (string, string, error) {
+func (s *Web) GetPageSource(url string, localValue string, locateType LocateType, pageLoadTimeout int, screenshot bool, fullscreen bool) (string, string, error) {
 	s.Mutex.Lock()
 
 	if !s.Status.CompareAndSwap(false, true) {
@@ -207,15 +213,38 @@ func (s *Web) GetPageSource(url string, localValue string, locateType LocateType
 		return "", "", err
 	}
 
-	// 截图开关打开时捕获浏览器截图
+	// 截图开关打开时捕获全屏截图
 	screenshotData := ""
 	if screenshot && s.WebDriver != nil {
+		// 记录当前视口尺寸，截图后恢复
+		origWidth, _ := s.WebDriver.ExecuteScript("return window.innerWidth;", nil)
+		origHeight, _ := s.WebDriver.ExecuteScript("return window.innerHeight;", nil)
+
+		//是否全屏
+		if fullscreen {
+			// 设置全屏
+			_ = s.WebDriver.ResizeWindow("", 1920, 1080)
+			//_ = s.WebDriver.MaximizeWindow("")
+		}
+
 		pngBytes, shotErr := s.WebDriver.Screenshot()
 		if shotErr != nil {
 			log.Printf("截图失败: %v", shotErr)
 		} else {
 			screenshotData = base64.StdEncoding.EncodeToString(pngBytes)
 		}
+
+		// 恢复原始窗口尺寸
+		if fullscreen {
+			if origWidth != nil && origHeight != nil {
+				ow := int(origWidth.(float64))
+				oh := int(origHeight.(float64))
+				if ow > 0 && oh > 0 {
+					_ = s.WebDriver.ResizeWindow("", ow, oh)
+				}
+			}
+		}
+
 	}
 
 	s.RequestSum++

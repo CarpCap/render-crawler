@@ -18,6 +18,7 @@ type Config struct {
 		WebCheckInterval   int32 `mapstructure:"web_check_interval"`
 		WebCheckIdle       int64 `mapstructure:"web_check_idle"`
 		Headless           bool  `mapstructure:"headless"`
+		WebLoadImg         bool  `mapstructure:"web_load_img"`
 	} `mapstructure:"web"`
 }
 

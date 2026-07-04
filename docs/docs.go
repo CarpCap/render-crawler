@@ -107,6 +107,11 @@ const docTemplate = `{
                     "description": "css选择器",
                     "type": "string"
                 },
+                "fullscreen": {
+                    "description": "是否全屏 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "pageLoadStrategy": {
                     "description": "加载类型 默认 NORMAL",
                     "default": "normal",
@@ -174,6 +179,11 @@ const docTemplate = `{
                 "waitTime"
             ],
             "properties": {
+                "fullscreen": {
+                    "description": "是否全屏 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "pageLoadStrategy": {
                     "description": "加载类型 默认 NORMAL",
                     "default": "normal",
@@ -216,6 +226,11 @@ const docTemplate = `{
                 "xpath"
             ],
             "properties": {
+                "fullscreen": {
+                    "description": "是否全屏 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "pageLoadStrategy": {
                     "description": "加载类型 默认 NORMAL",
                     "default": "normal",

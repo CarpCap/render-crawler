@@ -13,6 +13,8 @@ type WebReq struct {
 	WaitTime int `json:"waitTime" binding:"required" default:"10"`
 	// 是否截图 默认false
 	Screenshot bool `json:"screenshot" default:"false"`
+	// 是否全屏 默认false
+	Fullscreen bool `json:"fullscreen" default:"false"`
 }
 
 // Css定位器

@@ -99,6 +99,11 @@
                     "description": "css选择器",
                     "type": "string"
                 },
+                "fullscreen": {
+                    "description": "是否全屏 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "pageLoadStrategy": {
                     "description": "加载类型 默认 NORMAL",
                     "default": "normal",
@@ -166,6 +171,11 @@
                 "waitTime"
             ],
             "properties": {
+                "fullscreen": {
+                    "description": "是否全屏 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "pageLoadStrategy": {
                     "description": "加载类型 默认 NORMAL",
                     "default": "normal",
@@ -208,6 +218,11 @@
                 "xpath"
             ],
             "properties": {
+                "fullscreen": {
+                    "description": "是否全屏 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "pageLoadStrategy": {
                     "description": "加载类型 默认 NORMAL",
                     "default": "normal",

@@ -4,6 +4,10 @@ definitions:
       css:
         description: css选择器
         type: string
+      fullscreen:
+        default: false
+        description: 是否全屏 默认false
+        type: boolean
       pageLoadStrategy:
         allOf:
         - $ref: '#/definitions/mods.PageLoadStrategy'
@@ -52,6 +56,10 @@ definitions:
     - INTL
   mods.WebReq:
     properties:
+      fullscreen:
+        default: false
+        description: 是否全屏 默认false
+        type: boolean
       pageLoadStrategy:
         allOf:
         - $ref: '#/definitions/mods.PageLoadStrategy'
@@ -79,6 +87,10 @@ definitions:
     type: object
   mods.Xpath:
     properties:
+      fullscreen:
+        default: false
+        description: 是否全屏 默认false
+        type: boolean
       pageLoadStrategy:
         allOf:
         - $ref: '#/definitions/mods.PageLoadStrategy'

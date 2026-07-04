@@ -131,7 +131,7 @@ func (t Time) pageSource() (string, error) {
 		return r.s, nil
 
 	// case 2: 超时情况（10秒后 time.After 通道会收到值）
-	case <-time.After(10 * time.Second):
+	case <-time.After(time.Duration(t.pageLoadTimeout) * time.Second):
 		// 10秒内没有从 ch 通道收到结果，返回超时错误
 		return "", fmt.Errorf("Time页面加载超时")
 	}
