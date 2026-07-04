@@ -20,16 +20,21 @@ https://rc.carpcap.com/
 
 
 比如：通过http直接请求baidu
-返回结果大概是这样的，本身因为没有任何请求头以及js执行，本质只是一次get请求
+```shell
+curl https://www.bilibili.com
+```
+
+返回结果大概是这样的，本身因为没有任何请求头以及js执行，本质只是一次get请求，信息量极少。
 
 ```
-<html>
-<head><title>301 Moved Permanently</title></head>
-<body>
-<center><h1>301 Moved Permanently</h1></center>
-<hr/>Powered by Tengine<hr><center>tengine</center>
-</body>
-</html>
+<!DOCTYPE html><html><head>
+<!-- Dejavu Release Version 64940-->
+<script>
+window._BiliGreyResult = {
+  method: "direct",
+  versionId: "64940",
+}
+</script><meta charset="UTF-8"><title>验证码_哔哩哔哩</title><meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,viewport-fit=cover"><meta name="spm_prefix" content="333.1291"><script type="text/javascript" src="//www.bilibili.com/gentleman/polyfill.js?features=Promise%2CObject.assign%2CString.prototype.includes%2CNumber.isNaN"></script><script>window._riskdata_ = { 'v_voucher': 'voucher_7bc1a50d-7814-48e3-a50b-ad55208484ba' }</script><script type="text/javascript" src="//s1.hdslb.com/bfs/seed/log/report/log-reporter.js"></script><link href="//s1.hdslb.com/bfs/static/jinkela/risk-captcha/css/risk-captcha.0.3bd977140b994afccbcc4d0102d33b9577e89cc0.css" rel="stylesheet"></head><body><div id="biliMainHeader"></div><div id="risk-captcha-app"></div><script src="//s1.hdslb.com/bfs/seed/jinkela/risk-captcha-sdk/CaptchaLoader.js"></script><script type="text/javascript" src="//s1.hdslb.com/bfs/static/jinkela/risk-captcha/1.risk-captcha.3bd977140b994afccbcc4d0102d33b9577e89cc0.js"></script><script type="text/javascript" src="//s1.hdslb.com/bfs/static/jinkela/risk-captcha/risk-captcha.3bd977140b994afccbcc4d0102d33b9577e89cc0.js"></script></body></html>
 ```
 
 但如果通过 Render Crawler 
