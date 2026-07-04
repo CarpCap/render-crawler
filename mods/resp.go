@@ -1,4 +1,4 @@
-package mods
+﻿package mods
 
 import (
 	"net/http"
@@ -6,11 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// JsonResult 定义了统一的 HTTP 响应结构
+// JsonResult 统一的 HTTP 响应结构
 type JsonResult struct {
-	Code int         `json:"code"` // 业务错误码，200 表示成功
-	Msg  string      `json:"msg"`  // 消息，用于描述结果
-	Data interface{} `json:"data"` // 返回的数据
+	Code       int         `json:"code"`                 // 业务码，200 表示成功
+	Msg        string      `json:"msg"`                  // 结果消息
+	Data       interface{} `json:"data"`                 // HTML 页面源码
+	Screenshot string      `json:"screenshot,omitempty"` // base64 PNG 截图，未请求时为空
 }
 
 // Success 成功响应
@@ -19,6 +20,16 @@ func Success(c *gin.Context, data interface{}) {
 		Code: 200,
 		Msg:  "Success",
 		Data: data,
+	})
+}
+
+// SuccessWithScreenshot 成功响应（含截图）
+func SuccessWithScreenshot(c *gin.Context, html string, screenshot string) {
+	c.JSON(http.StatusOK, JsonResult{
+		Code:       200,
+		Msg:        "Success",
+		Data:       html,
+		Screenshot: screenshot,
 	})
 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -95,6 +95,14 @@
         #request-body-container label {
              flex-basis: 220px;
         }
+        /* checkbox 水平布局 */
+        .param-group input[type="checkbox"] {
+            flex-grow: 0;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -156,20 +164,23 @@
             url: { desc: "必须携带http头", type: "string", default: "https://www.bilibili.com" }, // 示例默认 URL
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
-            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" }
+            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" },
+            screenshot: { desc: "截图", type: "boolean", default: false }
         },
         "mods.Xpath": {
             xpath: { desc: "xpath选择器", type: "string",default:"//*[@id=\"app\"]" },
             url: { desc: "必须携带http头", type: "string", default: "https://www.bilibili.com" },
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
-            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" }
+            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" },
+            screenshot: { desc: "截图", type: "boolean", default: false }
         },
         "mods.WebReq": {
             url: { desc: "必须携带http头", type: "string", default: "https://www.baidu.com" },
             waitTime: { desc: "等待时间 (秒)", type: "integer", default: 10 },
             pageLoadStrategy: { desc: "加载类型", enum: ["normal", "eager", "none"], default: "normal" },
-            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" }
+            proxyPoolType: { desc: "代理类型", enum: ["off", "cn", "intl"], default: "off" },
+            screenshot: { desc: "截图", type: "boolean", default: false }
         }
     };
 
@@ -214,11 +225,17 @@
                 });
             } else {
                 // 文本输入框
-                inputElement = document.createElement('input');
-                inputElement.type = 'text';
-                inputElement.id = `input-${key}`;
-                inputElement.placeholder = `${prop.desc} (${prop.type})`;
-                inputElement.value = prop.default || '';
+                if (prop.type === 'boolean') {
+                    inputElement = document.createElement('input');
+                    inputElement.type = 'checkbox';
+                    inputElement.checked = prop.default || false;
+                } else {
+                    inputElement = document.createElement('input');
+                    inputElement.type = 'text';
+                    inputElement.id = `input-${key}`;
+                    inputElement.placeholder = `${prop.desc} (${prop.type})`;
+                    inputElement.value = prop.default || '';
+                }
             }
             inputElement.name = key;
             inputElement.id = `input-${key}`;
@@ -254,6 +271,13 @@
         const spec = API_SPEC[selectedPath];
         container.querySelectorAll('[name]').forEach(input => {
             const key = input.name;
+            const propDef = DEFINITIONS[spec.model][key];
+
+            if (propDef && propDef.type === 'boolean') {
+                requestBody[key] = input.checked;
+                return;
+            }
+
             let value = input.value.trim();
 
             if (spec.required.includes(key) && !value) {
@@ -261,8 +285,7 @@
             }
 
             // 处理类型转换
-            const type = DEFINITIONS[spec.model][key].type;
-            if (type === 'integer' && value) {
+            if (propDef && propDef.type === 'integer' && value) {
                 value = parseInt(value, 10);
                 if (isNaN(value)) {
                     // 如果转换失败，设为空或保留字符串以便后端处理
@@ -310,16 +333,13 @@
             const statusColor = response.ok ? 'green' : 'red';
 
 
-            // 2. 创建一个新的段落元素来承载内容和样式
-            const p = document.createElement('p');
+            resultArea.innerHTML = '';
+            const pre = document.createElement('pre');
 
-            // 3. 设置样式
-            p.style.color = statusColor;
-            p.style.fontWeight = 'bold';
-            // 4. 使用 textContent 安全地插入数据
-            p.textContent = dataText; // 👈 关键：这里 dataText 被视为纯文本
-            // 5. 将元素添加到结果区域
-            resultArea.appendChild(p);
+            pre.style.color = statusColor;
+            pre.style.fontWeight = 'bold';
+            pre.textContent = dataText;
+            resultArea.appendChild(pre);
 
 
 

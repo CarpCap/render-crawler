@@ -11,6 +11,8 @@ type WebReq struct {
 	ProxyPoolType ProxyPoolType `json:"proxyPoolType"  default:"off"`
 	// 等待时间 默认10秒
 	WaitTime int `json:"waitTime" binding:"required" default:"10"`
+	// 是否截图 默认false
+	Screenshot bool `json:"screenshot" default:"false"`
 }
 
 // Css定位器

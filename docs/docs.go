@@ -125,6 +125,11 @@ const docTemplate = `{
                         }
                     ]
                 },
+                "screenshot": {
+                    "description": "是否截图 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "url": {
                     "description": "请求路径，必须携带http头",
                     "type": "string"
@@ -187,6 +192,11 @@ const docTemplate = `{
                         }
                     ]
                 },
+                "screenshot": {
+                    "description": "是否截图 默认false",
+                    "type": "boolean",
+                    "default": false
+                },
                 "url": {
                     "description": "请求路径，必须携带http头",
                     "type": "string"
@@ -223,6 +233,11 @@ const docTemplate = `{
                             "$ref": "#/definitions/mods.ProxyPoolType"
                         }
                     ]
+                },
+                "screenshot": {
+                    "description": "是否截图 默认false",
+                    "type": "boolean",
+                    "default": false
                 },
                 "url": {
                     "description": "请求路径，必须携带http头",

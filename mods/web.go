@@ -18,3 +18,9 @@ const (
 	// 默认 即正常情况下，selenium会等待整个界面加载完成（指对html和子资源的下载与解析,如JS文件，图片等，不包括ajax）
 	NORMAL PageLoadStrategy = "normal"
 )
+
+// PageResult 页面抓取结果，包含 HTML 和可选的截图数据
+type PageResult struct {
+	HTML       string `json:"html"`
+	Screenshot string `json:"screenshot,omitempty"` // base64 编码的 PNG 截图，未请求时为空
+}

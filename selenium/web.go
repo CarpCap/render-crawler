@@ -1,6 +1,7 @@
 package selenium
 
 import (
+	"encoding/base64"
 	"errors"
 	"github.com/tebeka/selenium"
 	"log"
@@ -177,11 +178,11 @@ func (s *Web) CloseSelenium() {
 }
 
 // 获取页面
-func (s *Web) GetPageSource(url string, localValue string, locateType LocateType, pageLoadTimeout int) (string, error) {
+func (s *Web) GetPageSource(url string, localValue string, locateType LocateType, pageLoadTimeout int, screenshot bool) (string, string, error) {
 	s.Mutex.Lock()
 
 	if !s.Status.CompareAndSwap(false, true) {
-		return "", errors.New("系统异常")
+		return "", "", errors.New("系统异常")
 	}
 
 	defer func() {
@@ -201,10 +202,24 @@ func (s *Web) GetPageSource(url string, localValue string, locateType LocateType
 	if err != nil {
 		s.FailSum++
 		verifyFailWeb(s)
+		s.RequestSum++
+		s.LastActiveTime = time.Now().Unix()
+		return "", "", err
+	}
+
+	// 截图开关打开时捕获浏览器截图
+	screenshotData := ""
+	if screenshot && s.WebDriver != nil {
+		pngBytes, shotErr := s.WebDriver.Screenshot()
+		if shotErr != nil {
+			log.Printf("截图失败: %v", shotErr)
+		} else {
+			screenshotData = base64.StdEncoding.EncodeToString(pngBytes)
+		}
 	}
 
 	s.RequestSum++
 	s.LastActiveTime = time.Now().Unix()
 
-	return result, err
+	return result, screenshotData, nil
 }
