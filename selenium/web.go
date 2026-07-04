@@ -116,7 +116,6 @@ func (s *Web) initWeb() {
 	if config.Cfg.Web.WebLoadImg {
 		// 如果页面一定要显示图片，则开启
 		fmt.Println("开启图片显示")
-		//chromeArgs = append(chromeArgs, "--window-size=1920,1080")
 	} else {
 		chromeArgs = append(chromeArgs, "--blink-settings=imagesEnabled=false")
 	}
@@ -203,6 +202,16 @@ func (s *Web) GetPageSource(url string, localValue string, locateType LocateType
 		s.initWeb()
 	}
 
+	// 记录当前视口尺寸，获取内容后恢复
+	origWidth, _ := s.WebDriver.ExecuteScript("return window.outerWidth;", nil)
+	origHeight, _ := s.WebDriver.ExecuteScript("return window.outerHeight;", nil)
+	//是否全屏
+	if fullscreen {
+		// 设置全屏
+		_ = s.WebDriver.ResizeWindow("", 1920, 1080)
+		//_ = s.WebDriver.MaximizeWindow("")
+	}
+
 	//策略模式获取内容
 	result, err := PageSource(url, s.WebDriver, locateType, localValue, pageLoadTimeout)
 	if err != nil {
@@ -216,16 +225,6 @@ func (s *Web) GetPageSource(url string, localValue string, locateType LocateType
 	// 截图开关打开时捕获全屏截图
 	screenshotData := ""
 	if screenshot && s.WebDriver != nil {
-		// 记录当前视口尺寸，截图后恢复
-		origWidth, _ := s.WebDriver.ExecuteScript("return window.innerWidth;", nil)
-		origHeight, _ := s.WebDriver.ExecuteScript("return window.innerHeight;", nil)
-
-		//是否全屏
-		if fullscreen {
-			// 设置全屏
-			_ = s.WebDriver.ResizeWindow("", 1920, 1080)
-			//_ = s.WebDriver.MaximizeWindow("")
-		}
 
 		pngBytes, shotErr := s.WebDriver.Screenshot()
 		if shotErr != nil {
@@ -233,18 +232,17 @@ func (s *Web) GetPageSource(url string, localValue string, locateType LocateType
 		} else {
 			screenshotData = base64.StdEncoding.EncodeToString(pngBytes)
 		}
+	}
 
-		// 恢复原始窗口尺寸
-		if fullscreen {
-			if origWidth != nil && origHeight != nil {
-				ow := int(origWidth.(float64))
-				oh := int(origHeight.(float64))
-				if ow > 0 && oh > 0 {
-					_ = s.WebDriver.ResizeWindow("", ow, oh)
-				}
+	// 恢复原始窗口尺寸
+	if fullscreen {
+		if origWidth != nil && origHeight != nil {
+			ow := int(origWidth.(float64))
+			oh := int(origHeight.(float64))
+			if ow > 0 && oh > 0 {
+				_ = s.WebDriver.ResizeWindow("", ow, oh)
 			}
 		}
-
 	}
 
 	s.RequestSum++

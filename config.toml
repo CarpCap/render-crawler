@@ -13,7 +13,7 @@ web_check_fail_sum = 2
 web_check_interval = 10
 # 浏览器闲置时间 秒
 web_check_idle = 60
-# 隐藏窗口，生产环境建议关闭
-headless = false
-# 是否加载图片
-web_load_img = true
+# 隐藏窗口 true隐藏 false不隐藏，生产环境建议设为true
+headless = true
+# 是否加载图片 true加载 false不加载
+web_load_img = false
