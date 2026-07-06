@@ -19,7 +19,7 @@ https://rc.carpcap.com/
 ## 🌭  功能说明
 
 
-比如：通过http直接请求baidu
+比如：通过http直接请求bilibili
 ```shell
 curl https://www.bilibili.com
 ```
