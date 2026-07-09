@@ -4,8 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/tebeka/selenium"
+	"github.com/carpcap/selenium"
 	"log"
+	"math"
 	"strings"
 	"time"
 )
@@ -140,11 +141,40 @@ func (t Time) pageSource() (string, error) {
 
 func PageSource(url string, wd selenium.WebDriver, locateType LocateType, value string, pageLoadTimeout int) (string, error) {
 	// 导航到指定 URL
+
 	if err := wd.Get(url); err != nil {
 		log.Printf("导航到 %s 失败: %v", url, err)
 		return "", err
 	}
 	log.Printf("成功导航到 %s", url)
+
+	cookie := &selenium.Cookie{Name: "Authorization", Value: "ded3a8de-4711-499d-a3f9-7570bb11187a", Expiry: math.MaxUint32}
+
+	err := wd.AddCookie(cookie)
+	if err != nil {
+		fmt.Println("add cookie error:", err)
+	}
+
+	_, err = wd.ExecuteCDP("Network.enable", nil)
+	if err != nil {
+		panic(err)
+	}
+	_, err = wd.ExecuteCDP(
+		"Network.setExtraHTTPHeaders",
+		map[string]interface{}{
+			"headers": map[string]string{
+				"Authorization": "Bearer xxx",
+				"X-Test":        "123",
+			},
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	//request.Header.Add("Accept", jsonContentType)
+
+	wd.Refresh()
 
 	html := Html{wd: wd, locateValue: value, pageLoadTimeout: pageLoadTimeout}
 	var locate Locate

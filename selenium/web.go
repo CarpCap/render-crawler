@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/tebeka/selenium"
+	"github.com/carpcap/selenium"
 	"log"
 	"render-crawler/config"
 	"render-crawler/mods"
