@@ -2,8 +2,6 @@ module render-crawler
 
 go 1.24.0
 
-toolchain go1.26.5
-
 require (
 	github.com/PuerkitoBio/goquery v1.11.0
 	github.com/gin-contrib/cors v1.7.6
