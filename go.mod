@@ -2,7 +2,7 @@ module render-crawler
 
 go 1.24.0
 
-toolchain go1.24.11
+toolchain go1.26.5
 
 require (
 	github.com/PuerkitoBio/goquery v1.11.0
