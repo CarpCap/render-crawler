@@ -141,18 +141,24 @@ func (t Time) pageSource() (string, error) {
 
 func PageSource(url string, wd selenium.WebDriver, locateType LocateType, value string, pageLoadTimeout int) (string, error) {
 	// 导航到指定 URL
-
 	if err := wd.Get(url); err != nil {
 		log.Printf("导航到 %s 失败: %v", url, err)
 		return "", err
 	}
 	log.Printf("成功导航到 %s", url)
 
-	cookie := &selenium.Cookie{Name: "Authorization", Value: "ded3a8de-4711-499d-a3f9-7570bb11187a", Expiry: math.MaxUint32}
-
+	//cookies
+	cookie := &selenium.Cookie{Name: "Authorization", Value: "ded3a8de-4711-499d-a3f9-7570bb133387a", Expiry: math.MaxUint32}
 	err := wd.AddCookie(cookie)
 	if err != nil {
 		fmt.Println("add cookie error:", err)
+	}
+
+	//handlers
+
+	headlers := map[string]string{
+		"Authorization": "ded3a8de-4711-499d-a3f9-7570bb11187a",
+		"X-Test":        "123",
 	}
 
 	_, err = wd.ExecuteCDP("Network.enable", nil)
@@ -162,17 +168,12 @@ func PageSource(url string, wd selenium.WebDriver, locateType LocateType, value 
 	_, err = wd.ExecuteCDP(
 		"Network.setExtraHTTPHeaders",
 		map[string]interface{}{
-			"headers": map[string]string{
-				"Authorization": "Bearer xxx",
-				"X-Test":        "123",
-			},
+			"headers": headlers,
 		},
 	)
 	if err != nil {
 		panic(err)
 	}
-
-	//request.Header.Add("Accept", jsonContentType)
 
 	wd.Refresh()
 
@@ -189,7 +190,23 @@ func PageSource(url string, wd selenium.WebDriver, locateType LocateType, value 
 		locate = Time{html}
 		break
 	default:
+		_ = clearHeaders(wd, headlers)
 		return "", errors.New("locate type error")
 	}
+
+	_ = clearHeaders(wd, headlers)
 	return locate.pageSource()
+}
+
+func clearHeaders(wd selenium.WebDriver, headers map[string]string) (err error) {
+	for key := range headers {
+		headers[key] = ""
+	}
+	_, err = wd.ExecuteCDP(
+		"Network.setExtraHTTPHeaders",
+		map[string]interface{}{
+			"headers": headers,
+		},
+	)
+	return err
 }

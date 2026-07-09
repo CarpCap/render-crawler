@@ -4,6 +4,7 @@ go 1.24.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.11.0
+	github.com/carpcap/selenium v0.9.10
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.11.0
 	github.com/spf13/pflag v1.0.10
@@ -11,7 +12,6 @@ require (
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.1
 	github.com/swaggo/swag v1.16.6
-	github.com/carpcap/selenium v0.9.10
 )
 
 //replace github.com/tebeka/selenium => ../selenium
@@ -56,6 +56,7 @@ require (
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
+	github.com/tebeka/selenium v0.9.9 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.3.1 // indirect
 	go.uber.org/mock v0.6.0 // indirect
